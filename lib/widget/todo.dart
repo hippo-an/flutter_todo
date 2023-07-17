@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:todo_todo/widget/todo_item.dart';
+import 'package:todo_todo/widget/todo_list.dart';
 
 class Todo extends StatelessWidget {
   const Todo({super.key});
@@ -7,27 +8,21 @@ class Todo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
       home: Scaffold(
         body: Column(
           children: [
             SafeArea(
               child: AppBar(
-                title: Text('TodoTodo'),
+                title: const Text('TodoTodo'),
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Todo ${index + 1}'),
-                  );
-                },
-              ),
-            ),
+            const TodoList(),
             SafeArea(
               child: BottomNavigationBar(
-                items: [
+                items: const [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
                     label: 'Home',
