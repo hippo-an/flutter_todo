@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TodoItem extends StatefulWidget {
+  final String id;
   String title;
   bool isDone;
   String? shortDescription;
@@ -10,19 +11,19 @@ class TodoItem extends StatefulWidget {
     required this.title,
     this.shortDescription,
     this.isDone = false,
-  });
+  }) : id = UniqueKey().toString();
 
   @override
   State<TodoItem> createState() => _TodoItemState();
 }
 
 class _TodoItemState extends State<TodoItem> {
-
   void isDone(bool value) {
     setState(() {
       widget.isDone = value;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Card(
