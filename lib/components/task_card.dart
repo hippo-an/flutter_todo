@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/models/enums.dart';
 
-class Task extends StatefulWidget {
+class TaskCard extends StatefulWidget {
   final String name;
   final String? note;
   final Urgent urgent;
@@ -9,7 +9,7 @@ class Task extends StatefulWidget {
   final Priority priority;
   final Progression progression;
 
-  const Task({
+  const TaskCard({
     super.key,
     required this.name,
     this.note,
@@ -20,10 +20,10 @@ class Task extends StatefulWidget {
   });
 
   @override
-  State<Task> createState() => _TaskState();
+  State<TaskCard> createState() => _TaskCardState();
 }
 
-class _TaskState extends State<Task> {
+class _TaskCardState extends State<TaskCard> {
   var _isDone = false;
 
   @override
