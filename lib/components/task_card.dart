@@ -38,47 +38,51 @@ class _TaskCardState extends State<TaskCard> {
         shape: BoxShape.rectangle,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Checkbox(
-              value: _isDone,
-              onChanged: (value) {
-                setState(() {
-                  _isDone = value ?? false;
-                });
-              },
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.name,
-                    style: TextStyle(
-                      color: _isDone
-                          ? Theme.of(context).colorScheme.secondary
-                          : Theme.of(context).colorScheme.secondary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      decoration: _isDone
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                    ),
-                  ),
-                  if (widget.note != null)
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+        child: IntrinsicHeight(
+          child: Row(
+            children: [
+              Checkbox(
+                value: _isDone,
+                onChanged: (value) {
+                  setState(() {
+                    _isDone = value ?? false;
+                  });
+                },
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      widget.note ?? 'none',
+                      widget.name,
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: _isDone
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context).colorScheme.secondary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        decoration: _isDone
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                       ),
                     ),
-                ],
+                    if (widget.note != null)
+                      Text(
+                        widget.note ?? 'none',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: 16),
+              const Icon(Icons.drag_indicator),
+            ],
+          ),
         ),
       ),
     );
