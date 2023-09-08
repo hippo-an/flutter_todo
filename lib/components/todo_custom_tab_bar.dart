@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:todo_todo/components/todo_custom_drawer.dart';
 
 class TodoCustomTabBar extends StatelessWidget {
   const TodoCustomTabBar({
@@ -15,31 +17,24 @@ class TodoCustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.orangeAccent,
+      padding: const EdgeInsets.all(4),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
               icon: const Icon(Icons.menu),
             ),
           ),
           Expanded(
-            flex: 5,
+            flex: 6,
             child: TabBar(
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: Colors.blueAccent,
               unselectedLabelColor: Colors.black38,
               onTap: onTap,
-              indicator: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.blueAccent,
-                    width: 3,
-                  ),
-                ),
-              ),
+              indicator: const BoxDecoration(),
               tabs: tabBarConfig.values.indexed
                   .map(
                     ((int, IconData) e) => Tab(
