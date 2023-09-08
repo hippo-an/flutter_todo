@@ -4,8 +4,8 @@ import 'package:todo_todo/components/main_calendar_container.dart';
 import 'package:todo_todo/components/todo_list_container.dart';
 import 'package:todo_todo/screens/task_add_screen.dart';
 
-class TodoHomeScreen extends StatelessWidget {
-  const TodoHomeScreen({super.key});
+class TodoCalendarScreen extends StatelessWidget {
+  const TodoCalendarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

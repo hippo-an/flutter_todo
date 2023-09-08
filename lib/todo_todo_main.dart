@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/provider/main_calendar_provider.dart';
-import 'package:todo_todo/screens/todo_home_screen.dart';
+import 'package:todo_todo/screens/todo_navigation_screen.dart';
 
 var kColorScheme = ColorScheme.fromSeed(seedColor: const Color(0xFFF3FDE8));
 
 var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
   seedColor: const Color.fromARGB(255, 68, 65, 98),
+);
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const TodoNavigationScreen(),
+    ),
+  ],
 );
 
 void main() async {
@@ -21,20 +31,19 @@ class TodoTodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-              create: (BuildContext context) => MainCalendarProvider()),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'TodoTodo',
-          theme:
-          ThemeData().copyWith(useMaterial3: true, colorScheme: kColorScheme),
-          themeMode: ThemeMode.light,
-          home: const SafeArea(
-            child: TodoHomeScreen(),
-          ),
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) => MainCalendarProvider(),
         ),
+      ],
+      child: MaterialApp.router(
+        routerConfig: _router,
+        debugShowCheckedModeBanner: false,
+        title: 'TodoTodo',
+        theme:
+            ThemeData().copyWith(useMaterial3: true, colorScheme: kColorScheme),
+        themeMode: ThemeMode.light,
+      ),
     );
   }
 }
