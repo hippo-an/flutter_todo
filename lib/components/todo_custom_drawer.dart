@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_todo/components/add_category_alert_dialog.dart';
 
 class TodoCustomDrawer extends StatelessWidget {
   const TodoCustomDrawer({super.key});
@@ -22,14 +23,32 @@ class TodoCustomDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
+          ExpansionTile(
+            initiallyExpanded: true,
             leading: const Icon(
               Icons.category,
               size: 26,
             ),
             title: const Text('Category'),
-            onTap: () {},
-          )
+            children: [
+              const ListTile(
+                title: Text('All'),
+              ),
+              ListTile(
+                title: TextButton.icon(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const AddCategoryAlertDialog();
+                        });
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('new'),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
