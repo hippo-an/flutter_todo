@@ -23,31 +23,34 @@ class TodoCustomDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ExpansionTile(
-            initiallyExpanded: true,
-            leading: const Icon(
-              Icons.category,
-              size: 26,
-            ),
-            title: const Text('Category'),
-            children: [
-              const ListTile(
-                title: Text('All'),
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              initiallyExpanded: true,
+              leading: const Icon(
+                Icons.category,
+                size: 26,
               ),
-              ListTile(
-                title: TextButton.icon(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const AddCategoryAlertDialog();
-                        });
-                  },
-                  icon: const Icon(Icons.add),
-                  label: const Text('new'),
+              title: const Text('Category'),
+              children: [
+                const ListTile(
+                  title: Text('All'),
                 ),
-              ),
-            ],
+                ListTile(
+                  title: TextButton.icon(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AddCategoryAlertDialog();
+                          });
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('new'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
