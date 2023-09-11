@@ -18,13 +18,13 @@ class CategoryListBar extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final category = categories[index];
           return Padding(
+            key: ObjectKey(category),
             padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: index == selectedIndex
                     ? Colors.orangeAccent
                     : category.color,
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
               ),
               onPressed: () {
                 if (selectedIndex == index) {

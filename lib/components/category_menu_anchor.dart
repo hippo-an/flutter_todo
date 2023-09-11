@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_todo/components/add_category_alert_dialog.dart';
 import 'package:todo_todo/consts/enums.dart';
 
 class CategoryMenuAnchor extends StatelessWidget {
@@ -30,7 +31,13 @@ class CategoryMenuAnchor extends StatelessWidget {
       ),
       menuChildren: <MenuItemButton>[
         MenuItemButton(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return const AddCategoryAlertDialog();
+                });
+          },
           child: Text('edit'),
         ),
         MenuItemButton(

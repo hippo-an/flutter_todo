@@ -23,6 +23,7 @@ class DrawerCategoryTile extends StatelessWidget {
           ...categories.map(
                 (category) =>
                 Padding(
+                  key: ObjectKey(category),
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: InkWell(
                     customBorder: RoundedRectangleBorder(

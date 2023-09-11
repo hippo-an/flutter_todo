@@ -36,4 +36,10 @@ class CategoryProvider extends ChangeNotifier {
     _selectedIndex = selectedIndex;
     notifyListeners();
   }
+
+  void reorderCategory(int oldIndex, int newIndex) {
+    final category = _categories.removeAt(oldIndex);
+    _categories.insert(newIndex, category);
+    notifyListeners();
+  }
 }

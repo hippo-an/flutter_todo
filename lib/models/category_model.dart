@@ -8,17 +8,37 @@ class CategoryModel {
     this.categoryState = CategoryState.activated,
     required this.color,
     this.isDeleted = false,
-  }) {
-    final now = DateTime.now();
-    createdAt = now;
-    updatedAt = now;
-  }
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  })
+      : createdAt = createdAt ?? DateTime.now(),
+        updatedAt = updatedAt ?? DateTime.now();
 
   final String id;
-  String name;
-  CategoryState categoryState;
-  Color color;
-  bool isDeleted;
-  late final DateTime createdAt;
-  late DateTime updatedAt;
+  final String name;
+  final CategoryState categoryState;
+  final Color color;
+  final bool isDeleted;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  CategoryModel copyWith({
+    required String? id,
+    required String? name,
+    required CategoryState? categoryState,
+    required Color? color,
+    required bool? isDeleted,
+    required DateTime? createdAt,
+    required DateTime? updatedAt,
+  }) {
+    return CategoryModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      categoryState: categoryState ?? this.categoryState,
+      color: color ?? this.color,
+      isDeleted: isDeleted ?? this.isDeleted,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
