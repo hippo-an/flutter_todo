@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/add_category_alert_dialog.dart';
+import 'package:todo_todo/components/task_list_screen/add_category_alert_dialog.dart';
 import 'package:todo_todo/components/drawer/drawer_category_tile.dart';
 
 class TodoCustomDrawer extends StatelessWidget {

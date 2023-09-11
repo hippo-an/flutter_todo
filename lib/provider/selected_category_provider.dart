@@ -14,7 +14,6 @@ final _baseCategory = CategoryModel(
 class CategoryProvider extends ChangeNotifier {
   int _selectedIndex = 0;
   final List<CategoryModel> _categories = [];
-  List<CategoryModel> _cacheCategory = [];
 
   int get selectedIndex => _selectedIndex;
 

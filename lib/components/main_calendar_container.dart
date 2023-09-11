@@ -53,12 +53,12 @@ class MainCalendarContainer extends StatelessWidget {
                           ? CalendarFormat.week
                           : CalendarFormat.month);
                 },
-                child: calendarFormat == CalendarFormat.month
-                    ? const Icon(Icons.keyboard_arrow_up)
-                    : const Icon(Icons.keyboard_arrow_down),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                 ),
+                child: calendarFormat == CalendarFormat.month
+                    ? const Icon(Icons.keyboard_arrow_up)
+                    : const Icon(Icons.keyboard_arrow_down),
               ),
             ),
             const SizedBox(width: 10),

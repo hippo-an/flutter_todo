@@ -34,6 +34,10 @@ class _TodoNavigationScreenState extends State<TodoNavigationScreen> {
             tabBarConfig: _tabBarWidgets,
             selectedIndex: _selectedIndex,
             onTap: (index) {
+              if (_selectedIndex == index) {
+                return;
+              }
+
               setState(() {
                 _selectedIndex = index;
               });

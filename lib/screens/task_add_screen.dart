@@ -31,7 +31,7 @@ class TaskAddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     final mainCalendarProvider = Provider.of<MainCalendarProvider>(context);
 
     return WillPopScope(
@@ -43,7 +43,7 @@ class TaskAddScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 30, 12, 12),
               child: Form(
-                key: _formKey,
+                key: formKey,
                 child: Column(
                   children: [
                     TextFormField(
@@ -188,7 +188,6 @@ class TaskAddScreen extends StatelessWidget {
                         );
 
                         if (pickedDate != null) {
-                          print(pickedDate);
                         }
                       },
                     ),
@@ -198,7 +197,7 @@ class TaskAddScreen extends StatelessWidget {
                       children: [
                         TextButton(
                           onPressed: () {
-                            _formKey.currentState!.reset();
+                            formKey.currentState!.reset();
                           },
                           child: const Text('Reset'),
                         ),

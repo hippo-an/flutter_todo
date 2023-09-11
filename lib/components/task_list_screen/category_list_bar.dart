@@ -9,6 +9,7 @@ class CategoryListBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoryProvider = Provider.of<CategoryProvider>(context);
     final categories = categoryProvider.categories;
+    final selectedIndex = categoryProvider.selectedIndex;
     return Expanded(
       child: ListView.builder(
         itemCount: categories.length,
@@ -20,12 +21,16 @@ class CategoryListBar extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: index == categoryProvider.selectedIndex
+                backgroundColor: index == selectedIndex
                     ? Colors.orangeAccent
                     : category.color,
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
               ),
               onPressed: () {
+                if (selectedIndex == index) {
+                  return;
+                }
+
                 categoryProvider.updateSelectedIndex(index);
               },
               child: Text(category.name),

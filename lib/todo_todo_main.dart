@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/provider/main_calendar_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
+import 'package:todo_todo/screens/manage_category_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/screens/todo_calendar_screen.dart';
 import 'package:todo_todo/screens/todo_navigation_screen.dart';
@@ -22,9 +23,13 @@ final _router = GoRouter(
       routes: <RouteBase>[
         GoRoute(
           path: TaskListScreen.routeName,
-          builder: (BuildContext context, GoRouterState state) {
-            return const TaskListScreen();
-          },
+          builder: (context, state) => const TaskListScreen(),
+          routes: [
+            GoRoute(
+              path: ManageCategoryScreen.routeName,
+              builder: (context, state) => const ManageCategoryScreen(),
+            ),
+          ],
         ),
         GoRoute(
           path: TodoCalendarScreen.routeName,
@@ -60,7 +65,8 @@ class TodoTodoApp extends StatelessWidget {
         routerConfig: _router,
         debugShowCheckedModeBanner: false,
         title: 'TodoTodo',
-        theme: ThemeData().copyWith(useMaterial3: true, colorScheme: kColorScheme),
+        theme:
+            ThemeData().copyWith(useMaterial3: true, colorScheme: kColorScheme),
         themeMode: ThemeMode.light,
       ),
     );

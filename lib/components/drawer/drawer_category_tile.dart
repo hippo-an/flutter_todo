@@ -31,6 +31,7 @@ class DrawerCategoryTile extends StatelessWidget {
                     onTap: () {},
                     splashColor: Colors.grey[800],
                     child: ListTile(
+                      isThreeLine: false,
                       title: Text(category.name),
                     ),
                   ),

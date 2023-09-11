@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_todo/components/category_list_bar.dart';
+import 'package:todo_todo/components/task_list_screen/category_list_bar.dart';
 import 'package:todo_todo/components/custom_floating_action_button.dart';
-import 'package:todo_todo/components/menu_anchor_button.dart';
-import 'package:todo_todo/provider/selected_category_provider.dart';
+import 'package:todo_todo/components/category_bar_menu_anchor.dart';
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});
@@ -20,7 +18,7 @@ class TaskListScreen extends StatelessWidget {
         child: const Row(
           children: [
             CategoryListBar(),
-            MenuAnchorExample(),
+            CategoryBarMenuAnchor(),
           ],
         ),
       ),
