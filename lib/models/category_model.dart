@@ -23,13 +23,13 @@ class CategoryModel {
   final DateTime updatedAt;
 
   CategoryModel copyWith({
-    required String? id,
-    required String? name,
-    required CategoryState? categoryState,
-    required Color? color,
-    required bool? isDeleted,
-    required DateTime? createdAt,
-    required DateTime? updatedAt,
+    String? id,
+    String? name,
+    CategoryState? categoryState,
+    Color? color,
+    bool? isDeleted,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return CategoryModel(
       id: id ?? this.id,

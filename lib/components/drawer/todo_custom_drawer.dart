@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/add_category_alert_dialog.dart';
 import 'package:todo_todo/components/drawer/drawer_category_tile.dart';
 
 class TodoCustomDrawer extends StatelessWidget {
@@ -28,20 +27,35 @@ class TodoCustomDrawer extends StatelessWidget {
             ),
           ),
           const DrawerCategoryTile(),
-          ListTile(
-            title: Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton.icon(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const AddCategoryAlertDialog();
-                      });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('new'),
+          InkWell(
+            customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            onTap: () {},
+            splashColor: Colors.grey[800],
+            child: const ListTile(
+              isThreeLine: false,
+              leading: Icon(
+                Icons.delete_outline,
+                size: 26,
               ),
+              title: Text('Manage Delete'),
+            ),
+
+          ),
+          InkWell(
+            customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            onTap: () {},
+            splashColor: Colors.grey[800],
+            child: const ListTile(
+              isThreeLine: false,
+              leading: Icon(
+                Icons.settings,
+                size: 26,
+              ),
+              title: Text('Settings'),
             ),
           ),
         ],

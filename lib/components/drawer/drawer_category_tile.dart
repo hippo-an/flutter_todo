@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_todo/components/add_category_alert_dialog.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class DrawerCategoryTile extends StatelessWidget {
@@ -37,6 +38,20 @@ class DrawerCategoryTile extends StatelessWidget {
                     ),
                   ),
                 ),
+          ),
+          ListTile(
+            title: OutlinedButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const AddCategoryAlertDialog();
+                  },
+                );
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('new'),
+            ),
           ),
         ],
       ),

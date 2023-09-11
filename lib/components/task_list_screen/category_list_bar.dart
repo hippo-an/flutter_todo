@@ -22,9 +22,13 @@ class CategoryListBar extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: index == selectedIndex
-                    ? Colors.orangeAccent
-                    : category.color,
+                side: index == selectedIndex
+                    ? const BorderSide(
+                        width: 2,
+                        color: Colors.black,
+                      )
+                    : null,
+                backgroundColor: category.color,
               ),
               onPressed: () {
                 if (selectedIndex == index) {

@@ -42,4 +42,11 @@ class CategoryProvider extends ChangeNotifier {
     _categories.insert(newIndex, category);
     notifyListeners();
   }
+
+  void updateCategory(int categoryIndex, String name, Color selectedColor) {
+    final category = _categories.removeAt(categoryIndex);
+    final newCategory = category.copyWith(name: name, color: selectedColor, updatedAt: DateTime.now());
+    _categories.insert(categoryIndex, newCategory);
+    notifyListeners();
+  }
 }

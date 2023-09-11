@@ -4,7 +4,7 @@ import 'package:todo_todo/screens/manage_category_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/screens/todo_navigation_screen.dart';
 
-const _menuList = ['Manage Categories'];
+const _menuList = ['Manage Categories', 'Change Default Color'];
 
 class CategoryBarMenuAnchor extends StatelessWidget {
   const CategoryBarMenuAnchor({super.key});
@@ -34,8 +34,12 @@ class CategoryBarMenuAnchor extends StatelessWidget {
           _menuList.length,
           (int index) => MenuItemButton(
             onPressed: () {
-              context.push(
-                  '${TodoNavigationScreen.routeName}${TaskListScreen.routeName}/${ManageCategoryScreen.routeName}');
+              if (index == 0) {
+                context.push(
+                    '${TodoNavigationScreen.routeName}${TaskListScreen.routeName}/${ManageCategoryScreen.routeName}');
+              } else if (index == 1) {
+
+              }
             },
             child: Text(_menuList[index]),
           ),

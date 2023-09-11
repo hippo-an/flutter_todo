@@ -8,14 +8,16 @@ class ManageCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Categories'),
-      ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: const CategoryList(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Manage Categories'),
+        ),
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            child: const CategoryList(),
+          ),
         ),
       ),
     );

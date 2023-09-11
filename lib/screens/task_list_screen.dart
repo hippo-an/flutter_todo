@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/task_list_screen/category_list_bar.dart';
-import 'package:todo_todo/components/custom_floating_action_button.dart';
 import 'package:todo_todo/components/category_bar_menu_anchor.dart';
+import 'package:todo_todo/components/custom_floating_action_button.dart';
+import 'package:todo_todo/components/task_list_screen/category_list_bar.dart';
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});

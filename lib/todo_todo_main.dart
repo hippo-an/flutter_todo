@@ -55,10 +55,10 @@ class TodoTodoApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (BuildContext context) => MainCalendarProvider(),
+          create: (_) => MainCalendarProvider(),
         ),
         ChangeNotifierProvider(
-          create: (BuildContext context) => CategoryProvider(),
+          create: (_) => CategoryProvider(),
         ),
       ],
       child: MaterialApp.router(
