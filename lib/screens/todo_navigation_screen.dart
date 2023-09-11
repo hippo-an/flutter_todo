@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/todo_custom_drawer.dart';
+import 'package:todo_todo/components/drawer/todo_custom_drawer.dart';
 import 'package:todo_todo/components/todo_custom_tab_bar.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/screens/todo_calendar_screen.dart';
@@ -14,7 +14,7 @@ class TodoNavigationScreen extends StatefulWidget {
 }
 
 class _TodoNavigationScreenState extends State<TodoNavigationScreen> {
-  final Map<Widget, IconData> _tabBarConfig = {
+  final Map<Widget, IconData> _tabBarWidgets = {
     const TaskListScreen(): Icons.task_alt,
     const TodoCalendarScreen(): Icons.calendar_month,
     const Scaffold(): Icons.person,
@@ -25,13 +25,13 @@ class _TodoNavigationScreenState extends State<TodoNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _tabBarConfig.length,
+      length: _tabBarWidgets.length,
       initialIndex: _selectedIndex,
       child: SafeArea(
         child: Scaffold(
           drawer: const TodoCustomDrawer(),
           bottomNavigationBar: TodoCustomTabBar(
-            tabBarConfig: _tabBarConfig,
+            tabBarConfig: _tabBarWidgets,
             selectedIndex: _selectedIndex,
             onTap: (index) {
               setState(() {
@@ -44,7 +44,7 @@ class _TodoNavigationScreenState extends State<TodoNavigationScreen> {
             child: IndexedStack(
               sizing: StackFit.expand,
               index: _selectedIndex,
-              children: _tabBarConfig.keys.toList()
+              children: _tabBarWidgets.keys.toList()
             ),
           ),
         ),

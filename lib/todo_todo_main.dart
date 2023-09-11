@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/provider/main_calendar_provider.dart';
+import 'package:todo_todo/provider/selected_category_provider.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/screens/todo_calendar_screen.dart';
 import 'package:todo_todo/screens/todo_navigation_screen.dart';
@@ -50,6 +51,9 @@ class TodoTodoApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (BuildContext context) => MainCalendarProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => CategoryProvider(),
         ),
       ],
       child: MaterialApp.router(
