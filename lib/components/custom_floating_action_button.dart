@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_todo/screens/task_add_screen.dart';
+import 'package:todo_todo/components/task_bottom_sheet.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   const CustomFloatingActionButton({super.key});
@@ -9,11 +8,10 @@ class CustomFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Provider(create: (BuildContext context) {  },
-                child: const TaskAddScreen()),
-          ),
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => const TaskBottomSheet(),
         );
       },
       child: Container(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/add_category_alert_dialog.dart';
+지import 'package:todo_todo/provider/drawer_category_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class DrawerCategoryTile extends StatelessWidget {
@@ -10,11 +11,15 @@ class DrawerCategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoryProvider = Provider.of<CategoryProvider>(context);
     final categories = categoryProvider.categories;
+    final drawerCategoryProvider = Provider.of<DrawerCategoryProvider>(context);
 
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
-        initiallyExpanded: true,
+        onExpansionChanged: (value) {
+          drawerCategoryProvider.updateDrawerCategoryStatus();
+        },
+        initiallyExpanded: drawerCategoryProvider.drawerCategoryStatus,
         leading: const Icon(
           Icons.category,
           size: 26,

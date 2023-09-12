@@ -59,8 +59,10 @@ class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
       return;
     }
 
-    Provider.of<CategoryProvider>(context, listen: false).createCategory(name);
-    Navigator.of(context).pop();
+    final createdCategory =
+        Provider.of<CategoryProvider>(context, listen: false)
+            .createCategory(name);
+    Navigator.of(context).pop(createdCategory);
   }
 
   void _onUpdate() {

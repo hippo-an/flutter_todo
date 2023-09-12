@@ -10,7 +10,7 @@ class CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categoryProvider = Provider.of<CategoryProvider>(context);
-    final categories = categoryProvider.categories.sublist(1);
+    final categories = categoryProvider.categoriesWithoutAll;
 
     return ReorderableListView.builder(
       itemCount: categories.length,
@@ -57,7 +57,7 @@ class CategoryList extends StatelessWidget {
                     },
                   );
                 },
-                child: Text('edit'),
+                child: const Text('edit'),
               ),
               MenuItemButton(
                 onPressed: () {},
@@ -79,8 +79,8 @@ class CategoryList extends StatelessWidget {
         if (oldIndex == newIndex) {
           return;
         }
-
-        categoryProvider.reorderCategory(oldIndex, newIndex);
+        int offset = oldIndex < newIndex ? 1: 0;
+        categoryProvider.reorderCategory(oldIndex, newIndex - offset);
       },
     );
   }

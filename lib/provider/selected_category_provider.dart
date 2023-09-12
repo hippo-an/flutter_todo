@@ -17,11 +17,10 @@ class CategoryProvider extends ChangeNotifier {
 
   int get selectedIndex => _selectedIndex;
 
-  List<CategoryModel> get categories {
-    return [_baseCategory, ..._categories];
-  }
+  List<CategoryModel> get categories => [_baseCategory, ..._categories];
+  List<CategoryModel> get categoriesWithoutAll => [..._categories];
 
-  void createCategory(String name) {
+  CategoryModel createCategory(String name) {
     final category = CategoryModel(
       id: uuid.generate(),
       name: name,
@@ -30,6 +29,7 @@ class CategoryProvider extends ChangeNotifier {
 
     _categories.add(category);
     notifyListeners();
+    return category;
   }
 
   void updateSelectedIndex(int selectedIndex) {
@@ -48,5 +48,9 @@ class CategoryProvider extends ChangeNotifier {
     final newCategory = category.copyWith(name: name, color: selectedColor, updatedAt: DateTime.now());
     _categories.insert(categoryIndex, newCategory);
     notifyListeners();
+  }
+
+  CategoryModel? findCategory(String id) {
+    return categories.where((category) => category.id == id).first;
   }
 }
