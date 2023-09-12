@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/add_category_alert_dialog.dart';
-지import 'package:todo_todo/provider/drawer_category_provider.dart';
+import 'package:todo_todo/provider/drawer_category_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class DrawerCategoryTile extends StatelessWidget {
