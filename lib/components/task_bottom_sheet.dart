@@ -13,10 +13,50 @@ class TaskBottomSheet extends StatefulWidget {
 
 class _TaskBottomSheetState extends State<TaskBottomSheet> {
   CategoryModel? _category;
+  DateTime? _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+  void _dateSelectDialog() async {
+    final now = _selectedDate ?? DateTime.now();
+    final dateTime = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: DateTime(now.year - 10),
+      lastDate: DateTime(now.year + 10),
+    );
+
+    setState(() {
+      _selectedDate = dateTime;
+    });
+  }
+
+  void _categorySelectDialog() async {
+    final (id, name) = await showDialog(
+      context: context,
+      builder: (context) {
+        return const CategorySelectDialog();
+      },
+    );
+
+    if (id == null && name == null) {
+      setState(() {
+        _category = null;
+      });
+    } else {
+      setState(() {
+        _category = Provider.of<CategoryProvider>(context, listen: false)
+            .findCategory(id);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final categoryProvider = Provider.of<CategoryProvider>(context);
     return SafeArea(
       child: SingleChildScrollView(
         child: AnimatedPadding(
@@ -53,49 +93,58 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                       children: [
                         Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.035,
-                                child: OutlinedButton(
-                                  onPressed: () async {
-                                    final (id, name) = await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return const CategorySelectDialog();
-                                      },
-                                    );
-
-                                    if (id == null && name == null) {
-                                      setState(() {
-                                        _category = null;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        _category =
-                                            categoryProvider.findCategory(id);
-                                      });
-                                    }
-                                  },
-                                  child: Text(
-                                    _category == null
-                                        ? 'No Category'
-                                        : _category!.name,
-                                    style: const TextStyle(
-                                      fontSize: 11,
+                            _category == null
+                                ? IconButton(
+                                    onPressed: _categorySelectDialog,
+                                    icon: const Icon(Icons.category_outlined))
+                                : Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.035,
+                                      child: OutlinedButton(
+                                        onPressed: _categorySelectDialog,
+                                        child: Text(
+                                          _category == null
+                                              ? 'No Category'
+                                              : _category!.name,
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.calendar_month_sharp,
-                                size: 22,
-                              ),
-                            ),
+                            _selectedDate != null
+                                ? Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.035,
+                                      child: OverflowBar(
+                                        children: [
+                                          OutlinedButton(
+                                            onPressed: _dateSelectDialog,
+                                            child: Text(
+                                              '${_selectedDate!.year}-${_selectedDate!.month.toString().padLeft(2, '0')}-${_selectedDate!.day.toString().padLeft(2, '0')}',
+                                              style: const TextStyle(
+                                                fontSize: 11,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : IconButton(
+                                    onPressed: _dateSelectDialog,
+                                    icon: const Icon(
+                                      Icons.calendar_month_sharp,
+                                      size: 22,
+                                    ),
+                                  ),
                             IconButton(
                               onPressed: () {},
                               icon: const Icon(
