@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/category_select_dialog.dart';
 import 'package:todo_todo/models/category_model.dart';
+import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class TaskBottomSheet extends StatefulWidget {
-  const TaskBottomSheet({super.key});
+  const TaskBottomSheet({
+    super.key,
+    required this.selectedCategory,
+  });
+
+  final CategoryModel? selectedCategory;
 
   @override
   State<TaskBottomSheet> createState() => _TaskBottomSheetState();
@@ -18,7 +24,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   @override
   void initState() {
     super.initState();
-
+    _category = widget.selectedCategory;
   }
 
   void _dateSelectDialog() async {
@@ -49,7 +55,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
       });
     } else {
       setState(() {
-        _category = Provider.of<CategoryProvider>(context, listen: false)
+        _category = Provider.of<CategoryListProvider>(context, listen: false)
             .findCategory(id);
       });
     }

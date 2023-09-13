@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/add_category_alert_dialog.dart';
-import 'package:todo_todo/provider/selected_category_provider.dart';
+import 'package:todo_todo/provider/category_list_provider.dart';
 
 class CategorySelectDialog extends StatelessWidget {
   const CategorySelectDialog({super.key});
@@ -13,8 +13,8 @@ class CategorySelectDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryProvider = Provider.of<CategoryProvider>(context);
-    final categories = categoryProvider.categoriesWithoutAll;
+    final categoryProvider = Provider.of<CategoryListProvider>(context);
+    final categories = categoryProvider.categories;
     final size = MediaQuery.of(context).size;
     return AlertDialog(
       content: SizedBox(

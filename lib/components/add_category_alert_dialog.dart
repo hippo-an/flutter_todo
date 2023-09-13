@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/provider/selected_category_provider.dart';
+import 'package:todo_todo/models/category_model.dart';
+import 'package:todo_todo/provider/category_list_provider.dart';
 
 final _colors = <Color>[
   Colors.lightBlueAccent,
@@ -60,7 +61,7 @@ class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
     }
 
     final createdCategory =
-        Provider.of<CategoryProvider>(context, listen: false)
+        Provider.of<CategoryListProvider>(context, listen: false)
             .createCategory(name);
     Navigator.of(context).pop(createdCategory);
   }
@@ -76,12 +77,12 @@ class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
       return;
     }
 
-    Provider.of<CategoryProvider>(context, listen: false).updateCategory(
+    final updatedCategory = Provider.of<CategoryListProvider>(context, listen: false).updateCategory(
       widget.categoryIndex,
       name,
       _selectedColor,
     );
-    Navigator.of(context).pop();
+    Navigator.of(context).pop<CategoryModel>(updatedCategory);
   }
 
   @override

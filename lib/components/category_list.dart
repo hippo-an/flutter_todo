@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/add_category_alert_dialog.dart';
 import 'package:todo_todo/consts/enums.dart';
+import 'package:todo_todo/models/category_model.dart';
+import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class CategoryList extends StatelessWidget {
@@ -9,8 +11,10 @@ class CategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryProvider = Provider.of<CategoryProvider>(context);
-    final categories = categoryProvider.categoriesWithoutAll;
+    final categoryProvider = Provider.of<CategoryListProvider>(context);
+    final categories = categoryProvider.categories;
+    var selectedCategoryProvider = Provider.of<SelectedCategoryProvider>(context, listen: false);
+    final selectedCategory = selectedCategoryProvider.selectedCategory;
 
     return ReorderableListView.builder(
       itemCount: categories.length,
@@ -44,8 +48,8 @@ class CategoryList extends StatelessWidget {
             },
             menuChildren: <MenuItemButton>[
               MenuItemButton(
-                onPressed: () {
-                  showDialog(
+                onPressed: () async {
+                  final updatedCategory = await showDialog<CategoryModel>(
                     context: context,
                     builder: (context) {
                       return AddCategoryAlertDialog(
@@ -56,6 +60,11 @@ class CategoryList extends StatelessWidget {
                       );
                     },
                   );
+
+                  if (updatedCategory != null &&
+                      selectedCategory?.id == updatedCategory.id) {
+                    selectedCategoryProvider.updateSelectedCategory(updatedCategory);
+                  }
                 },
                 child: const Text('edit'),
               ),
@@ -79,7 +88,7 @@ class CategoryList extends StatelessWidget {
         if (oldIndex == newIndex) {
           return;
         }
-        int offset = oldIndex < newIndex ? 1: 0;
+        int offset = oldIndex < newIndex ? 1 : 0;
         categoryProvider.reorderCategory(oldIndex, newIndex - offset);
       },
     );

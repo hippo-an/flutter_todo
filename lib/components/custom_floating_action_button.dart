@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_todo/components/task_bottom_sheet.dart';
+import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   const CustomFloatingActionButton({super.key});
@@ -11,7 +13,12 @@ class CustomFloatingActionButton extends StatelessWidget {
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
-          builder: (context) => const TaskBottomSheet(),
+          builder: (context) =>
+              TaskBottomSheet(
+                selectedCategory: Provider
+                    .of<SelectedCategoryProvider>(context, listen: false)
+                    .selectedCategory,
+              ),
         );
       },
       child: Container(
