@@ -3,41 +3,61 @@ import 'package:todo_todo/consts/enums.dart';
 
 class CategoryModel {
   CategoryModel({
-    required this.id,
+    required this.categoryId,
     required this.name,
+    required this.colorCode,
+    required this.createdAt,
+    required this.updatedAt,
     this.categoryState = CategoryState.activated,
-    required this.color,
     this.isDeleted = false,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  })
-      : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+  });
 
-  final String id;
+  final String categoryId;
   final String name;
-  final CategoryState categoryState;
-  final Color color;
-  final bool isDeleted;
+  final int colorCode;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final CategoryState categoryState;
+  final bool isDeleted;
+
+  get color => Color(colorCode);
+
+  static CategoryModel fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      categoryId: json['categoryId'],
+      name: json['name'],
+      colorCode: int.tryParse(json['colorCode']) ?? 0xFFFFFFFF,
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'categoryId' : categoryId,
+      'name': name,
+      'colorCode': colorCode.toString(),
+      'createdAt': createdAt.toString(),
+      'updatedAt': updatedAt.toString(),
+      'categoryState': categoryState.name,
+      'isDeleted': isDeleted.toString(),
+    };
+  }
 
   CategoryModel copyWith({
-    String? id,
     String? name,
     CategoryState? categoryState,
-    Color? color,
+    int? colorCode,
     bool? isDeleted,
-    DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return CategoryModel(
-      id: id ?? this.id,
+      categoryId: categoryId,
       name: name ?? this.name,
       categoryState: categoryState ?? this.categoryState,
-      color: color ?? this.color,
+      colorCode: colorCode ?? this.colorCode,
       isDeleted: isDeleted ?? this.isDeleted,
-      createdAt: createdAt ?? this.createdAt,
+      createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }

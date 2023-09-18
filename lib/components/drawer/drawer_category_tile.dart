@@ -57,7 +57,7 @@ class DrawerCategoryTile extends StatelessWidget {
                       color: Colors.grey[300],
                     )
                   : null,
-              key: ValueKey(category.id),
+              key: ValueKey(category.categoryId),
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: InkWell(
                 customBorder: RoundedRectangleBorder(

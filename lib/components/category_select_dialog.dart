@@ -50,7 +50,7 @@ class CategorySelectDialog extends StatelessWidget {
                   if (context.mounted) {
                     _onCategorySelected(
                       context,
-                      id: createdCategory.id,
+                      id: createdCategory.categoryId,
                       name: createdCategory.name,
                     );
                   }
@@ -69,7 +69,7 @@ class CategorySelectDialog extends StatelessWidget {
               onTap: () {
                 _onCategorySelected(
                   context,
-                  id: category.id,
+                  id: category.categoryId,
                   name: category.name,
                 );
               },

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class CategoryListBar extends StatelessWidget {
-  const CategoryListBar({super.key});
+  const CategoryListBar({super.key, this.selectedCategory});
+  final CategoryModel? selectedCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,6 @@ class CategoryListBar extends StatelessWidget {
     final categories = categoryListProvider.categories;
     final selectedCategoryProvider =
         Provider.of<SelectedCategoryProvider>(context);
-    final selectedCategory = selectedCategoryProvider.selectedCategory;
     return Expanded(
       child: ListView.builder(
         itemCount: categories.length + 1,
@@ -42,7 +43,7 @@ class CategoryListBar extends StatelessWidget {
           }
           final category = categories[index - 1];
           return Padding(
-            key: ValueKey(category.id),
+            key: ValueKey(category.categoryId),
             padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(

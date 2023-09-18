@@ -141,7 +141,7 @@ class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
                             child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    width: _selectedColor == color ? 2 : 0),
+                                    width: _selectedColor.value == color.value ? 2 : 0),
                                 shape: BoxShape.circle,
                               ),
                               child: CircleAvatar(

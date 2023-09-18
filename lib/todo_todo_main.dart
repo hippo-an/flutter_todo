@@ -5,6 +5,7 @@ import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/drawer_provider.dart';
 import 'package:todo_todo/provider/main_calendar_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
+import 'package:todo_todo/provider/task_list_provider.dart';
 import 'package:todo_todo/screens/manage_category_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/screens/todo_calendar_screen.dart';
@@ -67,6 +68,9 @@ class TodoTodoApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => CategoryListProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TaskListProvider(),
         ),
       ],
       child: MaterialApp.router(

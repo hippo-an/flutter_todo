@@ -21,7 +21,7 @@ class CategoryList extends StatelessWidget {
       itemBuilder: (context, index) {
         final category = categories[index];
         return ListTile(
-          key: ValueKey<String>(category.id),
+          key: ValueKey<String>(category.categoryId),
           isThreeLine: false,
           leading: Container(
             width: 15,
@@ -62,7 +62,7 @@ class CategoryList extends StatelessWidget {
                   );
 
                   if (updatedCategory != null &&
-                      selectedCategory?.id == updatedCategory.id) {
+                      selectedCategory?.categoryId == updatedCategory.categoryId) {
                     selectedCategoryProvider.updateSelectedCategory(updatedCategory);
                   }
                 },

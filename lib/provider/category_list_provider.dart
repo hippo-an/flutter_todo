@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_todo/consts/tools.dart';
 import 'package:todo_todo/models/category_model.dart';
-import 'package:uuid/v4.dart';
-
-const uuid = UuidV4();
 
 class CategoryListProvider extends ChangeNotifier {
   final List<CategoryModel> _categories = [];
@@ -10,10 +8,13 @@ class CategoryListProvider extends ChangeNotifier {
   List<CategoryModel> get categories => _categories;
 
   CategoryModel createCategory(String name) {
+    final now = DateTime.now();
     final category = CategoryModel(
-      id: uuid.generate(),
+      categoryId: uuid.generate(),
       name: name,
-      color: Colors.lightBlueAccent,
+      colorCode: Colors.lightBlueAccent.value,
+      createdAt: now,
+      updatedAt: now,
     );
 
     _categories.add(category);
@@ -27,17 +28,20 @@ class CategoryListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  CategoryModel updateCategory(int categoryIndex, String name, Color selectedColor) {
+  CategoryModel updateCategory(
+      int categoryIndex, String name, Color selectedColor) {
     final category = _categories.removeAt(categoryIndex);
-    final updatedCategory = category.copyWith(name: name, color: selectedColor, updatedAt: DateTime.now());
+    final updatedCategory = category.copyWith(
+      name: name,
+      colorCode: selectedColor.value,
+      updatedAt: DateTime.now(),
+    );
     _categories.insert(categoryIndex, updatedCategory);
     notifyListeners();
     return updatedCategory;
   }
 
   CategoryModel? findCategory(String id) {
-    return categories.where((category) => category.id == id).first;
+    return categories.where((category) => category.categoryId == id).first;
   }
-
 }
