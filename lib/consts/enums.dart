@@ -33,10 +33,10 @@ enum Urgent {
 }
 
 extension UrgentExtension on Urgent {
-  ({String koVal, Color color}) get properties {
+  ({Color color, IconData iconData}) get properties {
     return switch (this) {
-      Urgent.urgent => (koVal: "긴급", color: Colors.redAccent),
-      Urgent.notUrgent => (koVal: "긴급하지 않음", color: Colors.black)
+      Urgent.urgent => (color: Colors.red[500]!, iconData: Icons.warning_amber),
+      Urgent.notUrgent => (color: Colors.black, iconData: Icons.do_not_disturb_on_outlined),
     };
   }
 }
@@ -44,10 +44,10 @@ extension UrgentExtension on Urgent {
 enum Importance { importance, notImportance }
 
 extension ImportanceExtension on Importance {
-  ({String koVal, Color color}) get properties {
+  ({Color color, IconData iconData}) get properties {
     return switch (this) {
-      Importance.importance => (koVal: "중요", color: Colors.redAccent),
-      Importance.notImportance => (koVal: "중요하지 않음", color: Colors.black)
+      Importance.importance => (color: Colors.red[500]!, iconData: Icons.star),
+      Importance.notImportance => (color: Colors.black,  iconData: Icons.star_border_outlined)
     };
   }
 }
@@ -61,13 +61,13 @@ enum Priority {
 }
 
 extension PriorityExtension on Priority {
-  ({String koVal, Color color}) get properties {
+  ({Color color, IconData iconData}) get properties {
     return switch (this) {
-      Priority.strongest => (koVal: "가장 높음", color: Colors.redAccent),
-      Priority.strong => (koVal: "높음", color: Colors.yellowAccent),
-      Priority.normal => (koVal: "보통", color: Colors.greenAccent),
-      Priority.weak => (koVal: "하위", color: Colors.blueAccent),
-      Priority.weakest => (koVal: "가장 하위", color: Colors.purpleAccent),
+      Priority.strongest => (color: Colors.red[500]!, iconData: Icons.signal_wifi_4_bar_sharp),
+      Priority.strong => (color: Colors.orange[500]!, iconData: Icons.network_wifi_3_bar_sharp),
+      Priority.normal => (color: Colors.green[500]!, iconData: Icons.network_wifi_2_bar_sharp),
+      Priority.weak => (color: Colors.black, iconData: Icons.network_wifi_1_bar_sharp),
+      Priority.weakest => (color: Colors.grey[500]!, iconData: Icons.signal_wifi_0_bar_sharp),
     };
   }
 }
@@ -80,12 +80,12 @@ enum Progression {
 }
 
 extension ProgressionExtension on Progression {
-  ({String koVal, Color color}) get properties {
+  ({Color color, IconData iconData}) get properties {
     return switch (this) {
-      Progression.ready => (koVal: "준비중", color: Colors.grey),
-      Progression.progress => (koVal: "진행중", color: Colors.blueAccent),
-      Progression.done => (koVal: "완료", color: Colors.greenAccent),
-      Progression.abort => (koVal: "수행 안함", color: Colors.redAccent),
+      Progression.ready => (color: Colors.grey[500]!, iconData: Icons.upcoming),
+      Progression.progress => ( color: Colors.blue[500]!, iconData: Icons.update),
+      Progression.done => (color: Colors.green[500]!, iconData: Icons.done_all),
+      Progression.abort => (color: Colors.red[500]!, iconData: Icons.pause),
     };
   }
 }

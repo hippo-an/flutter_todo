@@ -99,4 +99,13 @@ class TaskModel {
       subTasks: subTasks ?? [...this.subTasks],
     );
   }
+
+  bool isBefore() {
+    final now = DateTime.now();
+    return dueDate!.year < now.year ||
+        (dueDate!.year == now.year && dueDate!.month < now.month) ||
+        (dueDate!.year == now.year &&
+            dueDate!.month == now.month &&
+            dueDate!.day < now.day);
+  }
 }

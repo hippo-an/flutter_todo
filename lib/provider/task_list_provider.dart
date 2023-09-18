@@ -9,10 +9,14 @@ class TaskListProvider extends ChangeNotifier {
 
   List<TaskModel> tasks(CategoryModel? categoryModel) {
     if (categoryModel == null) {
-      return [..._tasks];
+      final copiedList = [..._tasks];
+      copiedList.sort((a, b) {return 0;});
+      return copiedList;
     }
 
-    return _tasks.where((task) => task.categoryModel == categoryModel).toList();
+    final categorizedTask = _tasks.where((task) => task.categoryModel == categoryModel).toList();
+    categorizedTask.sort((a, b) {return 1;});
+    return categorizedTask;
   }
 
   void createTask(String name, {
