@@ -31,7 +31,7 @@ class _TaskListItemState extends State<TaskListItem> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return const TaskDetailScreen();
+              return TaskDetailScreen(task: widget.task);
             },
           ),
         );
@@ -89,6 +89,10 @@ class _TaskListItemState extends State<TaskListItem> {
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
                         maxLines: 1,
+                        style: TextStyle(
+                          decoration: isDone ? TextDecoration.lineThrough : null,
+                          color: isDone ? Colors.grey : Colors.black,
+                        ),
                       ),
                       widget.task.dueDate != null
                           ? const SizedBox(height: 12)
@@ -137,6 +141,7 @@ class _TaskListItemState extends State<TaskListItem> {
                   });
                 },
                 shape: const CircleBorder(),
+                activeColor: Colors.grey,
               )
             ],
           ),
