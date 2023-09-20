@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/category_select_dialog.dart';
 import 'package:todo_todo/components/sub_task_form_list.dart';
+import 'package:todo_todo/consts/tools.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/models/sub_task_form_model.dart';
 import 'package:todo_todo/models/sub_task_model.dart';
@@ -203,7 +204,11 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                             onPressed: () {
                               if (_subTaskForms.length < 6) {
                                 setState(() {
-                                  _subTaskForms.add(SubTaskFormModel());
+                                  _subTaskForms.add(
+                                    SubTaskFormModel(
+                                      subTaskId: uuid.generate(),
+                                    ),
+                                  );
                                 });
                               }
                             },

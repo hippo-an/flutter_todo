@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
@@ -18,6 +19,7 @@ class TaskModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final List<SubTaskModel> subTasks;
+  final File? attachment;
 
   TaskModel({
     required this.taskId,
@@ -33,6 +35,7 @@ class TaskModel {
     required this.createdAt,
     required this.updatedAt,
     this.subTasks = const <SubTaskModel>[],
+    this.attachment,
   });
 
   static TaskModel fromJson(Map<String, dynamic> map) {
@@ -48,9 +51,11 @@ class TaskModel {
       dueDate: DateTime.tryParse(map['dueDate']),
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
-      subTasks: List<SubTaskModel>.from(json
-          .decode(map['subTasks'])
-          .map((model) => SubTaskModel.fromJson(model))),
+      subTasks: List<SubTaskModel>.from(
+        json.decode(map['subTasks']).map(
+              (model) => SubTaskModel.fromJson(model),
+            ),
+      ),
     );
   }
 
@@ -83,6 +88,7 @@ class TaskModel {
     DateTime? dueDate,
     DateTime? updatedAt,
     List<SubTaskModel>? subTasks,
+    File? attachment,
   }) {
     return TaskModel(
       taskId: taskId,
@@ -97,6 +103,7 @@ class TaskModel {
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       subTasks: subTasks ?? [...this.subTasks],
+      attachment: attachment ?? this.attachment,
     );
   }
 

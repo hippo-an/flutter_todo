@@ -13,7 +13,7 @@ class SubTaskModel {
 
   static SubTaskModel fromSubTaskFormModel(SubTaskFormModel subTaskFormModel) {
     return SubTaskModel(
-      subTaskId: subTaskFormModel.taskId,
+      subTaskId: subTaskFormModel.subTaskId,
       name: subTaskFormModel.name!,
       isDone: subTaskFormModel.isDone,
     );
@@ -33,6 +33,14 @@ class SubTaskModel {
       'name': name,
       'isDone': isDone.toString(),
     };
+  }
+
+  SubTaskFormModel toSubTaskFormModel() {
+    return SubTaskFormModel(
+      subTaskId: subTaskId,
+      name: name,
+      isDone: isDone,
+    );
   }
 
   SubTaskModel copyWith({

@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Used to receive photos of your attachment.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Used to take photos of your attachment.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Used to record voice of your attachment.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

@@ -19,7 +19,7 @@ class SubTaskFormList extends StatelessWidget {
         (e) {
           final subTaskFormModel = e.$2;
           return SubTaskForm(
-            key: ValueKey<String>(subTaskFormModel.taskId),
+            key: ValueKey<String>(subTaskFormModel.subTaskId),
             index: e.$1,
             subTaskFormModel: subTaskFormModel,
             onRemove: onRemove,

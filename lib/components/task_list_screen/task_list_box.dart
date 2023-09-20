@@ -14,7 +14,6 @@ class TaskListBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final taskListProvider = Provider.of<TaskListProvider>(context);
     final tasks = taskListProvider.tasks(selectedCategory);
-    Provider.of<TaskListProvider>(context);
     return Expanded(
       child: ReorderableListView.builder(
         itemCount: tasks.length,

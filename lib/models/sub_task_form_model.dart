@@ -1,15 +1,12 @@
-import 'package:todo_todo/consts/tools.dart';
-
-
 
 class SubTaskFormModel {
-  final String _subTaskId;
+  final String subTaskId;
   String? name;
-  final bool isDone;
+  bool isDone;
 
   SubTaskFormModel({
+    required this.subTaskId,
+    this.name,
     this.isDone = false,
-  }): _subTaskId = uuid.generate();
-
-  get taskId => _subTaskId;
+  });
 }

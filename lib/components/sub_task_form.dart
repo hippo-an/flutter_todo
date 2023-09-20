@@ -18,13 +18,31 @@ class SubTaskForm extends StatefulWidget {
 }
 
 class _SubTaskFormState extends State<SubTaskForm> {
-  bool _isChecked = false;
+  late final TextEditingController _textEditingController;
+  late bool _isChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController = TextEditingController(text: widget.subTaskFormModel.name);
+    _isChecked = widget.subTaskFormModel.isDone;
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      key: ValueKey<String>(widget.subTaskFormModel.taskId),
-      height: MediaQuery.of(context).size.height * 0.05,
+      margin: const EdgeInsets.only(bottom: 4),
+      key: ValueKey<String>(widget.subTaskFormModel.subTaskId),
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 0.05,
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
@@ -33,9 +51,12 @@ class _SubTaskFormState extends State<SubTaskForm> {
             child: Checkbox(
               value: _isChecked,
               onChanged: (bool? value) {
-                setState(() {
-                  _isChecked = value ?? false;
-                });
+                if (_textEditingController.text.isNotEmpty) {
+                  setState(() {
+                    _isChecked = value ?? false;
+                    widget.subTaskFormModel.isDone = _isChecked;
+                  });
+                }
               },
               tristate: true,
               shape: const CircleBorder(),
@@ -43,6 +64,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
           ),
           Expanded(
             child: TextFormField(
+              controller: _textEditingController,
               maxLength: 30,
               maxLines: 1,
               decoration: const InputDecoration(
@@ -52,14 +74,27 @@ class _SubTaskFormState extends State<SubTaskForm> {
                 ),
                 counter: SizedBox.shrink(),
               ),
-              style: const TextStyle(),
+              style: TextStyle(
+                decoration: _isChecked && _textEditingController.text.isNotEmpty
+                    ? TextDecoration.lineThrough
+                    : null,
+                color: _isChecked && _textEditingController.text.isNotEmpty
+                    ? Colors.grey
+                    : Colors.black,
+              ),
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
                   widget.subTaskFormModel.name = value;
+                } else {
+                  setState(() {
+                    _isChecked = false;
+                  });
                 }
               },
               validator: (String? value) {
-                if (value == null || value.trim().isEmpty) {
+                if (value == null || value
+                    .trim()
+                    .isEmpty) {
                   return 'Fill the blank';
                 }
 

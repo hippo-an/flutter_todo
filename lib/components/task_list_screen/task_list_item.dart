@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/provider/selected_task_provider.dart';
+import 'package:todo_todo/provider/task_list_provider.dart';
 import 'package:todo_todo/screens/task_detail_screen.dart';
 
 class TaskListItem extends StatefulWidget {
@@ -16,22 +19,25 @@ class TaskListItem extends StatefulWidget {
 }
 
 class _TaskListItemState extends State<TaskListItem> {
-  late bool isDone;
+  late bool _isDone;
 
   @override
   void initState() {
     super.initState();
-    isDone = widget.task.isDone;
+    _isDone = widget.task.isDone;
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Provider.of<SelectedTaskProvider>(context, listen: false)
+            .updateSelectedTask(widget.task);
+
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return TaskDetailScreen(task: widget.task);
+              return const TaskDetailScreen();
             },
           ),
         );
@@ -90,8 +96,9 @@ class _TaskListItemState extends State<TaskListItem> {
                         softWrap: true,
                         maxLines: 1,
                         style: TextStyle(
-                          decoration: isDone ? TextDecoration.lineThrough : null,
-                          color: isDone ? Colors.grey : Colors.black,
+                          decoration:
+                              _isDone ? TextDecoration.lineThrough : null,
+                          color: _isDone ? Colors.grey : Colors.black,
                         ),
                       ),
                       widget.task.dueDate != null
@@ -134,10 +141,13 @@ class _TaskListItemState extends State<TaskListItem> {
                 ),
               ),
               Checkbox(
-                value: isDone,
+                value: _isDone,
                 onChanged: (value) {
                   setState(() {
-                    isDone = !isDone;
+                    _isDone = !_isDone;
+                    final updatedTask = Provider.of<TaskListProvider>(context, listen: false)
+                        .updateTask(task: widget.task, isDone: _isDone);
+                    Provider.of<SelectedTaskProvider>(context, listen: false).selectedTask = updatedTask;
                   });
                 },
                 shape: const CircleBorder(),
