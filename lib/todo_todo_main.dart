@@ -7,6 +7,7 @@ import 'package:todo_todo/provider/selected_category_provider.dart';
 import 'package:todo_todo/provider/selected_task_provider.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
 import 'package:todo_todo/router.dart';
+import 'package:todo_todo/provider/navigation_tab_provider.dart';
 import 'package:todo_todo/theme.dart';
 
 final _router = router;
@@ -23,6 +24,9 @@ class TodoTodoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => NavigationTabProvider(),
+        ),
         ChangeNotifierProvider(
           create: (_) => MainCalendarProvider(),
         ),
