@@ -34,7 +34,7 @@ class CategoryModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'categoryId' : categoryId,
+      'categoryId': categoryId,
       'name': name,
       'colorCode': colorCode.toString(),
       'createdAt': createdAt.toString(),
@@ -61,4 +61,15 @@ class CategoryModel {
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
+
+  @override
+  int get hashCode => categoryId.hashCode ^ categoryState.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CategoryModel &&
+          runtimeType == other.runtimeType &&
+          categoryId == other.categoryId &&
+          categoryState == other.categoryState;
 }

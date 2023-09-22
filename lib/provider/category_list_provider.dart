@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/consts/tools.dart';
 import 'package:todo_todo/models/category_model.dart';
 
 class CategoryListProvider extends ChangeNotifier {
   final List<CategoryModel> _categories = [];
+  bool _isLoading = false;
 
-  List<CategoryModel> get categories => _categories;
+  List<CategoryModel> get categories => List.unmodifiable(
+      _categories.where((category) => !category.isDeleted).toList());
+
+  List<CategoryModel> get activatedCategories => List.unmodifiable(_categories
+      .where((category) =>
+          !category.isDeleted &&
+          category.categoryState == CategoryState.activated)
+      .toList());
+
+  bool get isLoading => _isLoading;
 
   CategoryModel createCategory(String name) {
     final now = DateTime.now();
@@ -42,6 +53,6 @@ class CategoryListProvider extends ChangeNotifier {
   }
 
   CategoryModel? findCategory(String id) {
-    return categories.where((category) => category.categoryId == id).first;
+    return categories.firstWhere((category) => category.categoryId == id);
   }
 }

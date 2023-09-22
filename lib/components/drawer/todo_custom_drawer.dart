@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/components/drawer/drawer_category_tile.dart';
+import 'package:todo_todo/components/drawer/drawer_menu.dart';
 
 class TodoCustomDrawer extends StatelessWidget {
   const TodoCustomDrawer({super.key});
@@ -18,7 +19,7 @@ class TodoCustomDrawer extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Text(
-                'TodoTodo',
+                'Todo-Todo',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -27,36 +28,14 @@ class TodoCustomDrawer extends StatelessWidget {
             ),
           ),
           const DrawerCategoryTile(),
-          InkWell(
-            customBorder: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            onTap: () {},
-            splashColor: Colors.grey[800],
-            child: const ListTile(
-              isThreeLine: false,
-              leading: Icon(
-                Icons.delete_outline,
-                size: 26,
-              ),
-              title: Text('Manage Delete'),
-            ),
-
-          ),
-          InkWell(
-            customBorder: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            onTap: () {},
-            splashColor: Colors.grey[800],
-            child: const ListTile(
-              isThreeLine: false,
-              leading: Icon(
-                Icons.settings,
-                size: 26,
-              ),
-              title: Text('Settings'),
-            ),
+          DrawerMenu(
+              onTab: () {},
+              iconData: Icons.delete_outline,
+              menuName: 'Manage Delete'),
+          DrawerMenu(
+            onTab: () {},
+            iconData: Icons.settings,
+            menuName: 'Settings',
           ),
         ],
       ),
