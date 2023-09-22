@@ -12,17 +12,13 @@ class TaskListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedCategoryProvider =
-        Provider.of<SelectedCategoryProvider>(context);
-    final selectedCategory = selectedCategoryProvider.selectedCategory;
-
-    return Scaffold(
-      floatingActionButton: const CustomFloatingActionButton(),
+    return const Scaffold(
+      floatingActionButton: CustomFloatingActionButton(),
       body: Column(
         children: [
-          CategoryBar(selectedCategory: selectedCategory),
-          const SizedBox(height: 10),
-          TaskListBox(selectedCategory: selectedCategory),
+          CategoryBar(),
+          SizedBox(height: 10),
+          TaskListBox(),
         ],
       ),
     );

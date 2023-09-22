@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DrawerProvider extends ChangeNotifier {
-  bool _drawerCategoryStatus = true;
+  bool _drawerCategoryStatus = false;
 
   bool get drawerCategoryStatus => _drawerCategoryStatus;
 
