@@ -7,24 +7,45 @@ import 'package:todo_todo/models/sub_task_model.dart';
 import 'package:todo_todo/models/task_model.dart';
 
 class TaskListProvider extends ChangeNotifier {
-  final List<TaskModel> _tasks = [];
+  TaskListProvider(CategoryModel? selectedCategory)
+      : _selectedCategory = selectedCategory;
 
-  List<TaskModel> tasks(CategoryModel? categoryModel) {
-    if (categoryModel == null) {
+  final List<TaskModel> _tasks = [];
+  CategoryModel? _selectedCategory;
+
+  List<TaskModel> get filteredTask {
+    if (_selectedCategory == null) {
       final copiedList = [..._tasks];
       copiedList.sort((a, b) {
         return 0;
       });
+
       return copiedList;
     }
 
-    final categorizedTask =
-        _tasks.where((task) => task.categoryModel == categoryModel).toList();
+    final categorizedTask = _tasks
+        .where((task) => task.categoryModel == _selectedCategory)
+        .toList();
     categorizedTask.sort((a, b) {
       return 1;
     });
     return categorizedTask;
   }
+
+  // Future loadTodos() {
+  //   _isLoading = true;
+  //   notifyListeners();
+  //
+  //   return repository.loadTodos().then((loadedTodos) {
+  //     _todos.addAll(loadedTodos.map(Todo.fromEntity));
+  //     _isLoading = false;
+  //     notifyListeners();
+  //   }).catchError((err) {
+  //     _isLoading = false;
+  //     notifyListeners();
+  //   });
+  // }
+
 
   void createTask(
     String name, {
@@ -78,5 +99,11 @@ class TaskListProvider extends ChangeNotifier {
     notifyListeners();
 
     return updatedTask;
+  }
+
+  TaskListProvider? updateSelectedCategory(CategoryModel? selectedCategory) {
+    _selectedCategory = selectedCategory;
+    notifyListeners();
+    return this;
   }
 }

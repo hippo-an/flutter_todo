@@ -70,6 +70,5 @@ class CategoryModel {
       identical(this, other) ||
       other is CategoryModel &&
           runtimeType == other.runtimeType &&
-          categoryId == other.categoryId &&
-          categoryState == other.categoryState;
+          categoryId == other.categoryId;
 }

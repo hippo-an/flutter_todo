@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 
@@ -12,7 +11,7 @@ class CategoryListBar extends StatelessWidget {
     return Consumer2<CategoryListProvider, SelectedCategoryProvider>(
       builder: (BuildContext context, CategoryListProvider categoryListProvider,
           SelectedCategoryProvider selectedCategoryProvider, Widget? child) {
-        final categories = categoryListProvider.categories;
+        final categories = categoryListProvider.activatedCategories;
         final selectedCategory = selectedCategoryProvider.selectedCategory;
         return Expanded(
           child: ListView.builder(

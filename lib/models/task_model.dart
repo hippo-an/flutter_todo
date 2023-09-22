@@ -98,6 +98,7 @@ class TaskModel {
       importance: importance ?? this.importance,
       priority: priority ?? this.priority,
       progression: progression ?? this.progression,
+      isDone: isDone ?? this.isDone,
       categoryModel: categoryModel ?? this.categoryModel,
       dueDate: dueDate ?? this.dueDate,
       createdAt: createdAt,
@@ -115,4 +116,15 @@ class TaskModel {
             dueDate!.month == now.month &&
             dueDate!.day < now.day);
   }
+
+  @override
+  int get hashCode =>
+      taskId.hashCode ^ categoryModel.hashCode ^ isDone.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TaskModel &&
+          runtimeType == other.runtimeType &&
+          taskId == other.taskId;
 }

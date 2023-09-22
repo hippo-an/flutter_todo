@@ -100,8 +100,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
   void _onSave() {
     if (_formKey.currentState!.validate()) {
-      Navigator.of(context).pop();
-      Provider.of<TaskListProvider>(context, listen: false).updateTask(
+      Provider.of<TaskListProvider>(context,listen: false).updateTask(
         task: widget.task,
         taskName: _taskNameController.text.trim(),
         isDone: _isDone,
@@ -117,6 +116,7 @@ class _TaskDetailState extends State<TaskDetail> {
         note: _noteController.text.trim(),
         attachment: _attachment,
       );
+      Navigator.of(context).pop();
     }
   }
 
@@ -227,7 +227,7 @@ class _TaskDetailState extends State<TaskDetail> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await showDialog(
+        final pop = await showDialog(
           context: context,
           builder: (context) => AlertDialog(
             content: const Text('You will lose changes.'),
@@ -248,7 +248,7 @@ class _TaskDetailState extends State<TaskDetail> {
           ),
         );
 
-        return true;
+        return pop ?? false;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -257,8 +257,6 @@ class _TaskDetailState extends State<TaskDetail> {
               onPressed: () {
                 setState(() {
                   _isDone = !_isDone;
-                  Provider.of<TaskListProvider>(context, listen: false)
-                      .updateTask(task: widget.task, isDone: _isDone);
                 });
               },
               icon: Icon(_isDone

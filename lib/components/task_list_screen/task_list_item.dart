@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/models/task_model.dart';
-import 'package:todo_todo/provider/selected_task_provider.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
 import 'package:todo_todo/screens/task_detail_screen.dart';
 
-class TaskListItem extends StatefulWidget {
+class TaskListItem extends StatelessWidget {
   const TaskListItem({
     super.key,
     required this.task,
@@ -15,41 +15,19 @@ class TaskListItem extends StatefulWidget {
   final TaskModel task;
 
   @override
-  State<TaskListItem> createState() => _TaskListItemState();
-}
-
-class _TaskListItemState extends State<TaskListItem> {
-  late bool _isDone;
-
-  @override
-  void initState() {
-    super.initState();
-    _isDone = widget.task.isDone;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<SelectedTaskProvider>(context, listen: false)
-            .updateSelectedTask(widget.task);
-
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return const TaskDetailScreen();
-            },
-          ),
-        );
+        context.pushNamed(TaskDetailScreen.routeName, extra: task);
       },
       child: Slidable(
-        key: ValueKey(widget.task.taskId),
+        key: ValueKey(task.taskId),
         endActionPane: ActionPane(
           motion: const DrawerMotion(),
           children: [
             SlidableAction(
               onPressed: (context) {},
-              backgroundColor: Colors.yellowAccent[700]!,
+              backgroundColor: Colors.yellow!,
               foregroundColor: Colors.white,
               icon: Icons.star_outline,
               label: 'Star',
@@ -75,8 +53,7 @@ class _TaskListItemState extends State<TaskListItem> {
               Container(
                 width: 10,
                 decoration: BoxDecoration(
-                  color:
-                      widget.task.categoryModel?.color ?? Colors.lightBlue[100],
+                  color: task.categoryModel?.color ?? Colors.lightBlue[100],
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(5),
                     bottomLeft: Radius.circular(5),
@@ -91,25 +68,25 @@ class _TaskListItemState extends State<TaskListItem> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.task.taskName,
+                        task.taskName,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
                         maxLines: 1,
                         style: TextStyle(
                           decoration:
-                              _isDone ? TextDecoration.lineThrough : null,
-                          color: _isDone ? Colors.grey : Colors.black,
+                              task.isDone ? TextDecoration.lineThrough : null,
+                          color: task.isDone ? Colors.grey : Colors.black,
                         ),
                       ),
-                      widget.task.dueDate != null
+                      task.dueDate != null
                           ? const SizedBox(height: 12)
                           : const SizedBox.shrink(),
-                      if (widget.task.dueDate != null)
+                      if (task.dueDate != null)
                         Text(
-                          '${widget.task.dueDate!.year}-${widget.task.dueDate!.month.toString().padLeft(2, '0')}-${widget.task.dueDate!.day.toString().padLeft(2, '0')}',
+                          '${task.dueDate!.year}-${task.dueDate!.month.toString().padLeft(2, '0')}-${task.dueDate!.day.toString().padLeft(2, '0')}',
                           style: TextStyle(
                             fontSize: 12,
-                            color: widget.task.isBefore()
+                            color: task.isBefore()
                                 ? Colors.red[300]
                                 : Colors.grey[500],
                           ),
@@ -141,14 +118,10 @@ class _TaskListItemState extends State<TaskListItem> {
                 ),
               ),
               Checkbox(
-                value: _isDone,
+                value: task.isDone,
                 onChanged: (value) {
-                  setState(() {
-                    _isDone = !_isDone;
-                    final updatedTask = Provider.of<TaskListProvider>(context, listen: false)
-                        .updateTask(task: widget.task, isDone: _isDone);
-                    Provider.of<SelectedTaskProvider>(context, listen: false).selectedTask = updatedTask;
-                  });
+                  Provider.of<TaskListProvider>(context, listen: false)
+                      .updateTask(task: task, isDone: !task.isDone);
                 },
                 shape: const CircleBorder(),
                 activeColor: Colors.grey,

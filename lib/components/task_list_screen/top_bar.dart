@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/components/task_list_screen/category_bar_menu_anchor.dart';
 import 'package:todo_todo/components/task_list_screen/category_list_bar.dart';
-import 'package:todo_todo/models/category_model.dart';
 
 class CategoryBar extends StatelessWidget {
   const CategoryBar({
