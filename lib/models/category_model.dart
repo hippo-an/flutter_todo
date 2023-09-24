@@ -8,7 +8,7 @@ class CategoryModel {
     required this.colorCode,
     required this.createdAt,
     required this.updatedAt,
-    this.categoryState = CategoryState.activated,
+    this.categoryState = CategoryState.seen,
     this.isDeleted = false,
   });
 

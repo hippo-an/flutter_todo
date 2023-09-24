@@ -36,7 +36,7 @@ class NavTabControl extends StatelessWidget {
             },
           ),
           body: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10),
             child: IndexedStack(
                 sizing: StackFit.expand,
                 index: index,

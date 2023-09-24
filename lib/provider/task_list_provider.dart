@@ -19,7 +19,7 @@ class TaskListProvider extends ChangeNotifier {
       final copiedList = _tasks
           .where((task) =>
               task.categoryModel == null ||
-              task.categoryModel!.categoryState == CategoryState.activated)
+              task.categoryModel!.categoryState == CategoryState.seen)
           .toList();
 
       // TODO: Task 정렬
@@ -33,7 +33,39 @@ class TaskListProvider extends ChangeNotifier {
     final categorizedTask = _tasks
         .where((task) =>
             task.categoryModel == _selectedCategory &&
-            task.categoryModel!.categoryState == CategoryState.activated)
+            task.categoryModel!.categoryState == CategoryState.seen)
+        .toList();
+
+    // TODO: Task 정렬
+    categorizedTask.sort((a, b) {
+      return 0;
+    });
+
+    return categorizedTask;
+  }
+
+  List<TaskModel> get staredTask {
+    if (_selectedCategory == null) {
+      final copiedList = _tasks
+          .where((task) =>
+              task.stared &&
+              (task.categoryModel == null ||
+                  task.categoryModel!.categoryState == CategoryState.seen))
+          .toList();
+
+      // TODO: Task 정렬
+      copiedList.sort((a, b) {
+        return 0;
+      });
+
+      return copiedList;
+    }
+
+    final categorizedTask = _tasks
+        .where((task) =>
+            task.stared &&
+            task.categoryModel == _selectedCategory &&
+            task.categoryModel!.categoryState == CategoryState.seen)
         .toList();
 
     // TODO: Task 정렬
@@ -83,6 +115,7 @@ class TaskListProvider extends ChangeNotifier {
     required TaskModel task,
     String? taskName,
     bool? isDone,
+    bool? stared,
     DateTime? completedDate,
     String? note,
     CategoryModel? categoryModel,
@@ -97,6 +130,7 @@ class TaskListProvider extends ChangeNotifier {
     final updatedTask = task.copyWith(
         taskName: taskName,
         isDone: isDone,
+        stared: stared,
         completedDate: completedDate,
         note: note,
         categoryModel: categoryModel,

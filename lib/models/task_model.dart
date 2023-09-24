@@ -14,6 +14,7 @@ class TaskModel {
   final Priority priority;
   final Progression progression;
   final bool isDone;
+  final bool stared;
   final DateTime? completedDate;
   final CategoryModel? categoryModel;
   final DateTime? dueDate;
@@ -31,6 +32,7 @@ class TaskModel {
     this.priority = Priority.normal,
     this.progression = Progression.ready,
     this.isDone = false,
+    this.stared = false,
     this.completedDate,
     this.categoryModel,
     this.dueDate,
@@ -51,6 +53,7 @@ class TaskModel {
       progression: Progression.values.byName(mapObject['progression']),
       categoryModel: CategoryModel.fromJson(mapObject['categoryModel']),
       isDone: bool.tryParse(mapObject['isDone']) ?? false,
+      stared: bool.tryParse(mapObject['stared']) ?? false,
       dueDate: DateTime.tryParse(mapObject['dueDate']),
       completedDate: DateTime.tryParse(mapObject['completedDate']),
       createdAt: DateTime.parse(mapObject['createdAt']),
@@ -74,6 +77,7 @@ class TaskModel {
       'progression': progression.name,
       'categoryModel': categoryModel?.toJson(),
       'isDone': isDone.toString(),
+      'stared': stared.toString(),
       'completedDate': completedDate.toString(),
       'dueDate': dueDate.toString(),
       'createdAt': createdAt.toString(),
@@ -90,6 +94,7 @@ class TaskModel {
     Priority? priority,
     Progression? progression,
     bool? isDone,
+    bool? stared,
     DateTime? completedDate,
     CategoryModel? categoryModel,
     DateTime? dueDate,
@@ -106,6 +111,7 @@ class TaskModel {
       priority: priority ?? this.priority,
       progression: progression ?? this.progression,
       isDone: isDone ?? this.isDone,
+      stared: stared ?? this.stared,
       completedDate: completedDate ?? this.completedDate,
       categoryModel: categoryModel ?? this.categoryModel,
       dueDate: dueDate ?? this.dueDate,

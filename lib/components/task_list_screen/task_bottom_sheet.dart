@@ -24,15 +24,18 @@ class TaskBottomSheet extends StatefulWidget {
 class _TaskBottomSheetState extends State<TaskBottomSheet> {
   CategoryModel? _category;
   DateTime? _selectedDate;
-  final List<SubTaskFormModel> _subTaskForms = [];
-  final _formKey = GlobalKey<FormState>();
+  late final List<SubTaskFormModel> _subTaskForms;
+  late final GlobalKey<FormState> _formKey;
   late TextEditingController _taskNameController;
 
   @override
   void initState() {
     super.initState();
-    _taskNameController = TextEditingController();
     _category = widget.selectedCategory;
+    _selectedDate = DateTime.now();
+    _subTaskForms = [];
+    _formKey  = GlobalKey<FormState>();
+    _taskNameController = TextEditingController();
   }
 
   @override
@@ -96,6 +99,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
           dueDate: _selectedDate,
           categoryModel: _category,
           subTasks: subTasks);
+
       Navigator.of(context).pop();
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/screens/manage_category_screen.dart';
+import 'package:todo_todo/screens/stared_tasks_screen.dart';
 import 'package:todo_todo/screens/task_detail_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/screens/todo_calendar_screen.dart';
@@ -37,6 +38,13 @@ final router = GoRouter(
           name: TodoCalendarScreen.routeName,
           builder: (BuildContext context, GoRouterState state) {
             return const TodoCalendarScreen();
+          },
+        ),
+        GoRoute(
+          path: StaredTaskScreen.routeName,
+          name: StaredTaskScreen.routeName,
+          builder: (BuildContext context, GoRouterState state) {
+            return const StaredTaskScreen();
           },
         ),
       ],

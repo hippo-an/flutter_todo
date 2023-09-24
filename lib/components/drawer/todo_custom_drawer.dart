@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_todo/components/drawer/drawer_category_tile.dart';
 import 'package:todo_todo/components/drawer/drawer_menu.dart';
+import 'package:todo_todo/screens/stared_tasks_screen.dart';
 
 class TodoCustomDrawer extends StatelessWidget {
   const TodoCustomDrawer({super.key});
@@ -26,6 +28,13 @@ class TodoCustomDrawer extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          DrawerMenu(
+            onTab: () {
+              context.pushNamed(StaredTaskScreen.routeName);
+            },
+            iconData: Icons.star,
+            menuName: 'Stared tasks',
           ),
           const DrawerCategoryTile(),
           DrawerMenu(

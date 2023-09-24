@@ -12,11 +12,11 @@ class CategoryListProvider extends ChangeNotifier {
         _categories.where((category) => !category.isDeleted).toList());
 
     ret.sort((a, b) {
-      if (a.categoryState == CategoryState.activated &&
-          b.categoryState == CategoryState.deactivated) {
+      if (a.categoryState == CategoryState.seen &&
+          b.categoryState == CategoryState.hide) {
         return 0;
-      } else if (a.categoryState == CategoryState.deactivated &&
-          b.categoryState == CategoryState.activated) {
+      } else if (a.categoryState == CategoryState.hide &&
+          b.categoryState == CategoryState.seen) {
         return 1;
       }
       return 0;
@@ -28,7 +28,7 @@ class CategoryListProvider extends ChangeNotifier {
     return List<CategoryModel>.unmodifiable(_categories
         .where((category) =>
     !category.isDeleted &&
-        category.categoryState == CategoryState.activated)
+        category.categoryState == CategoryState.seen)
         .toList());
   }
 
@@ -51,7 +51,7 @@ class CategoryListProvider extends ChangeNotifier {
 
   void reorderCategory(int oldIndex, int newIndex) {
     final category = _categories.removeAt(oldIndex);
-    if (category.categoryState == CategoryState.activated) {
+    if (category.categoryState == CategoryState.seen) {
       _categories.insert(newIndex, category);
       notifyListeners();
     }

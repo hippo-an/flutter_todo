@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum CategoryState { activated, deactivated }
+enum CategoryState { seen, hide }
 
 enum TaskListSectionState {
   past, today, future, complete

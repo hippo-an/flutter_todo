@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/components/task_list_screen/task_list_item.dart';
+import 'package:todo_todo/components/task_list_screen/slidable_task_list_item.dart';
 import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/provider/task_list_section_provider.dart';
@@ -74,7 +74,7 @@ class TaskListSection extends StatelessWidget {
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
                   final TaskModel task = tasks[index];
-                  return TaskListItem(
+                  return SlidableTaskListItem(
                     key: ValueKey(task.taskId),
                     task: task,
                   );

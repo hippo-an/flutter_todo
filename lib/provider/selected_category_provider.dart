@@ -13,7 +13,7 @@ class SelectedCategoryProvider extends ChangeNotifier {
   }
 
   void updateCategory(CategoryModel? updatedCategory) {
-    if (updatedCategory?.categoryState == CategoryState.deactivated) {
+    if (updatedCategory?.categoryState == CategoryState.hide) {
       _selectedCategory = null;
       notifyListeners();
     } else if (selectedCategory?.categoryId == updatedCategory?.categoryId) {
