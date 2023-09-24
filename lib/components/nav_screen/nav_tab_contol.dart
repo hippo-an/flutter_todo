@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/drawer/todo_custom_drawer.dart';
-import 'package:todo_todo/components/todo_custom_tab_bar.dart';
+import 'package:todo_todo/components/nav_screen/todo_custom_tab_bar.dart';
 import 'package:todo_todo/provider/navigation_tab_provider.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/screens/todo_calendar_screen.dart';

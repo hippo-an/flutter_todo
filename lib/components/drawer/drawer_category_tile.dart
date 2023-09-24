@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/components/category_alert_dialog.dart';
+import 'package:todo_todo/components/common/category_alert_dialog.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/drawer_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
@@ -10,7 +10,6 @@ class DrawerCategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('DrawerCategoryTile build@@@@@@@@@@@@@@@ ');
     final drawerCategoryProvider =
         Provider.of<DrawerProvider>(context, listen: false);
 
@@ -47,6 +46,7 @@ class DrawerCategoryTile extends StatelessWidget {
                   onTap: () {
                     if (selectedCategory != null) {
                       selectedCategoryProvider.updateSelectedCategory(null);
+                      Scaffold.of(context).closeDrawer();
                     }
                   },
                   splashColor: Colors.grey[800],
@@ -73,6 +73,7 @@ class DrawerCategoryTile extends StatelessWidget {
                       if (selectedCategory != category) {
                         selectedCategoryProvider
                             .updateSelectedCategory(category);
+                        Scaffold.of(context).closeDrawer();
                       }
                     },
                     splashColor: Colors.grey[800],

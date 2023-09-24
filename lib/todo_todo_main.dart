@@ -36,7 +36,7 @@ final providers = [
     create: (context) => TaskListProvider(null),
     update: (context, selectedCategoryProvider, taskListProvider) =>
     taskListProvider!
-      ..updateSelectedCategory(
+      ..initializeSelectedCategory(
           selectedCategoryProvider.selectedCategory),
   ),
 ];

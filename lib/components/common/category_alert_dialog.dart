@@ -79,8 +79,8 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
         Provider.of<CategoryListProvider>(context, listen: false)
             .updateCategory(
       widget.category!,
-      name,
-      _selectedColor,
+      name: name,
+      colorCode: _selectedColor,
     );
     Navigator.of(context).pop<CategoryModel>(updatedCategory);
   }

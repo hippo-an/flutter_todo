@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/sub_task_form.dart';
+import 'package:todo_todo/components/common/sub_task_form.dart';
 import 'package:todo_todo/models/sub_task_form_model.dart';
 
 class SubTaskFormList extends StatelessWidget {

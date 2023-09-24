@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/category_alert_dialog.dart';
+import 'package:todo_todo/components/common/category_alert_dialog.dart';
 import 'package:todo_todo/components/manage_category_screen/category_list.dart';
 
 class ManageCategoryScreen extends StatelessWidget {

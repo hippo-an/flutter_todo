@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/custom_floating_action_button.dart';
-import 'package:todo_todo/components/main_calendar_container.dart';
-import 'package:todo_todo/components/todo_list_container.dart';
+import 'package:todo_todo/components/common/custom_floating_action_button.dart';
+import 'package:todo_todo/components/calendar_screen/main_calendar_container.dart';
+import 'package:todo_todo/components/calendar_screen/todo_list_container.dart';
 
 class TodoCalendarScreen extends StatelessWidget {
   const TodoCalendarScreen({super.key});

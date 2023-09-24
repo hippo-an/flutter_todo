@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/components/category_alert_dialog.dart';
+import 'package:todo_todo/components/common/category_alert_dialog.dart';
 import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
@@ -72,7 +72,8 @@ class CategoryList extends StatelessWidget {
                     if (category.categoryState == CategoryState.activated)
                       MenuItemButton(
                         onPressed: () async {
-                          await showDialog<CategoryModel>(
+                          final updatedCategory =
+                              await showDialog<CategoryModel>(
                             context: context,
                             builder: (context) {
                               return CategoryAlertDialog(
@@ -81,12 +82,25 @@ class CategoryList extends StatelessWidget {
                               );
                             },
                           );
+                          selectedCategoryProvider
+                              .updateCategory(updatedCategory);
+                          taskListProvider.updateCategory(updatedCategory!);
                         },
                         child: const Text('edit'),
                       ),
                     MenuItemButton(
                       onPressed: () {
-                        categoryProvider.updateCategoryState(category);
+                        final updatedCategory = categoryProvider.updateCategory(
+                          category,
+                          categoryState:
+                              category.categoryState == CategoryState.activated
+                                  ? CategoryState.deactivated
+                                  : CategoryState.activated,
+                        );
+
+                        selectedCategoryProvider
+                            .updateCategory(updatedCategory);
+                        taskListProvider.updateCategory(updatedCategory);
                       },
                       child: Text(
                         category.categoryState == CategoryState.activated
@@ -145,7 +159,9 @@ class CategoryList extends StatelessWidget {
               );
             },
             onReorder: (int oldIndex, int newIndex) {
-              if (oldIndex == newIndex || categories[oldIndex].categoryState == CategoryState.deactivated) {
+              if (oldIndex == newIndex ||
+                  categories[oldIndex].categoryState ==
+                      CategoryState.deactivated) {
                 return;
               }
               int offset = oldIndex < newIndex ? 1 : 0;

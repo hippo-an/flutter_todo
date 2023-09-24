@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/consts/tools.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/models/sub_task_model.dart';
@@ -15,7 +16,13 @@ class TaskListProvider extends ChangeNotifier {
 
   List<TaskModel> get filteredTask {
     if (_selectedCategory == null) {
-      final copiedList = [..._tasks];
+      final copiedList = _tasks
+          .where((task) =>
+              task.categoryModel == null ||
+              task.categoryModel!.categoryState == CategoryState.activated)
+          .toList();
+
+      // TODO: Task 정렬
       copiedList.sort((a, b) {
         return 0;
       });
@@ -24,11 +31,16 @@ class TaskListProvider extends ChangeNotifier {
     }
 
     final categorizedTask = _tasks
-        .where((task) => task.categoryModel == _selectedCategory)
+        .where((task) =>
+            task.categoryModel == _selectedCategory &&
+            task.categoryModel!.categoryState == CategoryState.activated)
         .toList();
+
+    // TODO: Task 정렬
     categorizedTask.sort((a, b) {
-      return 1;
+      return 0;
     });
+
     return categorizedTask;
   }
 
@@ -45,7 +57,6 @@ class TaskListProvider extends ChangeNotifier {
   //     notifyListeners();
   //   });
   // }
-
 
   void createTask(
     String name, {
@@ -101,7 +112,8 @@ class TaskListProvider extends ChangeNotifier {
     return updatedTask;
   }
 
-  TaskListProvider? updateSelectedCategory(CategoryModel? selectedCategory) {
+  TaskListProvider? initializeSelectedCategory(
+      CategoryModel? selectedCategory) {
     _selectedCategory = selectedCategory;
     notifyListeners();
     return this;
@@ -109,6 +121,18 @@ class TaskListProvider extends ChangeNotifier {
 
   void deleteTaskByCategory(CategoryModel category) {
     _tasks.removeWhere((task) => task.categoryModel == category);
+    notifyListeners();
+  }
+
+  void updateCategory(CategoryModel updatedCategory) {
+    final updatedTasks = _tasks.map((task) {
+      if (task.categoryModel == updatedCategory) {
+        return task.copyWith(categoryModel: updatedCategory);
+      }
+      return task;
+    }).toList();
+    _tasks.clear();
+    _tasks.addAll(updatedTasks);
     notifyListeners();
   }
 }

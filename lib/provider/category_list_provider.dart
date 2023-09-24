@@ -24,11 +24,13 @@ class CategoryListProvider extends ChangeNotifier {
     return ret;
   }
 
-  List<CategoryModel> get activatedCategories => List.unmodifiable(_categories
-      .where((category) =>
-          !category.isDeleted &&
-          category.categoryState == CategoryState.activated)
-      .toList());
+  List<CategoryModel> get activatedCategories {
+    return List<CategoryModel>.unmodifiable(_categories
+        .where((category) =>
+    !category.isDeleted &&
+        category.categoryState == CategoryState.activated)
+        .toList());
+  }
 
   bool get isLoading => _isLoading;
 
@@ -55,12 +57,13 @@ class CategoryListProvider extends ChangeNotifier {
     }
   }
 
-  CategoryModel updateCategory(
-      CategoryModel categoryModel, String name, Color selectedColor) {
+  CategoryModel updateCategory(CategoryModel categoryModel,
+      {String? name, Color? colorCode, CategoryState? categoryState,}) {
     final index = _categories.indexOf(categoryModel);
     final updatedCategory = _categories.removeAt(index).copyWith(
-      name: name,
-      colorCode: selectedColor.value,
+      name: name ?? categoryModel.name,
+      colorCode: colorCode?.value ?? categoryModel.colorCode,
+      categoryState: categoryState ?? categoryModel.categoryState,
       updatedAt: DateTime.now(),
     );
     _categories.insert(index, updatedCategory);
@@ -74,20 +77,6 @@ class CategoryListProvider extends ChangeNotifier {
 
   void deleteCategory(CategoryModel category) {
     _categories.remove(category);
-    notifyListeners();
-  }
-
-  void updateCategoryState(CategoryModel category) {
-    final index = _categories.indexOf(category);
-    ;
-    _categories.insert(
-        index,
-        _categories.removeAt(index).copyWith(
-              categoryState: category.categoryState == CategoryState.activated
-                  ? CategoryState.deactivated
-                  : CategoryState.activated,
-            ));
-
     notifyListeners();
   }
 }
