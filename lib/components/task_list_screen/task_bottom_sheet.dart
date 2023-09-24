@@ -48,6 +48,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
       initialDate: now,
       firstDate: DateTime(now.year - 10),
       lastDate: DateTime(now.year + 10),
+      cancelText: 'Reset',
     );
 
     setState(() {

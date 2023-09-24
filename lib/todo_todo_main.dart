@@ -6,6 +6,7 @@ import 'package:todo_todo/provider/main_calendar_provider.dart';
 import 'package:todo_todo/provider/navigation_tab_provider.dart';
 import 'package:todo_todo/provider/selected_category_provider.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
+import 'package:todo_todo/provider/task_list_section_provider.dart';
 import 'package:todo_todo/router.dart';
 import 'package:todo_todo/theme.dart';
 
@@ -35,9 +36,12 @@ final providers = [
   ChangeNotifierProxyProvider<SelectedCategoryProvider, TaskListProvider>(
     create: (context) => TaskListProvider(null),
     update: (context, selectedCategoryProvider, taskListProvider) =>
-    taskListProvider!
-      ..initializeSelectedCategory(
-          selectedCategoryProvider.selectedCategory),
+        taskListProvider!
+          ..initializeSelectedCategory(
+              selectedCategoryProvider.selectedCategory),
+  ),
+  ChangeNotifierProvider(
+    create: (_) => TaskListSectionProvider(),
   ),
 ];
 
@@ -53,7 +57,7 @@ class TodoTodoApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Todo-Todo',
         theme:
-        ThemeData().copyWith(useMaterial3: true, colorScheme: kColorScheme),
+            ThemeData().copyWith(useMaterial3: true, colorScheme: kColorScheme),
         themeMode: ThemeMode.light,
       ),
     );

@@ -66,11 +66,12 @@ class _TaskDetailState extends State<TaskDetail> {
   void _dateSelectDialog() async {
     final dueDate = _dueDate ?? DateTime.now();
     final selectedDueDate = await showDatePicker(
-        context: context,
-        initialDate: dueDate,
-        firstDate: DateTime(dueDate.year - 20),
-        lastDate: DateTime(dueDate.year + 20),
-        cancelText: 'Reset');
+      context: context,
+      initialDate: dueDate,
+      firstDate: DateTime(dueDate.year - 20),
+      lastDate: DateTime(dueDate.year + 20),
+      cancelText: 'Reset',
+    );
 
     setState(() {
       _dueDate = selectedDueDate;
@@ -100,10 +101,11 @@ class _TaskDetailState extends State<TaskDetail> {
 
   void _onSave() {
     if (_formKey.currentState!.validate()) {
-      Provider.of<TaskListProvider>(context,listen: false).updateTask(
+      Provider.of<TaskListProvider>(context, listen: false).updateTask(
         task: widget.task,
         taskName: _taskNameController.text.trim(),
         isDone: _isDone,
+        completedDate: _isDone ? DateTime.now() : null,
         categoryModel: _categoryModel,
         subTasks: [
           ..._subTaskList,

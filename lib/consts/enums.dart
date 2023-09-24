@@ -2,6 +2,20 @@ import 'package:flutter/material.dart';
 
 enum CategoryState { activated, deactivated }
 
+enum TaskListSectionState {
+  past, today, future, complete
+}
+extension TaskListSectionStateExtension on TaskListSectionState {
+  String get mappingValue {
+    return switch (this) {
+      TaskListSectionState.past => 'Past',
+      TaskListSectionState.today => 'Today',
+      TaskListSectionState.future => 'Future',
+      TaskListSectionState.complete => 'Complete today',
+    };
+  }
+}
+
 enum ColorType {
   red([244, 67, 54]),
   pink([233, 30, 99]),

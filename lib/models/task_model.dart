@@ -14,6 +14,7 @@ class TaskModel {
   final Priority priority;
   final Progression progression;
   final bool isDone;
+  final DateTime? completedDate;
   final CategoryModel? categoryModel;
   final DateTime? dueDate;
   final DateTime createdAt;
@@ -30,6 +31,7 @@ class TaskModel {
     this.priority = Priority.normal,
     this.progression = Progression.ready,
     this.isDone = false,
+    this.completedDate,
     this.categoryModel,
     this.dueDate,
     required this.createdAt,
@@ -38,21 +40,23 @@ class TaskModel {
     this.attachment,
   });
 
-  static TaskModel fromJson(Map<String, dynamic> map) {
+  static TaskModel fromJson(Map<String, dynamic> mapObject) {
     return TaskModel(
-      taskId: map['taskId'],
-      taskName: map['taskName'],
-      note: map['note'],
-      urgent: Urgent.values.byName(map['urgent']),
-      importance: Importance.values.byName(map['importance']),
-      priority: Priority.values.byName(map['priority']),
-      progression: Progression.values.byName(map['progression']),
-      categoryModel: CategoryModel.fromJson(map['categoryModel']),
-      dueDate: DateTime.tryParse(map['dueDate']),
-      createdAt: DateTime.parse(map['createdAt']),
-      updatedAt: DateTime.parse(map['updatedAt']),
+      taskId: mapObject['taskId'],
+      taskName: mapObject['taskName'],
+      note: mapObject['note'],
+      urgent: Urgent.values.byName(mapObject['urgent']),
+      importance: Importance.values.byName(mapObject['importance']),
+      priority: Priority.values.byName(mapObject['priority']),
+      progression: Progression.values.byName(mapObject['progression']),
+      categoryModel: CategoryModel.fromJson(mapObject['categoryModel']),
+      isDone: bool.tryParse(mapObject['isDone']) ?? false,
+      dueDate: DateTime.tryParse(mapObject['dueDate']),
+      completedDate: DateTime.tryParse(mapObject['completedDate']),
+      createdAt: DateTime.parse(mapObject['createdAt']),
+      updatedAt: DateTime.parse(mapObject['updatedAt']),
       subTasks: List<SubTaskModel>.from(
-        json.decode(map['subTasks']).map(
+        json.decode(mapObject['subTasks']).map(
               (model) => SubTaskModel.fromJson(model),
             ),
       ),
@@ -69,6 +73,8 @@ class TaskModel {
       'priority': priority.name,
       'progression': progression.name,
       'categoryModel': categoryModel?.toJson(),
+      'isDone': isDone.toString(),
+      'completedDate': completedDate.toString(),
       'dueDate': dueDate.toString(),
       'createdAt': createdAt.toString(),
       'updatedAt': updatedAt.toString(),
@@ -84,6 +90,7 @@ class TaskModel {
     Priority? priority,
     Progression? progression,
     bool? isDone,
+    DateTime? completedDate,
     CategoryModel? categoryModel,
     DateTime? dueDate,
     DateTime? updatedAt,
@@ -99,6 +106,7 @@ class TaskModel {
       priority: priority ?? this.priority,
       progression: progression ?? this.progression,
       isDone: isDone ?? this.isDone,
+      completedDate: completedDate ?? this.completedDate,
       categoryModel: categoryModel ?? this.categoryModel,
       dueDate: dueDate ?? this.dueDate,
       createdAt: createdAt,
@@ -108,13 +116,52 @@ class TaskModel {
     );
   }
 
-  bool isBefore() {
+  bool get isBeforeThanToday {
+    if (dueDate == null) {
+      return false;
+    }
+
     final now = DateTime.now();
     return dueDate!.year < now.year ||
         (dueDate!.year == now.year && dueDate!.month < now.month) ||
         (dueDate!.year == now.year &&
             dueDate!.month == now.month &&
             dueDate!.day < now.day);
+  }
+
+  bool get isToday {
+    if (dueDate == null) {
+      return false;
+    }
+
+    final now = DateTime.now();
+    return dueDate!.year == now.year &&
+        dueDate!.month == now.month &&
+        dueDate!.day == now.day;
+  }
+
+  bool get isFutureThanToday {
+    if (dueDate == null) {
+      return true;
+    }
+
+    final now = DateTime.now();
+    return dueDate!.year > now.year ||
+        (dueDate!.year == now.year && dueDate!.month > now.month) ||
+        (dueDate!.year == now.year &&
+            dueDate!.month == now.month &&
+            dueDate!.day > now.day);
+  }
+
+  bool get isDoneToday {
+    if (completedDate == null) {
+      return false;
+    }
+
+    final now = DateTime.now();
+    return completedDate!.year == now.year &&
+        completedDate!.month == now.month &&
+        completedDate!.day == now.day;
   }
 
   @override

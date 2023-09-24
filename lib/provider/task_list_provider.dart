@@ -83,6 +83,7 @@ class TaskListProvider extends ChangeNotifier {
     required TaskModel task,
     String? taskName,
     bool? isDone,
+    DateTime? completedDate,
     String? note,
     CategoryModel? categoryModel,
     DateTime? dueDate,
@@ -96,6 +97,7 @@ class TaskListProvider extends ChangeNotifier {
     final updatedTask = task.copyWith(
         taskName: taskName,
         isDone: isDone,
+        completedDate: completedDate,
         note: note,
         categoryModel: categoryModel,
         dueDate: dueDate,

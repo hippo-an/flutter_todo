@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/components/task_list_screen/task_list_item.dart';
-import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/components/task_list_screen/task_list_section.dart';
+import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
 
 class TaskListBox extends StatelessWidget {
@@ -9,29 +9,51 @@ class TaskListBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskListProvider>(
-      builder: (BuildContext context, taskListProvider, Widget? child) {
-        var filteredTask = taskListProvider.filteredTask;
-        return Expanded(
-          child: ListView.builder(
-            itemCount: filteredTask.length,
-            itemBuilder: (context, index) {
-              final TaskModel task = filteredTask[index];
-              return TaskListItem(
-                key: ValueKey(task.taskId),
-                task: task,
-              );
-            },
-            // onReorder: (int oldIndex, int newIndex) {
-            //   if (oldIndex == newIndex) {
-            //     return;
-            //   }
-            //   int offset = oldIndex < newIndex ? 1 : 0;
-            //   // categoryProvider.reorderCategory(oldIndex, newIndex - offset);
-            // },
-          ),
-        );
-      },
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Consumer<TaskListProvider>(
+          builder: (BuildContext context, taskListProvider, Widget? child) {
+            final filteredTask = taskListProvider.filteredTask;
+            final pastTasks = filteredTask
+                .where((task) => !task.isDone && task.isBeforeThanToday)
+                .toList();
+            final todayTasks = filteredTask
+                .where((task) => !task.isDone && task.isToday)
+                .toList();
+            final futureTasks = filteredTask
+                .where((task) => !task.isDone && task.isFutureThanToday)
+                .toList();
+            final completeTodayTasks = filteredTask
+                .where((task) => task.isDone && task.isDoneToday)
+                .toList();
+
+            return Column(
+              children: [
+                if (pastTasks.isNotEmpty)
+                  TaskListSection(
+                    tasks: pastTasks,
+                    taskListSectionState: TaskListSectionState.past,
+                  ),
+                if (todayTasks.isNotEmpty)
+                  TaskListSection(
+                    tasks: todayTasks,
+                    taskListSectionState: TaskListSectionState.today,
+                  ),
+                if (futureTasks.isNotEmpty)
+                  TaskListSection(
+                    tasks: futureTasks,
+                    taskListSectionState: TaskListSectionState.future,
+                  ),
+                if (completeTodayTasks.isNotEmpty)
+                  TaskListSection(
+                    tasks: completeTodayTasks,
+                    taskListSectionState: TaskListSectionState.complete,
+                  ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

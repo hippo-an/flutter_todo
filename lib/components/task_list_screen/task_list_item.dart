@@ -86,7 +86,7 @@ class TaskListItem extends StatelessWidget {
                           '${task.dueDate!.year}-${task.dueDate!.month.toString().padLeft(2, '0')}-${task.dueDate!.day.toString().padLeft(2, '0')}',
                           style: TextStyle(
                             fontSize: 12,
-                            color: task.isBefore()
+                            color: task.isBeforeThanToday
                                 ? Colors.red[300]
                                 : Colors.grey[500],
                           ),
@@ -121,7 +121,11 @@ class TaskListItem extends StatelessWidget {
                 value: task.isDone,
                 onChanged: (value) {
                   Provider.of<TaskListProvider>(context, listen: false)
-                      .updateTask(task: task, isDone: !task.isDone);
+                      .updateTask(
+                    task: task,
+                    isDone: !task.isDone,
+                    completedDate: !task.isDone ? DateTime.now() : null,
+                  );
                 },
                 shape: const CircleBorder(),
                 activeColor: Colors.grey,
