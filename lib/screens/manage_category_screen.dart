@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/components/add_category_alert_dialog.dart';
-import 'package:todo_todo/components/category_list.dart';
+import 'package:todo_todo/components/category_alert_dialog.dart';
+import 'package:todo_todo/components/manage_category_screen/category_list.dart';
 
 class ManageCategoryScreen extends StatelessWidget {
   const ManageCategoryScreen({super.key});
@@ -21,7 +21,7 @@ class ManageCategoryScreen extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return const AddCategoryAlertDialog();
+                      return const CategoryAlertDialog();
                     },
                   );
                 },
@@ -33,7 +33,26 @@ class ManageCategoryScreen extends StatelessWidget {
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(8),
-            child: const CategoryList(),
+            child: Column(
+              children: [
+                Container(
+                  height: 30,
+                  color: Colors.grey[200],
+                  child: Center(
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Category list',
+                        style: TextStyle(
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const CategoryList(),
+              ],
+            ),
           ),
         ),
       ),

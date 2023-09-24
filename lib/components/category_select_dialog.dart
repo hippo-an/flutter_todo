@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/components/add_category_alert_dialog.dart';
+import 'package:todo_todo/components/category_alert_dialog.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
 
 class CategorySelectDialog extends StatelessWidget {
@@ -43,7 +43,7 @@ class CategorySelectDialog extends StatelessWidget {
                   final createdCategory = await showDialog(
                     context: context,
                     builder: (context) {
-                      return const AddCategoryAlertDialog();
+                      return const CategoryAlertDialog();
                     },
                   );
 

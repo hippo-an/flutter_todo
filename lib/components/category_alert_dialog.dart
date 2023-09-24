@@ -13,25 +13,21 @@ final _colors = <Color>[
   Colors.purple,
 ];
 
-class AddCategoryAlertDialog extends StatefulWidget {
-  const AddCategoryAlertDialog({
+class CategoryAlertDialog extends StatefulWidget {
+  const CategoryAlertDialog({
     super.key,
     this.isEditMode = false,
-    this.color = Colors.lightBlueAccent,
-    this.name = '',
-    this.categoryIndex = 0,
+    this.category,
   });
 
   final bool isEditMode;
-  final Color color;
-  final String name;
-  final int categoryIndex;
+  final CategoryModel? category;
 
   @override
-  State<AddCategoryAlertDialog> createState() => _AddCategoryAlertDialogState();
+  State<CategoryAlertDialog> createState() => _CategoryAlertDialogState();
 }
 
-class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
+class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
   late TextEditingController _categoryController;
   late Color _selectedColor;
 
@@ -41,10 +37,10 @@ class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
     _categoryController = TextEditingController();
 
     if (widget.isEditMode) {
-      _categoryController.text = widget.name;
+      _categoryController.text = widget.category!.name;
     }
 
-    _selectedColor = widget.color;
+    _selectedColor = widget.category?.color ?? Colors.lightBlueAccent;
   }
 
   @override
@@ -73,12 +69,16 @@ class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
       return;
     }
 
-    if (name == widget.name && _selectedColor == widget.color) {
+    if (widget.category != null &&
+        name == widget.category!.name &&
+        _selectedColor == widget.category!.color) {
       return;
     }
 
-    final updatedCategory = Provider.of<CategoryListProvider>(context, listen: false).updateCategory(
-      widget.categoryIndex,
+    final updatedCategory =
+        Provider.of<CategoryListProvider>(context, listen: false)
+            .updateCategory(
+      widget.category!,
       name,
       _selectedColor,
     );
@@ -141,7 +141,9 @@ class _AddCategoryAlertDialogState extends State<AddCategoryAlertDialog> {
                             child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    width: _selectedColor.value == color.value ? 2 : 0),
+                                    width: _selectedColor.value == color.value
+                                        ? 2
+                                        : 0),
                                 shape: BoxShape.circle,
                               ),
                               child: CircleAvatar(

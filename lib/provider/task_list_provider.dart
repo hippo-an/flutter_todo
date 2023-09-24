@@ -106,4 +106,9 @@ class TaskListProvider extends ChangeNotifier {
     notifyListeners();
     return this;
   }
+
+  void deleteTaskByCategory(CategoryModel category) {
+    _tasks.removeWhere((task) => task.categoryModel == category);
+    notifyListeners();
+  }
 }
