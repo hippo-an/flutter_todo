@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_todo/components/drawer/drawer_category_tile.dart';
 import 'package:todo_todo/components/drawer/drawer_menu.dart';
+import 'package:todo_todo/screens/deleted_tasks_screen.dart';
 import 'package:todo_todo/screens/stared_tasks_screen.dart';
 
 class TodoCustomDrawer extends StatelessWidget {
@@ -38,7 +39,9 @@ class TodoCustomDrawer extends StatelessWidget {
           ),
           const DrawerCategoryTile(),
           DrawerMenu(
-              onTab: () {},
+              onTab: () {
+                context.pushNamed(DeletedTaskScreen.routeName);
+              },
               iconData: Icons.delete_outline,
               menuName: 'Manage Delete'),
           DrawerMenu(

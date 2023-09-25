@@ -18,37 +18,7 @@ class TaskListProvider extends ChangeNotifier {
     if (_selectedCategory == null) {
       final copiedList = _tasks
           .where((task) =>
-              task.categoryModel == null ||
-              task.categoryModel!.categoryState == CategoryState.seen)
-          .toList();
-
-      // TODO: Task 정렬
-      copiedList.sort((a, b) {
-        return 0;
-      });
-
-      return copiedList;
-    }
-
-    final categorizedTask = _tasks
-        .where((task) =>
-            task.categoryModel == _selectedCategory &&
-            task.categoryModel!.categoryState == CategoryState.seen)
-        .toList();
-
-    // TODO: Task 정렬
-    categorizedTask.sort((a, b) {
-      return 0;
-    });
-
-    return categorizedTask;
-  }
-
-  List<TaskModel> get staredTask {
-    if (_selectedCategory == null) {
-      final copiedList = _tasks
-          .where((task) =>
-              task.stared &&
+              !task.isDeleted &&
               (task.categoryModel == null ||
                   task.categoryModel!.categoryState == CategoryState.seen))
           .toList();
@@ -63,7 +33,7 @@ class TaskListProvider extends ChangeNotifier {
 
     final categorizedTask = _tasks
         .where((task) =>
-            task.stared &&
+            !task.isDeleted &&
             task.categoryModel == _selectedCategory &&
             task.categoryModel!.categoryState == CategoryState.seen)
         .toList();
@@ -74,6 +44,39 @@ class TaskListProvider extends ChangeNotifier {
     });
 
     return categorizedTask;
+  }
+
+  List<TaskModel> get staredTask {
+    final copiedList = _tasks
+        .where((task) =>
+            !task.isDeleted &&
+            task.stared &&
+            (task.categoryModel == null ||
+                task.categoryModel!.categoryState == CategoryState.seen))
+        .toList();
+
+    // TODO: Task 정렬
+    copiedList.sort((a, b) {
+      return 0;
+    });
+
+    return copiedList;
+  }
+
+  List<TaskModel> get deletedTask {
+      final copiedList = _tasks
+          .where((task) =>
+              task.isDeleted &&
+              (task.categoryModel == null ||
+                  task.categoryModel!.categoryState == CategoryState.seen))
+          .toList();
+
+      // TODO: Task 정렬
+      copiedList.sort((a, b) {
+        return 0;
+      });
+
+      return copiedList;
   }
 
   // Future loadTodos() {
@@ -115,11 +118,13 @@ class TaskListProvider extends ChangeNotifier {
     required TaskModel task,
     String? taskName,
     bool? isDone,
+    bool? isDeleted,
     bool? stared,
     DateTime? completedDate,
     String? note,
     CategoryModel? categoryModel,
     DateTime? dueDate,
+    DateTime? deletedAt,
     List<SubTaskModel>? subTasks,
     File? attachment,
   }) {
@@ -130,11 +135,13 @@ class TaskListProvider extends ChangeNotifier {
     final updatedTask = task.copyWith(
         taskName: taskName,
         isDone: isDone,
+        isDeleted: isDeleted,
         stared: stared,
         completedDate: completedDate,
         note: note,
         categoryModel: categoryModel,
-        dueDate: dueDate,
+        dueDate: () => dueDate,
+        deletedAt: () => deletedAt,
         subTasks: subTasks,
         attachment: attachment,
         updatedAt: DateTime.now());
@@ -169,6 +176,11 @@ class TaskListProvider extends ChangeNotifier {
     }).toList();
     _tasks.clear();
     _tasks.addAll(updatedTasks);
+    notifyListeners();
+  }
+
+  void deleteTask({required TaskModel task}) {
+    _tasks.remove(task);
     notifyListeners();
   }
 }

@@ -14,12 +14,14 @@ class TaskModel {
   final Priority priority;
   final Progression progression;
   final bool isDone;
+  final bool isDeleted;
   final bool stared;
   final DateTime? completedDate;
   final CategoryModel? categoryModel;
   final DateTime? dueDate;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final DateTime? deletedAt;
   final List<SubTaskModel> subTasks;
   final File? attachment;
 
@@ -32,12 +34,14 @@ class TaskModel {
     this.priority = Priority.normal,
     this.progression = Progression.ready,
     this.isDone = false,
+    this.isDeleted = false,
     this.stared = false,
     this.completedDate,
     this.categoryModel,
     this.dueDate,
     required this.createdAt,
     required this.updatedAt,
+    this.deletedAt,
     this.subTasks = const <SubTaskModel>[],
     this.attachment,
   });
@@ -53,11 +57,13 @@ class TaskModel {
       progression: Progression.values.byName(mapObject['progression']),
       categoryModel: CategoryModel.fromJson(mapObject['categoryModel']),
       isDone: bool.tryParse(mapObject['isDone']) ?? false,
+      isDeleted: bool.tryParse(mapObject['isDeleted']) ?? false,
       stared: bool.tryParse(mapObject['stared']) ?? false,
       dueDate: DateTime.tryParse(mapObject['dueDate']),
       completedDate: DateTime.tryParse(mapObject['completedDate']),
       createdAt: DateTime.parse(mapObject['createdAt']),
       updatedAt: DateTime.parse(mapObject['updatedAt']),
+      deletedAt: DateTime.parse(mapObject['deletedAt']),
       subTasks: List<SubTaskModel>.from(
         json.decode(mapObject['subTasks']).map(
               (model) => SubTaskModel.fromJson(model),
@@ -77,11 +83,13 @@ class TaskModel {
       'progression': progression.name,
       'categoryModel': categoryModel?.toJson(),
       'isDone': isDone.toString(),
+      'isDeleted': isDeleted.toString(),
       'stared': stared.toString(),
       'completedDate': completedDate.toString(),
       'dueDate': dueDate.toString(),
       'createdAt': createdAt.toString(),
       'updatedAt': updatedAt.toString(),
+      'deletedAt': deletedAt.toString(),
       'subTasks': jsonEncode(subTasks),
     };
   }
@@ -94,11 +102,13 @@ class TaskModel {
     Priority? priority,
     Progression? progression,
     bool? isDone,
+    bool? isDeleted,
     bool? stared,
     DateTime? completedDate,
     CategoryModel? categoryModel,
-    DateTime? dueDate,
+    DateTime? Function()? dueDate,
     DateTime? updatedAt,
+    DateTime? Function()? deletedAt,
     List<SubTaskModel>? subTasks,
     File? attachment,
   }) {
@@ -111,12 +121,14 @@ class TaskModel {
       priority: priority ?? this.priority,
       progression: progression ?? this.progression,
       isDone: isDone ?? this.isDone,
+      isDeleted: isDeleted ?? this.isDeleted,
       stared: stared ?? this.stared,
       completedDate: completedDate ?? this.completedDate,
       categoryModel: categoryModel ?? this.categoryModel,
-      dueDate: dueDate ?? this.dueDate,
+      dueDate: dueDate != null ? dueDate() : this.dueDate,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt != null ? deletedAt() : this.deletedAt,
       subTasks: subTasks ?? [...this.subTasks],
       attachment: attachment ?? this.attachment,
     );

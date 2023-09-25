@@ -3,13 +3,17 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
 
+enum TaskItemState { stared, deleted, normal }
+
 class TaskListItem extends StatelessWidget {
   const TaskListItem({
     super.key,
     required this.task,
+    this.taskItemState = TaskItemState.normal,
   });
 
   final TaskModel task;
+  final TaskItemState taskItemState;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,7 @@ class TaskListItem extends StatelessWidget {
                     maxLines: 1,
                     style: TextStyle(
                       decoration:
-                      task.isDone ? TextDecoration.lineThrough : null,
+                          task.isDone ? TextDecoration.lineThrough : null,
                       color: task.isDone ? Colors.grey : Colors.black,
                     ),
                   ),
@@ -89,19 +93,58 @@ class TaskListItem extends StatelessWidget {
               ),
             ),
           ),
-          Checkbox(
-            value: task.isDone,
-            onChanged: (value) {
-              Provider.of<TaskListProvider>(context, listen: false)
-                  .updateTask(
-                task: task,
-                isDone: !task.isDone,
-                completedDate: !task.isDone ? DateTime.now() : null,
-              );
-            },
-            shape: const CircleBorder(),
-            activeColor: Colors.grey,
-          )
+          if (taskItemState == TaskItemState.normal)
+            Checkbox(
+              value: task.isDone,
+              onChanged: (value) {
+                Provider.of<TaskListProvider>(context, listen: false)
+                    .updateTask(
+                  task: task,
+                  isDone: !task.isDone,
+                  completedDate: !task.isDone ? DateTime.now() : null,
+                  dueDate: task.dueDate,
+                  deletedAt: task.deletedAt,
+                );
+              },
+              shape: const CircleBorder(),
+              activeColor: Colors.grey,
+            ),
+          if (taskItemState == TaskItemState.stared)
+            IconButton(
+              onPressed: () {
+                Provider.of<TaskListProvider>(context, listen: false)
+                    .updateTask(
+                  task: task,
+                  stared: false,
+                  dueDate: task.dueDate,
+                  deletedAt: task.deletedAt,
+                );
+              }, icon: const Icon(Icons.star_outline),
+            ),
+          if (taskItemState == TaskItemState.deleted)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Provider.of<TaskListProvider>(context, listen: false)
+                        .updateTask(
+                      task: task,
+                      isDeleted: false,
+                      dueDate: task.dueDate,
+                      deletedAt: null,
+                    );
+                  }, icon: const Icon(Icons.undo),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Provider.of<TaskListProvider>(context, listen: false)
+                        .deleteTask(task: task,);
+                  }, icon: const Icon(Icons.delete_forever_sharp),
+                ),
+              ],
+            )
+
         ],
       ),
     );
