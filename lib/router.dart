@@ -6,7 +6,7 @@ import 'package:todo_todo/screens/manage_category_screen.dart';
 import 'package:todo_todo/screens/stared_tasks_screen.dart';
 import 'package:todo_todo/screens/task_detail_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
-import 'package:todo_todo/screens/todo_calendar_screen.dart';
+import 'package:todo_todo/screens/task_calendar_screen.dart';
 import 'package:todo_todo/screens/todo_navigation_screen.dart';
 
 final router = GoRouter(

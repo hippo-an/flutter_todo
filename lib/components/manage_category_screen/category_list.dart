@@ -4,7 +4,6 @@ import 'package:todo_todo/components/common/category_alert_dialog.dart';
 import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
-import 'package:todo_todo/provider/selected_category_provider.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
 
 class CategoryList extends StatelessWidget {
@@ -13,11 +12,9 @@ class CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<CategoryListProvider>(
-      builder: (BuildContext context, CategoryListProvider categoryProvider,
-          Widget? child) {
+      builder: (_, categoryProvider, child) {
         final categories = categoryProvider.categories;
-        final selectedCategoryProvider =
-            Provider.of<SelectedCategoryProvider>(context, listen: false);
+        final selectedCategory = categoryProvider.selectedCategory;
         final taskListProvider =
             Provider.of<TaskListProvider>(context, listen: false);
 
@@ -41,21 +38,30 @@ class CategoryList extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      width: 16,
-                      height: 16,
+                      width: 15,
+                      height: 15,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: category.color,
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      category.name,
-                      style: const TextStyle(
-                        fontSize: 16
+                    Expanded(
+                      child: Text(
+                        category.name,
+                        style: const TextStyle(fontSize: 15),
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 8),
+                    Text(
+                      category.taskCount.toString(),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
                     if (category.categoryState == CategoryState.hide)
                       const Icon(
                         Icons.visibility_off,
@@ -92,8 +98,6 @@ class CategoryList extends StatelessWidget {
                                   );
                                 },
                               );
-                              selectedCategoryProvider
-                                  .updateCategory(updatedCategory);
                               taskListProvider.updateCategory(updatedCategory!);
                             },
                             child: const Text('edit'),
@@ -109,8 +113,6 @@ class CategoryList extends StatelessWidget {
                                       : CategoryState.seen,
                             );
 
-                            selectedCategoryProvider
-                                .updateCategory(updatedCategory);
                             taskListProvider.updateCategory(updatedCategory);
                           },
                           child: Text(
@@ -143,10 +145,8 @@ class CategoryList extends StatelessWidget {
                                         categoryProvider
                                             .deleteCategory(category);
 
-                                        if (selectedCategoryProvider
-                                                .selectedCategory ==
-                                            category) {
-                                          selectedCategoryProvider
+                                        if (selectedCategory == category) {
+                                          categoryProvider
                                               .updateSelectedCategory(null);
                                         }
 

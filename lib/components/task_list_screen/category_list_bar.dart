@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
-import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class CategoryListBar extends StatelessWidget {
   const CategoryListBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<CategoryListProvider, SelectedCategoryProvider>(
-      builder: (BuildContext context, CategoryListProvider categoryListProvider,
-          SelectedCategoryProvider selectedCategoryProvider, Widget? child) {
+    return Consumer<CategoryListProvider>(
+      builder: (_, categoryListProvider, Widget? child) {
         final categories = categoryListProvider.activatedCategories;
-        final selectedCategory = selectedCategoryProvider.selectedCategory;
+        final selectedCategory = categoryListProvider.selectedCategory;
         return Expanded(
           child: ListView.builder(
             itemCount: categories.length + 1,
@@ -34,7 +32,7 @@ class CategoryListBar extends StatelessWidget {
                       backgroundColor: Colors.lightBlueAccent,
                     ),
                     onPressed: () {
-                      selectedCategoryProvider.updateSelectedCategory(null);
+                      categoryListProvider.updateSelectedCategory(null);
                     },
                     child: const Text('All'),
                   ),
@@ -59,7 +57,7 @@ class CategoryListBar extends StatelessWidget {
                       return;
                     }
 
-                    selectedCategoryProvider.updateSelectedCategory(category);
+                    categoryListProvider.updateSelectedCategory(category);
                   },
                   child: Text(category.name),
                 ),

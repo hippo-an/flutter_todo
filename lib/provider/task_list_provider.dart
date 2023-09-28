@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_todo/consts/enums.dart';
 import 'package:todo_todo/consts/tools.dart';
 import 'package:todo_todo/models/category_model.dart';
@@ -64,19 +65,37 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   List<TaskModel> get deletedTask {
-      final copiedList = _tasks
-          .where((task) =>
-              task.isDeleted &&
-              (task.categoryModel == null ||
-                  task.categoryModel!.categoryState == CategoryState.seen))
-          .toList();
+    final copiedList = _tasks
+        .where((task) =>
+            task.isDeleted &&
+            (task.categoryModel == null ||
+                task.categoryModel!.categoryState == CategoryState.seen))
+        .toList();
 
-      // TODO: Task 정렬
-      copiedList.sort((a, b) {
-        return 0;
-      });
+    // TODO: Task 정렬
+    copiedList.sort((a, b) {
+      return 0;
+    });
 
-      return copiedList;
+    return copiedList;
+  }
+
+  List<TaskModel> calendarList(DateTime selectedDate) {
+    final copiedList = _tasks
+        .where((task) =>
+            !task.isDeleted &&
+            (task.categoryModel == null ||
+                task.categoryModel!.categoryState == CategoryState.seen) &&
+            task.isDone &&
+            isSameDay(selectedDate, task.completedDate))
+        .toList();
+
+    // TODO: Task 정렬
+    copiedList.sort((a, b) {
+      return 0;
+    });
+
+    return copiedList;
   }
 
   // Future loadTodos() {
@@ -137,7 +156,7 @@ class TaskListProvider extends ChangeNotifier {
         isDone: isDone,
         isDeleted: isDeleted,
         stared: stared,
-        completedDate: completedDate,
+        completedDate: () => completedDate,
         note: note,
         categoryModel: categoryModel,
         dueDate: () => dueDate,

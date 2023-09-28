@@ -34,7 +34,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
     _category = widget.selectedCategory;
     _selectedDate = DateTime.now();
     _subTaskForms = [];
-    _formKey  = GlobalKey<FormState>();
+    _formKey = GlobalKey<FormState>();
     _taskNameController = TextEditingController();
   }
 
@@ -100,6 +100,11 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
           categoryModel: _category,
           subTasks: subTasks);
 
+      if (_category != null) {
+        Provider.of<CategoryListProvider>(context, listen: false)
+            .updateCategory(_category!, task: 1);
+      }
+
       Navigator.of(context).pop();
     }
   }
@@ -151,78 +156,79 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                       onRemove: _onRemove,
                     ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          _category == null
-                              ? IconButton(
+                      _category == null
+                          ? IconButton(
+                              onPressed: _categorySelectDialog,
+                              icon: const Icon(Icons.category_outlined),
+                            )
+                          : Expanded(
+                              flex: 3,
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.035,
+                                child: OutlinedButton(
                                   onPressed: _categorySelectDialog,
-                                  icon: const Icon(Icons.category_outlined))
-                              : Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.035,
-                                    child: OutlinedButton(
-                                      onPressed: _categorySelectDialog,
+                                  child: Text(
+                                    _category == null
+                                        ? 'No Category'
+                                        : _category!.name,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ),
+                            ),
+                      const SizedBox(width: 8),
+                      _selectedDate != null
+                          ? Expanded(
+                              flex: 2,
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.035,
+                                child: OverflowBar(
+                                  children: [
+                                    OutlinedButton(
+                                      onPressed: _dateSelectDialog,
                                       child: Text(
-                                        _category == null
-                                            ? 'No Category'
-                                            : _category!.name,
+                                        '${_selectedDate!.year}-${_selectedDate!.month.toString().padLeft(2, '0')}-${_selectedDate!.day.toString().padLeft(2, '0')}',
                                         style: const TextStyle(
                                           fontSize: 11,
                                         ),
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                          _selectedDate != null
-                              ? Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.035,
-                                    child: OverflowBar(
-                                      children: [
-                                        OutlinedButton(
-                                          onPressed: _dateSelectDialog,
-                                          child: Text(
-                                            '${_selectedDate!.year}-${_selectedDate!.month.toString().padLeft(2, '0')}-${_selectedDate!.day.toString().padLeft(2, '0')}',
-                                            style: const TextStyle(
-                                              fontSize: 11,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : IconButton(
-                                  onPressed: _dateSelectDialog,
-                                  icon: const Icon(
-                                    Icons.calendar_month_sharp,
-                                    size: 22,
-                                  ),
-                                ),
-                          IconButton(
-                            onPressed: () {
-                              if (_subTaskForms.length < 6) {
-                                setState(() {
-                                  _subTaskForms.add(
-                                    SubTaskFormModel(
-                                      subTaskId: uuid.generate(),
-                                    ),
-                                  );
-                                });
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.alt_route,
-                              size: 22,
+                              ),
+                            )
+                          : IconButton(
+                              onPressed: _dateSelectDialog,
+                              icon: const Icon(
+                                Icons.calendar_month_sharp,
+                                size: 22,
+                              ),
                             ),
-                          ),
-                        ],
+                      IconButton(
+                        onPressed: () {
+                          if (_subTaskForms.length < 6) {
+                            setState(() {
+                              _subTaskForms.add(
+                                SubTaskFormModel(
+                                  subTaskId: uuid.generate(),
+                                ),
+                              );
+                            });
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.alt_route,
+                          size: 22,
+                        ),
                       ),
                       IconButton(
                         onPressed: _onSubmit,

@@ -104,7 +104,7 @@ class TaskModel {
     bool? isDone,
     bool? isDeleted,
     bool? stared,
-    DateTime? completedDate,
+    DateTime? Function()? completedDate,
     CategoryModel? categoryModel,
     DateTime? Function()? dueDate,
     DateTime? updatedAt,
@@ -123,7 +123,7 @@ class TaskModel {
       isDone: isDone ?? this.isDone,
       isDeleted: isDeleted ?? this.isDeleted,
       stared: stared ?? this.stared,
-      completedDate: completedDate ?? this.completedDate,
+      completedDate: completedDate != null ? completedDate() : this.completedDate,
       categoryModel: categoryModel ?? this.categoryModel,
       dueDate: dueDate != null ? dueDate() : this.dueDate,
       createdAt: createdAt,
@@ -147,17 +147,6 @@ class TaskModel {
             dueDate!.day < now.day);
   }
 
-  bool get isToday {
-    if (dueDate == null) {
-      return false;
-    }
-
-    final now = DateTime.now();
-    return dueDate!.year == now.year &&
-        dueDate!.month == now.month &&
-        dueDate!.day == now.day;
-  }
-
   bool get isFutureThanToday {
     if (dueDate == null) {
       return true;
@@ -169,17 +158,6 @@ class TaskModel {
         (dueDate!.year == now.year &&
             dueDate!.month == now.month &&
             dueDate!.day > now.day);
-  }
-
-  bool get isDoneToday {
-    if (completedDate == null) {
-      return false;
-    }
-
-    final now = DateTime.now();
-    return completedDate!.year == now.year &&
-        completedDate!.month == now.month &&
-        completedDate!.day == now.day;
   }
 
   @override

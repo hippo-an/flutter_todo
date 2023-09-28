@@ -4,7 +4,6 @@ import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/drawer_provider.dart';
 import 'package:todo_todo/provider/main_calendar_provider.dart';
 import 'package:todo_todo/provider/navigation_tab_provider.dart';
-import 'package:todo_todo/provider/selected_category_provider.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
 import 'package:todo_todo/provider/task_list_section_provider.dart';
 import 'package:todo_todo/router.dart';
@@ -25,20 +24,17 @@ final providers = [
     create: (_) => MainCalendarProvider(),
   ),
   ChangeNotifierProvider(
-    create: (_) => SelectedCategoryProvider(),
-  ),
-  ChangeNotifierProvider(
     create: (_) => DrawerProvider(),
   ),
   ChangeNotifierProvider(
     create: (_) => CategoryListProvider(),
   ),
-  ChangeNotifierProxyProvider<SelectedCategoryProvider, TaskListProvider>(
+  ChangeNotifierProxyProvider<CategoryListProvider, TaskListProvider>(
     create: (context) => TaskListProvider(null),
-    update: (context, selectedCategoryProvider, taskListProvider) =>
+    update: (context, categoryListProvider, taskListProvider) =>
         taskListProvider!
           ..initializeSelectedCategory(
-              selectedCategoryProvider.selectedCategory),
+              categoryListProvider.selectedCategory),
   ),
   ChangeNotifierProvider(
     create: (_) => TaskListSectionProvider(),

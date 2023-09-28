@@ -5,7 +5,11 @@ import 'package:todo_todo/models/category_model.dart';
 
 class CategoryListProvider extends ChangeNotifier {
   final List<CategoryModel> _categories = [];
+  CategoryModel? _selectedCategory;
   bool _isLoading = false;
+
+
+
 
   List<CategoryModel> get categories {
     final ret = List<CategoryModel>.from(
@@ -31,6 +35,7 @@ class CategoryListProvider extends ChangeNotifier {
         category.categoryState == CategoryState.seen)
         .toList());
   }
+  CategoryModel? get selectedCategory => _selectedCategory;
 
   bool get isLoading => _isLoading;
 
@@ -58,16 +63,27 @@ class CategoryListProvider extends ChangeNotifier {
   }
 
   CategoryModel updateCategory(CategoryModel categoryModel,
-      {String? name, Color? colorCode, CategoryState? categoryState,}) {
+      {String? name, Color? colorCode, CategoryState? categoryState, int task = 0, int complete = 0}) {
+    print('this is category : ${categoryModel.name}');
     final index = _categories.indexOf(categoryModel);
     final updatedCategory = _categories.removeAt(index).copyWith(
       name: name ?? categoryModel.name,
       colorCode: colorCode?.value ?? categoryModel.colorCode,
+      taskCount: categoryModel.taskCount + task,
+      completeCount: categoryModel.completeCount + complete,
       categoryState: categoryState ?? categoryModel.categoryState,
       updatedAt: DateTime.now(),
     );
     _categories.insert(index, updatedCategory);
+
+    if (updatedCategory.categoryState == CategoryState.hide) {
+      _selectedCategory = null;
+    } else if (selectedCategory?.categoryId == updatedCategory.categoryId) {
+      _selectedCategory = updatedCategory;
+    }
+
     notifyListeners();
+
     return updatedCategory;
   }
 
@@ -77,6 +93,11 @@ class CategoryListProvider extends ChangeNotifier {
 
   void deleteCategory(CategoryModel category) {
     _categories.remove(category);
+    notifyListeners();
+  }
+
+  void updateSelectedCategory(CategoryModel? selectedCategory) {
+    _selectedCategory = selectedCategory;
     notifyListeners();
   }
 }

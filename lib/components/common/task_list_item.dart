@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
 
-enum TaskItemState { stared, deleted, normal }
+enum TaskItemState { stared, deleted, normal, completed }
 
 class TaskListItem extends StatelessWidget {
   const TaskListItem({
@@ -100,11 +101,17 @@ class TaskListItem extends StatelessWidget {
                 Provider.of<TaskListProvider>(context, listen: false)
                     .updateTask(
                   task: task,
-                  isDone: !task.isDone,
+                  isDone: value ?? false,
                   completedDate: !task.isDone ? DateTime.now() : null,
                   dueDate: task.dueDate,
                   deletedAt: task.deletedAt,
                 );
+
+                if (task.categoryModel != null) {
+                  Provider.of<CategoryListProvider>(context, listen: false)
+                      .updateCategory(task.categoryModel!,
+                          complete: value ?? false ? 1 : -1);
+                }
               },
               shape: const CircleBorder(),
               activeColor: Colors.grey,
@@ -119,7 +126,8 @@ class TaskListItem extends StatelessWidget {
                   dueDate: task.dueDate,
                   deletedAt: task.deletedAt,
                 );
-              }, icon: const Icon(Icons.star_outline),
+              },
+              icon: const Icon(Icons.star_outline),
             ),
           if (taskItemState == TaskItemState.deleted)
             Row(
@@ -134,17 +142,52 @@ class TaskListItem extends StatelessWidget {
                       dueDate: task.dueDate,
                       deletedAt: null,
                     );
-                  }, icon: const Icon(Icons.undo),
+
+                    if (task.categoryModel != null) {
+                      Provider.of<CategoryListProvider>(context, listen: false)
+                          .updateCategory(task.categoryModel!,
+                              task: 1, complete: task.isDone ? 1 : 0);
+                    }
+                  },
+                  icon: const Icon(Icons.undo),
                 ),
                 IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Delete task permanently'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text('Cancel'),
+                          ),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Colors.red)),
+                            onPressed: () {},
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                     Provider.of<TaskListProvider>(context, listen: false)
-                        .deleteTask(task: task,);
-                  }, icon: const Icon(Icons.delete_forever_sharp),
+                        .deleteTask(
+                      task: task,
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.delete_forever_sharp,
+                    color: Colors.red,
+                  ),
                 ),
               ],
             )
-
         ],
       ),
     );

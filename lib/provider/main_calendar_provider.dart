@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MainCalendarProvider extends ChangeNotifier {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _selectedDate = DateTime.utc(
     DateTime.now().year,
     DateTime.now().month,
@@ -11,6 +11,9 @@ class MainCalendarProvider extends ChangeNotifier {
 
   CalendarFormat get calendarFormat => _calendarFormat;
   DateTime get selectedDate => _selectedDate;
+
+  bool selectedDayPredicate(DateTime selectedDate) =>
+    isSameDay(_selectedDate, selectedDate);
 
   void updateSelectedDate(DateTime newSelectedDate) {
     _selectedDate = newSelectedDate;
@@ -23,10 +26,11 @@ class MainCalendarProvider extends ChangeNotifier {
   }
 
   void selectToday() {
+    final now = DateTime.now();
     _selectedDate = DateTime.utc(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
+      now.year,
+      now.month,
+      now.day,
     );
     notifyListeners();
   }

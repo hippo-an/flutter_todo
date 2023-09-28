@@ -118,6 +118,25 @@ class _TaskDetailState extends State<TaskDetail> {
         note: _noteController.text.trim(),
         attachment: _attachment,
       );
+
+      // 기존 null 이면?
+      // 새로운 것이 null 이면?
+      if (widget.task.categoryModel != _categoryModel) {
+        final categoryListProvider =
+            Provider.of<CategoryListProvider>(context, listen: false);
+        if (widget.task.categoryModel == null && _categoryModel != null) {
+          categoryListProvider.updateCategory(_categoryModel!,
+              task: 1, complete: _isDone ? 1 : 0);
+        } else if (widget.task.categoryModel != null && _categoryModel == null) {
+          categoryListProvider.updateCategory(widget.task.categoryModel!,
+              task: -1, complete: widget.task.isDone ? -1 : 0);
+        } else {
+          categoryListProvider.updateCategory(widget.task.categoryModel!,
+              task: -1, complete: widget.task.isDone ? -1 : 0);
+          categoryListProvider.updateCategory(_categoryModel!,
+              task: 1, complete: _isDone ? 1 : 0);
+        }
+      }
       Navigator.of(context).pop();
     }
   }
@@ -254,18 +273,8 @@ class _TaskDetailState extends State<TaskDetail> {
       },
       child: Scaffold(
         appBar: AppBar(
+          title: const Text('Edit Task'),
           actions: [
-            TextButton.icon(
-              onPressed: () {
-                setState(() {
-                  _isDone = !_isDone;
-                });
-              },
-              icon: Icon(_isDone
-                  ? Icons.radio_button_unchecked
-                  : Icons.check_circle_outline),
-              label: Text(_isDone ? 'Mark unfinished' : 'Mark finished'),
-            ),
             TextButton.icon(
               onPressed: _onSave,
               icon: const Icon(Icons.save_alt),
@@ -276,6 +285,15 @@ class _TaskDetailState extends State<TaskDetail> {
         body: SingleChildScrollView(
           child: Stack(
             children: [
+              _isDone
+                  ? Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.6),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
               Container(
                 padding: const EdgeInsets.all(16),
                 child: Form(
@@ -288,7 +306,7 @@ class _TaskDetailState extends State<TaskDetail> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: OutlinedButton(
                                 onPressed: _categorySelectDialog,
                                 clipBehavior: Clip.hardEdge,
@@ -306,7 +324,7 @@ class _TaskDetailState extends State<TaskDetail> {
                             ),
                             const SizedBox(width: 8),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: OutlinedButton(
                                 onPressed: _dateSelectDialog,
                                 child: _dueDate != null
@@ -326,6 +344,15 @@ class _TaskDetailState extends State<TaskDetail> {
                                         ),
                                       ),
                               ),
+                            ),
+                            Checkbox(
+                              value: _isDone,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isDone = !_isDone;
+                                });
+                              },
+                              shape: const CircleBorder(),
                             ),
                           ],
                         ),
@@ -456,15 +483,6 @@ class _TaskDetailState extends State<TaskDetail> {
                   ),
                 ),
               ),
-              _isDone
-                  ? Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.6),
-                      ),
-                    )
-                  : const SizedBox.shrink()
             ],
           ),
         ),

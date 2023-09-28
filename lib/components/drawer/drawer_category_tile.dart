@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/components/common/category_alert_dialog.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/drawer_provider.dart';
-import 'package:todo_todo/provider/selected_category_provider.dart';
 
 class DrawerCategoryTile extends StatelessWidget {
   const DrawerCategoryTile({super.key});
@@ -13,10 +12,9 @@ class DrawerCategoryTile extends StatelessWidget {
     final drawerCategoryProvider =
         Provider.of<DrawerProvider>(context, listen: false);
 
-    return Consumer2<CategoryListProvider, SelectedCategoryProvider>(
-      builder: (BuildContext context, categoryProvider,
-          selectedCategoryProvider, Widget? child) {
-        final selectedCategory = selectedCategoryProvider.selectedCategory;
+    return Consumer<CategoryListProvider>(
+      builder: (BuildContext context, categoryProvider, Widget? child) {
+        final selectedCategory = categoryProvider.selectedCategory;
         final categories = categoryProvider.activatedCategories;
         return Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -45,7 +43,7 @@ class DrawerCategoryTile extends StatelessWidget {
                   ),
                   onTap: () {
                     if (selectedCategory != null) {
-                      selectedCategoryProvider.updateSelectedCategory(null);
+                      categoryProvider.updateSelectedCategory(null);
                       Scaffold.of(context).closeDrawer();
                     }
                   },
@@ -60,7 +58,7 @@ class DrawerCategoryTile extends StatelessWidget {
                 (category) => Container(
                   decoration: category == selectedCategory
                       ? BoxDecoration(
-                          color: Colors.grey[300],
+                          color: Colors.grey[200],
                         )
                       : null,
                   key: ValueKey(category.categoryId),
@@ -71,7 +69,7 @@ class DrawerCategoryTile extends StatelessWidget {
                     ),
                     onTap: () {
                       if (selectedCategory != category) {
-                        selectedCategoryProvider
+                        categoryProvider
                             .updateSelectedCategory(category);
                         Scaffold.of(context).closeDrawer();
                       }
@@ -79,7 +77,8 @@ class DrawerCategoryTile extends StatelessWidget {
                     splashColor: Colors.grey[800],
                     child: ListTile(
                       isThreeLine: false,
-                      title: Text(category.name),
+                      title: Text(category.name, softWrap: true, overflow: TextOverflow.ellipsis,),
+                      trailing: Text('${category.taskCount}'),
                     ),
                   ),
                 ),
