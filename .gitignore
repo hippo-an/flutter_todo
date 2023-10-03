@@ -182,3 +182,7 @@ fabric.properties
 !.idea/runConfigurations
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,dart,intellij+all
+/lib/firebase_options.dart
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
+/ios/firebase_app_id_file.json
