@@ -69,7 +69,7 @@ class TaskListSection extends StatelessWidget {
             }
 
             return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08 * tasks.length,
+              height: MediaQuery.of(context).size.height * 0.09 * tasks.length,
               child: ListView.builder(
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {

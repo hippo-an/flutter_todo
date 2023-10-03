@@ -17,7 +17,7 @@ class TaskModel {
   final bool isDeleted;
   final bool stared;
   final DateTime? completedDate;
-  final CategoryModel? categoryModel;
+  final String? categoryId;
   final DateTime? dueDate;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -37,7 +37,7 @@ class TaskModel {
     this.isDeleted = false,
     this.stared = false,
     this.completedDate,
-    this.categoryModel,
+    this.categoryId,
     this.dueDate,
     required this.createdAt,
     required this.updatedAt,
@@ -55,7 +55,7 @@ class TaskModel {
       importance: Importance.values.byName(mapObject['importance']),
       priority: Priority.values.byName(mapObject['priority']),
       progression: Progression.values.byName(mapObject['progression']),
-      categoryModel: CategoryModel.fromJson(mapObject['categoryModel']),
+      categoryId: mapObject['categoryModel'],
       isDone: bool.tryParse(mapObject['isDone']) ?? false,
       isDeleted: bool.tryParse(mapObject['isDeleted']) ?? false,
       stared: bool.tryParse(mapObject['stared']) ?? false,
@@ -81,7 +81,7 @@ class TaskModel {
       'importance': importance.name,
       'priority': priority.name,
       'progression': progression.name,
-      'categoryModel': categoryModel?.toJson(),
+      'categoryId': categoryId,
       'isDone': isDone.toString(),
       'isDeleted': isDeleted.toString(),
       'stared': stared.toString(),
@@ -105,7 +105,7 @@ class TaskModel {
     bool? isDeleted,
     bool? stared,
     DateTime? Function()? completedDate,
-    CategoryModel? categoryModel,
+    String? categoryId,
     DateTime? Function()? dueDate,
     DateTime? updatedAt,
     DateTime? Function()? deletedAt,
@@ -124,7 +124,7 @@ class TaskModel {
       isDeleted: isDeleted ?? this.isDeleted,
       stared: stared ?? this.stared,
       completedDate: completedDate != null ? completedDate() : this.completedDate,
-      categoryModel: categoryModel ?? this.categoryModel,
+      categoryId: categoryId ?? this.categoryId,
       dueDate: dueDate != null ? dueDate() : this.dueDate,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -162,7 +162,7 @@ class TaskModel {
 
   @override
   int get hashCode =>
-      taskId.hashCode ^ categoryModel.hashCode ^ isDone.hashCode;
+      taskId.hashCode ^ categoryId.hashCode ^ isDone.hashCode;
 
   @override
   bool operator ==(Object other) =>

@@ -29,13 +29,13 @@ class TaskListItem extends StatelessWidget {
         children: [
           Container(
             width: 10,
-            decoration: BoxDecoration(
-              color: task.categoryModel?.color ?? Colors.lightBlue[100],
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(5),
-                bottomLeft: Radius.circular(5),
-              ),
-            ),
+            // decoration: BoxDecoration(
+            //   color: task.categoryModel?.color ?? Colors.lightBlue[100],
+            //   borderRadius: const BorderRadius.only(
+            //     topLeft: Radius.circular(5),
+            //     bottomLeft: Radius.circular(5),
+            //   ),
+            // ),
           ),
           Expanded(
             child: Container(
@@ -107,9 +107,9 @@ class TaskListItem extends StatelessWidget {
                   deletedAt: task.deletedAt,
                 );
 
-                if (task.categoryModel != null) {
+                if (task.categoryId != null) {
                   Provider.of<CategoryListProvider>(context, listen: false)
-                      .updateCategory(task.categoryModel!,
+                      .updateCategory(task.categoryId!,
                           complete: value ?? false ? 1 : -1);
                 }
               },
@@ -143,9 +143,9 @@ class TaskListItem extends StatelessWidget {
                       deletedAt: null,
                     );
 
-                    if (task.categoryModel != null) {
+                    if (task.categoryId != null) {
                       Provider.of<CategoryListProvider>(context, listen: false)
-                          .updateCategory(task.categoryModel!,
+                          .updateCategory(task.categoryId!,
                               task: 1, complete: task.isDone ? 1 : 0);
                     }
                   },
@@ -176,10 +176,13 @@ class TaskListItem extends StatelessWidget {
                         ],
                       ),
                     );
-                    Provider.of<TaskListProvider>(context, listen: false)
-                        .deleteTask(
-                      task: task,
-                    );
+
+                    if (context.mounted) {
+                      Provider.of<TaskListProvider>(context, listen: false)
+                          .deleteTask(
+                        task: task,
+                      );
+                    }
                   },
                   icon: const Icon(
                     Icons.delete_forever_sharp,

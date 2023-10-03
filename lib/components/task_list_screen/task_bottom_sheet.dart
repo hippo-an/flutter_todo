@@ -102,7 +102,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
 
       if (_category != null) {
         Provider.of<CategoryListProvider>(context, listen: false)
-            .updateCategory(_category!, task: 1);
+            .updateCategory(_category!.categoryId, task: 1);
       }
 
       Navigator.of(context).pop();

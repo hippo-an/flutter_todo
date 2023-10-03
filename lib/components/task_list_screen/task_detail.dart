@@ -17,9 +17,11 @@ class TaskDetail extends StatefulWidget {
   const TaskDetail({
     super.key,
     required this.task,
+    this.category,
   });
 
   final TaskModel task;
+  final CategoryModel? category;
 
   @override
   State<TaskDetail> createState() => _TaskDetailState();
@@ -30,7 +32,8 @@ class _TaskDetailState extends State<TaskDetail> {
   late bool _isDone;
   late TextEditingController _taskNameController;
   late TextEditingController _noteController;
-  CategoryModel? _categoryModel;
+  String? _categoryId;
+  String? _categoryName;
   DateTime? _dueDate;
   late List<SubTaskModel> _subTaskList;
   late List<SubTaskFormModel> _subTaskFormList;
@@ -43,7 +46,8 @@ class _TaskDetailState extends State<TaskDetail> {
     _isDone = widget.task.isDone;
     _taskNameController = TextEditingController(text: widget.task.taskName);
     _noteController = TextEditingController(text: widget.task.note);
-    _categoryModel = widget.task.categoryModel;
+    _categoryId = widget.category?.categoryId;
+    _categoryName = widget.category?.name;
     _dueDate = widget.task.dueDate;
     _subTaskList = [...widget.task.subTasks];
     _subTaskFormList = [];
@@ -88,13 +92,13 @@ class _TaskDetailState extends State<TaskDetail> {
 
     if (id == null && name == null) {
       setState(() {
-        _categoryModel = null;
+        _categoryId = null;
+        _categoryName = null;
       });
     } else {
       setState(() {
-        _categoryModel =
-            Provider.of<CategoryListProvider>(context, listen: false)
-                .findCategory(id);
+        _categoryId = id;
+        _categoryName = name;
       });
     }
   }
@@ -106,7 +110,7 @@ class _TaskDetailState extends State<TaskDetail> {
         taskName: _taskNameController.text.trim(),
         isDone: _isDone,
         completedDate: _isDone ? DateTime.now() : null,
-        categoryModel: _categoryModel,
+        categoryId: _categoryId,
         subTasks: [
           ..._subTaskList,
           ..._subTaskFormList
@@ -121,19 +125,18 @@ class _TaskDetailState extends State<TaskDetail> {
 
       // 기존 null 이면?
       // 새로운 것이 null 이면?
-      if (widget.task.categoryModel != _categoryModel) {
+      if (widget.task.categoryId != _categoryId) {
         final categoryListProvider =
             Provider.of<CategoryListProvider>(context, listen: false);
-        if (widget.task.categoryModel == null && _categoryModel != null) {
-          categoryListProvider.updateCategory(_categoryModel!,
-              task: 1, complete: _isDone ? 1 : 0);
-        } else if (widget.task.categoryModel != null && _categoryModel == null) {
-          categoryListProvider.updateCategory(widget.task.categoryModel!,
+        if (widget.task.categoryId == null && _categoryId != null) {
+          categoryListProvider.updateCategory(_categoryId!, task: 1, complete: _isDone ? 1 : 0);
+        } else if (widget.task.categoryId != null && _categoryId == null) {
+          categoryListProvider.updateCategory(widget.task.categoryId!,
               task: -1, complete: widget.task.isDone ? -1 : 0);
         } else {
-          categoryListProvider.updateCategory(widget.task.categoryModel!,
+          categoryListProvider.updateCategory(widget.task.categoryId!,
               task: -1, complete: widget.task.isDone ? -1 : 0);
-          categoryListProvider.updateCategory(_categoryModel!,
+          categoryListProvider.updateCategory(_categoryId!,
               task: 1, complete: _isDone ? 1 : 0);
         }
       }
@@ -311,9 +314,9 @@ class _TaskDetailState extends State<TaskDetail> {
                                 onPressed: _categorySelectDialog,
                                 clipBehavior: Clip.hardEdge,
                                 child: Text(
-                                  _categoryModel == null
+                                  _categoryId == null
                                       ? 'No Category'
-                                      : _categoryModel!.name,
+                                      : _categoryName!,
                                   style: const TextStyle(
                                     fontSize: 11,
                                   ),

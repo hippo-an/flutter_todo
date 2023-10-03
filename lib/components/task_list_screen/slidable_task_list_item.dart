@@ -90,9 +90,9 @@ class SlidableTaskListItem extends StatelessWidget {
                   dueDate: task.dueDate,
                 );
 
-                if (task.categoryModel != null) {
+                if (task.categoryId != null) {
                   Provider.of<CategoryListProvider>(context, listen: false)
-                      .updateCategory(task.categoryModel!, task: -1,
+                      .updateCategory(task.categoryId!, task: -1,
                       complete: task.isDone ? -1 : 0);
                 }
               },

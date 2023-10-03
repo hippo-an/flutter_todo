@@ -17,12 +17,7 @@ class TaskListProvider extends ChangeNotifier {
 
   List<TaskModel> get filteredTask {
     if (_selectedCategory == null) {
-      final copiedList = _tasks
-          .where((task) =>
-              !task.isDeleted &&
-              (task.categoryModel == null ||
-                  task.categoryModel!.categoryState == CategoryState.seen))
-          .toList();
+      final copiedList = _tasks.where((task) => !task.isDeleted).toList();
 
       // TODO: Task 정렬
       copiedList.sort((a, b) {
@@ -34,9 +29,7 @@ class TaskListProvider extends ChangeNotifier {
 
     final categorizedTask = _tasks
         .where((task) =>
-            !task.isDeleted &&
-            task.categoryModel == _selectedCategory &&
-            task.categoryModel!.categoryState == CategoryState.seen)
+            !task.isDeleted && task.categoryId == _selectedCategory!.categoryId)
         .toList();
 
     // TODO: Task 정렬
@@ -48,13 +41,8 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   List<TaskModel> get staredTask {
-    final copiedList = _tasks
-        .where((task) =>
-            !task.isDeleted &&
-            task.stared &&
-            (task.categoryModel == null ||
-                task.categoryModel!.categoryState == CategoryState.seen))
-        .toList();
+    final copiedList =
+        _tasks.where((task) => !task.isDeleted && task.stared).toList();
 
     // TODO: Task 정렬
     copiedList.sort((a, b) {
@@ -65,12 +53,7 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   List<TaskModel> get deletedTask {
-    final copiedList = _tasks
-        .where((task) =>
-            task.isDeleted &&
-            (task.categoryModel == null ||
-                task.categoryModel!.categoryState == CategoryState.seen))
-        .toList();
+    final copiedList = _tasks.where((task) => task.isDeleted).toList();
 
     // TODO: Task 정렬
     copiedList.sort((a, b) {
@@ -84,10 +67,7 @@ class TaskListProvider extends ChangeNotifier {
     final copiedList = _tasks
         .where((task) =>
             !task.isDeleted &&
-            (task.categoryModel == null ||
-                task.categoryModel!.categoryState == CategoryState.seen) &&
-            task.isDone &&
-            isSameDay(selectedDate, task.completedDate))
+            isSameDay(selectedDate, task.dueDate))
         .toList();
 
     // TODO: Task 정렬
@@ -122,7 +102,7 @@ class TaskListProvider extends ChangeNotifier {
     final task = TaskModel(
         taskId: uuid.generate(),
         taskName: name,
-        categoryModel: categoryModel,
+        categoryId: categoryModel?.categoryId,
         dueDate: dueDate,
         createdAt: now,
         updatedAt: now,
@@ -141,7 +121,7 @@ class TaskListProvider extends ChangeNotifier {
     bool? stared,
     DateTime? completedDate,
     String? note,
-    CategoryModel? categoryModel,
+    String? categoryId,
     DateTime? dueDate,
     DateTime? deletedAt,
     List<SubTaskModel>? subTasks,
@@ -158,7 +138,7 @@ class TaskListProvider extends ChangeNotifier {
         stared: stared,
         completedDate: () => completedDate,
         note: note,
-        categoryModel: categoryModel,
+        categoryId: categoryId,
         dueDate: () => dueDate,
         deletedAt: () => deletedAt,
         subTasks: subTasks,
@@ -182,21 +162,21 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   void deleteTaskByCategory(CategoryModel category) {
-    _tasks.removeWhere((task) => task.categoryModel == category);
+    _tasks.removeWhere((task) => task.categoryId == category.categoryId);
     notifyListeners();
   }
 
-  void updateCategory(CategoryModel updatedCategory) {
-    final updatedTasks = _tasks.map((task) {
-      if (task.categoryModel == updatedCategory) {
-        return task.copyWith(categoryModel: updatedCategory);
-      }
-      return task;
-    }).toList();
-    _tasks.clear();
-    _tasks.addAll(updatedTasks);
-    notifyListeners();
-  }
+  // void updateCategory(CategoryModel updatedCategory) {
+  //   final updatedTasks = _tasks.map((task) {
+  //     if (task.categoryModel == updatedCategory) {
+  //       return task.copyWith(categoryModel: updatedCategory);
+  //     }
+  //     return task;
+  //   }).toList();
+  //   _tasks.clear();
+  //   _tasks.addAll(updatedTasks);
+  //   notifyListeners();
+  // }
 
   void deleteTask({required TaskModel task}) {
     _tasks.remove(task);

@@ -88,8 +88,7 @@ class CategoryList extends StatelessWidget {
                         if (category.categoryState == CategoryState.seen)
                           MenuItemButton(
                             onPressed: () async {
-                              final updatedCategory =
-                                  await showDialog<CategoryModel>(
+                              await showDialog<CategoryModel>(
                                 context: context,
                                 builder: (context) {
                                   return CategoryAlertDialog(
@@ -98,22 +97,18 @@ class CategoryList extends StatelessWidget {
                                   );
                                 },
                               );
-                              taskListProvider.updateCategory(updatedCategory!);
                             },
                             child: const Text('edit'),
                           ),
                         MenuItemButton(
                           onPressed: () {
-                            final updatedCategory =
-                                categoryProvider.updateCategory(
-                              category,
+                            categoryProvider.updateCategory(
+                              category.categoryId,
                               categoryState:
                                   category.categoryState == CategoryState.seen
                                       ? CategoryState.hide
                                       : CategoryState.seen,
                             );
-
-                            taskListProvider.updateCategory(updatedCategory);
                           },
                           child: Text(
                             category.categoryState == CategoryState.seen
