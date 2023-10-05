@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/nav_screen/nav_tab_contol.dart';
 import 'package:todo_todo/provider/navigation_tab_provider.dart';
-
-
+import 'package:todo_todo/screens/auth/auth_screen.dart';
 
 class TodoNavigationScreen extends StatelessWidget {
   const TodoNavigationScreen({super.key});
@@ -12,10 +12,24 @@ class TodoNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<NavigationTabProvider, int>(
-      selector: (context, navigationTabProvider) => navigationTabProvider.index,
-      builder: (BuildContext context, int index, Widget? child) {
-        return NavTabControl(index: index);
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (ctx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+
+        if (snapshot.hasData == true) {
+          return Selector<NavigationTabProvider, int>(
+            selector: (context, navigationTabProvider) =>
+            navigationTabProvider.index,
+            builder: (BuildContext context, int index, Widget? child) {
+              return NavTabControl(index: index);
+            },
+          );
+        }
+
+        return const AuthScreen();
       },
     );
   }

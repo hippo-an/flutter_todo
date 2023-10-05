@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/common/task_list_item.dart';
+import 'package:todo_todo/consts/colors.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
 import 'package:todo_todo/provider/task_list_provider.dart';
@@ -43,9 +44,9 @@ class SlidableTaskListItem extends StatelessWidget {
                 );
               },
               padding: const EdgeInsets.all(1),
-              backgroundColor: Colors.yellow!,
+              backgroundColor: Colors.yellow,
               foregroundColor:
-              task.stared ? Colors.white : Colors.lightBlueAccent,
+                  task.stared ? Colors.white : kDefaultColor,
               icon: task.stared ? Icons.star_outline : Icons.star,
               label: 'Star',
             ),
@@ -90,11 +91,8 @@ class SlidableTaskListItem extends StatelessWidget {
                   dueDate: task.dueDate,
                 );
 
-                if (task.categoryId != null) {
-                  Provider.of<CategoryListProvider>(context, listen: false)
-                      .updateCategory(task.categoryId!, task: -1,
-                      complete: task.isDone ? -1 : 0);
-                }
+                Provider.of<CategoryListProvider>(context, listen: false)
+                    .updateCategory(task.categoryId, task: -1);
               },
               padding: const EdgeInsets.all(1),
               backgroundColor: Colors.red,

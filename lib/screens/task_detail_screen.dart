@@ -19,7 +19,8 @@ class TaskDetailScreen extends StatelessWidget {
     return SafeArea(
       child: TaskDetail(
         task: task,
-        category: Provider.of<CategoryListProvider>(context, listen: false).findCategory(task.categoryId),
+        category: Provider.of<CategoryListProvider>(context, listen: false)
+            .findCategory(task.categoryId),
       ),
     );
   }

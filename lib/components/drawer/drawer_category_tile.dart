@@ -15,7 +15,7 @@ class DrawerCategoryTile extends StatelessWidget {
     return Consumer<CategoryListProvider>(
       builder: (BuildContext context, categoryProvider, Widget? child) {
         final selectedCategory = categoryProvider.selectedCategory;
-        final categories = categoryProvider.activatedCategories;
+        final categories = categoryProvider.seenCategories;
         return Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
@@ -29,31 +29,6 @@ class DrawerCategoryTile extends StatelessWidget {
             ),
             title: const Text('Category'),
             children: [
-              Container(
-                decoration: null == selectedCategory
-                    ? BoxDecoration(
-                        color: Colors.grey[300],
-                      )
-                    : null,
-                key: const ValueKey(null),
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: InkWell(
-                  customBorder: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  onTap: () {
-                    if (selectedCategory != null) {
-                      categoryProvider.updateSelectedCategory(null);
-                      Scaffold.of(context).closeDrawer();
-                    }
-                  },
-                  splashColor: Colors.grey[800],
-                  child: const ListTile(
-                    isThreeLine: false,
-                    title: Text('All'),
-                  ),
-                ),
-              ),
               ...categories.map(
                 (category) => Container(
                   decoration: category == selectedCategory
@@ -69,16 +44,23 @@ class DrawerCategoryTile extends StatelessWidget {
                     ),
                     onTap: () {
                       if (selectedCategory != category) {
-                        categoryProvider
-                            .updateSelectedCategory(category);
+                        categoryProvider.updateSelectedCategory(category);
                         Scaffold.of(context).closeDrawer();
                       }
                     },
                     splashColor: Colors.grey[800],
                     child: ListTile(
                       isThreeLine: false,
-                      title: Text(category.name, softWrap: true, overflow: TextOverflow.ellipsis,),
-                      trailing: Text('${category.taskCount}'),
+                      title: Text(
+                        category.name,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: Text(
+                        category.isDefault
+                            ? '${categoryProvider.totalCount}'
+                            : '${category.taskCount}',
+                      ),
                     ),
                   ),
                 ),

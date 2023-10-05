@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/components/common/category_select_dialog.dart';
 import 'package:todo_todo/components/common/sub_task_form_list.dart';
+import 'package:todo_todo/consts/colors.dart';
 import 'package:todo_todo/consts/tools.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/models/sub_task_form_model.dart';
@@ -15,14 +16,15 @@ class TaskBottomSheet extends StatefulWidget {
     required this.selectedCategory,
   });
 
-  final CategoryModel? selectedCategory;
+  final CategoryModel selectedCategory;
 
   @override
   State<TaskBottomSheet> createState() => _TaskBottomSheetState();
 }
 
 class _TaskBottomSheetState extends State<TaskBottomSheet> {
-  CategoryModel? _category;
+  late final CategoryModel _defaultCategory;
+  late CategoryModel _category;
   DateTime? _selectedDate;
   late final List<SubTaskFormModel> _subTaskForms;
   late final GlobalKey<FormState> _formKey;
@@ -31,6 +33,8 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   @override
   void initState() {
     super.initState();
+    _defaultCategory = Provider.of<CategoryListProvider>(context, listen: false)
+        .defaultCategory;
     _category = widget.selectedCategory;
     _selectedDate = DateTime.now();
     _subTaskForms = [];
@@ -69,7 +73,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
 
     if (id == null && name == null) {
       setState(() {
-        _category = null;
+        _category = _defaultCategory;
       });
     } else {
       setState(() {
@@ -100,10 +104,8 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
           categoryModel: _category,
           subTasks: subTasks);
 
-      if (_category != null) {
-        Provider.of<CategoryListProvider>(context, listen: false)
-            .updateCategory(_category!.categoryId, task: 1);
-      }
+      Provider.of<CategoryListProvider>(context, listen: false)
+          .updateCategory(_category.categoryId, task: 1);
 
       Navigator.of(context).pop();
     }
@@ -137,7 +139,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                         borderSide: const BorderSide(
-                          color: Colors.lightBlueAccent,
+                          color: kDefaultColor,
                         ),
                       ),
                       labelStyle: const TextStyle(fontSize: 12),
@@ -157,31 +159,25 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                     ),
                   Row(
                     children: [
-                      _category == null
-                          ? IconButton(
-                              onPressed: _categorySelectDialog,
-                              icon: const Icon(Icons.category_outlined),
-                            )
-                          : Expanded(
-                              flex: 3,
-                              child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.035,
-                                child: OutlinedButton(
-                                  onPressed: _categorySelectDialog,
-                                  child: Text(
-                                    _category == null
-                                        ? 'No Category'
-                                        : _category!.name,
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                  ),
-                                ),
+                      Expanded(
+                        flex: 3,
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                          child: OutlinedButton(
+                            onPressed: _categorySelectDialog,
+                            child: Text(
+                              _category == _defaultCategory
+                                  ? 'No Category'
+                                  : _category.name,
+                              style: const TextStyle(
+                                fontSize: 11,
                               ),
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
                             ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(width: 8),
                       _selectedDate != null
                           ? Expanded(

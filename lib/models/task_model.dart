@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:todo_todo/consts/enums.dart';
-import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/models/sub_task_model.dart';
 
 class TaskModel {
@@ -17,7 +16,7 @@ class TaskModel {
   final bool isDeleted;
   final bool stared;
   final DateTime? completedDate;
-  final String? categoryId;
+  final String categoryId;
   final DateTime? dueDate;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -37,7 +36,7 @@ class TaskModel {
     this.isDeleted = false,
     this.stared = false,
     this.completedDate,
-    this.categoryId,
+    required this.categoryId,
     this.dueDate,
     required this.createdAt,
     required this.updatedAt,
@@ -55,7 +54,7 @@ class TaskModel {
       importance: Importance.values.byName(mapObject['importance']),
       priority: Priority.values.byName(mapObject['priority']),
       progression: Progression.values.byName(mapObject['progression']),
-      categoryId: mapObject['categoryModel'],
+      categoryId: mapObject['categoryId'],
       isDone: bool.tryParse(mapObject['isDone']) ?? false,
       isDeleted: bool.tryParse(mapObject['isDeleted']) ?? false,
       stared: bool.tryParse(mapObject['stared']) ?? false,

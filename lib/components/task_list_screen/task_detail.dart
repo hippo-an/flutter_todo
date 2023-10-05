@@ -17,11 +17,11 @@ class TaskDetail extends StatefulWidget {
   const TaskDetail({
     super.key,
     required this.task,
-    this.category,
+    required this.category,
   });
 
   final TaskModel task;
-  final CategoryModel? category;
+  final CategoryModel category;
 
   @override
   State<TaskDetail> createState() => _TaskDetailState();
@@ -29,10 +29,11 @@ class TaskDetail extends StatefulWidget {
 
 class _TaskDetailState extends State<TaskDetail> {
   final _formKey = GlobalKey<FormState>();
+  late final CategoryModel _defaultCategory;
   late bool _isDone;
   late TextEditingController _taskNameController;
   late TextEditingController _noteController;
-  String? _categoryId;
+  late String _categoryId;
   String? _categoryName;
   DateTime? _dueDate;
   late List<SubTaskModel> _subTaskList;
@@ -44,10 +45,12 @@ class _TaskDetailState extends State<TaskDetail> {
   void initState() {
     super.initState();
     _isDone = widget.task.isDone;
+    _defaultCategory = Provider.of<CategoryListProvider>(context, listen: false)
+        .defaultCategory;
     _taskNameController = TextEditingController(text: widget.task.taskName);
     _noteController = TextEditingController(text: widget.task.note);
-    _categoryId = widget.category?.categoryId;
-    _categoryName = widget.category?.name;
+    _categoryId = widget.category.categoryId;
+    _categoryName = widget.category.name;
     _dueDate = widget.task.dueDate;
     _subTaskList = [...widget.task.subTasks];
     _subTaskFormList = [];
@@ -92,8 +95,8 @@ class _TaskDetailState extends State<TaskDetail> {
 
     if (id == null && name == null) {
       setState(() {
-        _categoryId = null;
-        _categoryName = null;
+        _categoryId = _defaultCategory.categoryId;
+        _categoryName = _defaultCategory.name;
       });
     } else {
       setState(() {
@@ -116,29 +119,19 @@ class _TaskDetailState extends State<TaskDetail> {
           ..._subTaskFormList
               .map((subTaskForm) =>
                   SubTaskModel.fromSubTaskFormModel(subTaskForm))
-              .toList()
+              .toList(),
         ],
         dueDate: _dueDate,
         note: _noteController.text.trim(),
         attachment: _attachment,
       );
 
-      // 기존 null 이면?
-      // 새로운 것이 null 이면?
+      // 카테고리가 바뀐경우
       if (widget.task.categoryId != _categoryId) {
         final categoryListProvider =
             Provider.of<CategoryListProvider>(context, listen: false);
-        if (widget.task.categoryId == null && _categoryId != null) {
-          categoryListProvider.updateCategory(_categoryId!, task: 1, complete: _isDone ? 1 : 0);
-        } else if (widget.task.categoryId != null && _categoryId == null) {
-          categoryListProvider.updateCategory(widget.task.categoryId!,
-              task: -1, complete: widget.task.isDone ? -1 : 0);
-        } else {
-          categoryListProvider.updateCategory(widget.task.categoryId!,
-              task: -1, complete: widget.task.isDone ? -1 : 0);
-          categoryListProvider.updateCategory(_categoryId!,
-              task: 1, complete: _isDone ? 1 : 0);
-        }
+        categoryListProvider.updateCategory(widget.task.categoryId, task: -1);
+        categoryListProvider.updateCategory(_categoryId, task: 1);
       }
       Navigator.of(context).pop();
     }
@@ -314,7 +307,7 @@ class _TaskDetailState extends State<TaskDetail> {
                                 onPressed: _categorySelectDialog,
                                 clipBehavior: Clip.hardEdge,
                                 child: Text(
-                                  _categoryId == null
+                                  _categoryId == _defaultCategory.categoryId
                                       ? 'No Category'
                                       : _categoryName!,
                                   style: const TextStyle(

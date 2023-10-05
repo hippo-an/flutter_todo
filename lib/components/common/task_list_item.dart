@@ -107,11 +107,8 @@ class TaskListItem extends StatelessWidget {
                   deletedAt: task.deletedAt,
                 );
 
-                if (task.categoryId != null) {
-                  Provider.of<CategoryListProvider>(context, listen: false)
-                      .updateCategory(task.categoryId!,
-                          complete: value ?? false ? 1 : -1);
-                }
+                Provider.of<CategoryListProvider>(context, listen: false)
+                    .updateCategory(task.categoryId);
               },
               shape: const CircleBorder(),
               activeColor: Colors.grey,
@@ -143,11 +140,8 @@ class TaskListItem extends StatelessWidget {
                       deletedAt: null,
                     );
 
-                    if (task.categoryId != null) {
-                      Provider.of<CategoryListProvider>(context, listen: false)
-                          .updateCategory(task.categoryId!,
-                              task: 1, complete: task.isDone ? 1 : 0);
-                    }
+                    Provider.of<CategoryListProvider>(context, listen: false)
+                        .updateCategory(task.categoryId, task: 1);
                   },
                   icon: const Icon(Icons.undo),
                 ),

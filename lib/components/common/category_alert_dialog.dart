@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_todo/consts/colors.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/provider/category_list_provider.dart';
 
 final _colors = <Color>[
-  Colors.lightBlueAccent,
+  kDefaultColor,
   Colors.red,
   Colors.orange,
   Colors.yellow,
@@ -40,7 +41,7 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
       _categoryController.text = widget.category!.name;
     }
 
-    _selectedColor = widget.category?.color ?? Colors.lightBlueAccent;
+    _selectedColor = widget.category?.color ?? kDefaultColor;
   }
 
   @override
@@ -108,7 +109,7 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: const BorderSide(
-                  color: Colors.lightBlueAccent,
+                  color: kDefaultColor,
                 ),
               ),
               labelText: 'Add Category',

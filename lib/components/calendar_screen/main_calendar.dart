@@ -1,14 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_todo/provider/main_calendar_provider.dart';
 
 final Map<DateTime, List<Color>> _events = {
-  DateTime(2023, 8, 31): [Colors.red, Colors.amber, Colors.green, Colors.purple, Colors.lightGreen],
-  DateTime(2023, 9, 1): [Colors.red, Colors.amber, Colors.green, Colors.purple, Colors.lightGreen],
-  DateTime(2023, 9, 25): [Colors.red, Colors.amber, Colors.green, Colors.purple, Colors.lightGreen],
-  DateTime(2023, 9, 26): [Colors.red, Colors.amber, Colors.green, Colors.purple, Colors.lightGreen],
-  DateTime(2023, 9, 27): [Colors.red, Colors.amber, Colors.green, Colors.purple, Colors.lightGreen],
+  DateTime(2023, 10, 1): [
+    Colors.red,
+    Colors.amber,
+    Colors.green,
+    Colors.purple,
+    Colors.lightGreen
+  ],
+  DateTime(2023, 10, 1): [
+    Colors.red,
+    Colors.amber,
+    Colors.green,
+    Colors.purple,
+    Colors.lightGreen
+  ],
+  DateTime(2023, 10, 25): [
+    Colors.red,
+    Colors.amber,
+    Colors.green,
+    Colors.purple,
+    Colors.lightGreen
+  ],
+  DateTime(2023, 10, 26): [
+    Colors.red,
+    Colors.amber,
+    Colors.green,
+    Colors.purple,
+    Colors.lightGreen
+  ],
+  DateTime(2023, 10, 27): [
+    Colors.red,
+    Colors.amber,
+    Colors.green,
+    Colors.purple,
+    Colors.lightGreen
+  ],
 };
 
 class MainCalendar extends StatelessWidget {
@@ -21,10 +52,11 @@ class MainCalendar extends StatelessWidget {
     return Consumer<MainCalendarProvider>(
       builder: (BuildContext context, MainCalendarProvider mainCalendarProvider,
           Widget? child) {
+        var selectedDate = mainCalendarProvider.selectedDate;
         return Column(
           children: [
             TableCalendar(
-              focusedDay: mainCalendarProvider.selectedDate,
+              focusedDay: selectedDate,
               firstDay: DateTime(1950, 1, 1),
               lastDay: DateTime(2999, 12, 31),
               calendarFormat: mainCalendarProvider.calendarFormat,
@@ -47,31 +79,49 @@ class MainCalendar extends StatelessWidget {
               ),
               formatAnimationCurve: Curves.easeInOut,
               availableGestures: AvailableGestures.horizontalSwipe,
-              onPageChanged: (focusedDay) {},
-              calendarBuilders:
-                  CalendarBuilders(markerBuilder: (context, date, events) {
-                DateTime selectedDate =
-                    DateTime(date.year, date.month, date.day);
-                final List<Color>? value = _events[selectedDate];
-                if (value != null) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(
-                      value.length > 4 ? 4 : value.length,
-                      (index) => Container(
-                        width: 10,
-                        height: 10,
-                        margin: const EdgeInsets.all(0.5),
-                        decoration: BoxDecoration(
-                          color: value[index],
-                          shape: BoxShape.circle,
+              onPageChanged: (focusedDay) {
+                if (!isSameDay(selectedDate, focusedDay)) {
+                  mainCalendarProvider.updateSelectedDate(focusedDay);
+                }
+              },
+              calendarBuilders: CalendarBuilders(
+                dowBuilder: (context, day) {
+                  if (day.weekday == DateTime.saturday ||
+                      day.weekday == DateTime.sunday) {
+                    final text = DateFormat.E().format(day);
+                    return Center(
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                            color: day.weekday == DateTime.saturday
+                                ? Colors.blue
+                                : Colors.red),
+                      ),
+                    );
+                  }
+                },
+                markerBuilder: (context, date, events) {
+                  final List<Color>? value = _events[date];
+                  if (value != null) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(
+                        value.length > 4 ? 4 : value.length,
+                        (index) => Container(
+                          width: 10,
+                          height: 10,
+                          margin: const EdgeInsets.all(0.5),
+                          decoration: BoxDecoration(
+                            color: value[index],
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }
-                return null;
-              }),
+                    );
+                  }
+                  return null;
+                },
+              ),
             ),
             Row(
               children: [

@@ -13,7 +13,7 @@ class CategoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CategoryListProvider>(
       builder: (_, categoryProvider, child) {
-        final categories = categoryProvider.categories;
+        final categories = categoryProvider.categoriesWithoutDefault;
         final selectedCategory = categoryProvider.selectedCategory;
         final taskListProvider =
             Provider.of<TaskListProvider>(context, listen: false);
@@ -142,7 +142,7 @@ class CategoryList extends StatelessWidget {
 
                                         if (selectedCategory == category) {
                                           categoryProvider
-                                              .updateSelectedCategory(null);
+                                              .updateSelectedCategoryToDefault();
                                         }
 
                                         taskListProvider

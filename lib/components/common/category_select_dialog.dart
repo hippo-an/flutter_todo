@@ -16,7 +16,7 @@ class CategorySelectDialog extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Consumer<CategoryListProvider>(
       builder: (BuildContext context, CategoryListProvider categoryListProvider, Widget? child) {
-        final categories = categoryListProvider.activatedCategories;
+        final categories = categoryListProvider.seenCategoriesWithoutDefault;
         return  AlertDialog(
           content: SizedBox(
             height: size.height * 0.7,
