@@ -1,21 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_todo/core/view_models/user_provider.dart';
+import 'package:todo_todo/core/services/auth_service.dart';
+import 'package:todo_todo/locator.dart';
 
-final _auth = FirebaseAuth.instance;
+import '../../widgets/auth/todo_logo.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
 
   static String routeName = 'sign_up';
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpViewState extends State<SignUpView> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   bool _isEmailLoading = false;
@@ -36,84 +35,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  Future<void> _signUpWithEmail() async {
-    try {
-      final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
-
-      if (email.isEmpty) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(
-            const SnackBar(
-              content: Text('Fill the Email.'),
-            ),
-          );
-        return;
-      }
-
-      if (email.length < 4 || !email.contains('@')) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(
-            const SnackBar(
-              content: Text('Invalid Email'),
-            ),
-          );
-        return;
-      }
-
-      if (password.isEmpty) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(
-            const SnackBar(
-              content: Text('Fill the Password'),
-            ),
-          );
-        return;
-      }
-
-      if (password.length < 8) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(
-            const SnackBar(
-              content: Text('Password is too short'),
-            ),
-          );
-        return;
-      }
-
-      setState(() {
-        _isEmailLoading = true;
-      });
-
-      final createUser = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+  void _showSignUpSnackBar({String? message}) {
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message ?? 'Sign up processing...'),
+        ),
       );
+  }
 
-      _createUser(createUser);
-    } on FirebaseAuthException catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(
-            SnackBar(content: Text(error.message ?? 'Authentication failed.')),
-          );
-      }
-    } finally {
+  Future<void> _signUpWithEmail() async {
+    setState(() {
+      _isEmailLoading = true;
+    });
+
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty) {
       setState(() {
+        _showSignUpSnackBar(message: 'Fill the Email.');
         _isEmailLoading = false;
       });
+      return;
+    }
+
+    if (email.length < 4 || !email.contains('@')) {
+      setState(() {
+        _showSignUpSnackBar(message: 'Invalid Email');
+        _isEmailLoading = false;
+      });
+      return;
+    }
+
+    if (password.isEmpty) {
+      setState(() {
+        _showSignUpSnackBar(message: 'Fill the Password');
+        _isEmailLoading = false;
+      });
+      return;
+    }
+
+    if (password.length < 8) {
+      setState(() {
+        _showSignUpSnackBar(message: 'Password is too short');
+        _isEmailLoading = false;
+      });
+      return;
+    }
+
+    final (:success, :message) = await locator<AuthService>()
+        .signUpWithEmailAndPassword(email: email, password: password);
+
+    setState(() {
+      _isEmailLoading = false;
+    });
+
+    if (!success) {
+      _passwordController.clear();
+      _showSignUpSnackBar(message: message);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
-    var width = MediaQuery.of(context).size.width;
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -129,18 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: const Center(
-                    child: Text(
-                      'Todo Todo',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+                const TodoLogo(),
                 Column(
                   children: [
                     TextFormField(
@@ -217,28 +194,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
-
-  void _createUser(UserCredential createUser) {
-    context
-        .read<UserProvider>()
-        .createUser(createUser.user!.uid, createUser.user!.email!);
-
-    _sendVerification();
-  }
-
-  void _sendVerification() async {
-    await _auth.currentUser?.sendEmailVerification();
-    if (mounted) {
-      ScaffoldMessenger.of(context)
-        ..clearSnackBars()
-        ..showSnackBar(
-          const SnackBar(
-            content: Text('Email verification sent.'),
-          ),
-        );
-
-      context.pop();
-    }
   }
 }

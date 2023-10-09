@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_todo/core/services/auth_service.dart';
 import 'package:todo_todo/core/view_models/navigation_tab_provider.dart';
-import 'package:todo_todo/ui/view/auth/auth_screen.dart';
+import 'package:todo_todo/locator.dart';
+import 'package:todo_todo/ui/view/auth/sign_in_view.dart';
 import 'package:todo_todo/ui/widgets/nav_screen/nav_tab_contol.dart';
 
 class TodoNavigationScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class TodoNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: locator<AuthService>().streamUser,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -29,7 +30,7 @@ class TodoNavigationScreen extends StatelessWidget {
           );
         }
 
-        return const AuthScreen();
+        return const SignInView();
       },
     );
   }

@@ -6,7 +6,7 @@ import 'package:todo_todo/common/tools.dart';
 import 'package:todo_todo/core/models/category_model.dart';
 import 'package:todo_todo/core/models/sub_task_model.dart';
 import 'package:todo_todo/core/models/task_model.dart';
-import 'package:todo_todo/core/services/task_repository.dart';
+import 'package:todo_todo/core/services/repository/task_repository.dart';
 
 class TaskListProvider extends ChangeNotifier {
   final TaskRepository taskRepository;

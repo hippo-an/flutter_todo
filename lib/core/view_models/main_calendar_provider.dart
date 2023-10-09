@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:todo_todo/core/services/task_repository.dart';
+import 'package:todo_todo/core/services/repository/task_repository.dart';
 
 class MainCalendarProvider extends ChangeNotifier {
   MainCalendarProvider(this.taskRepository);

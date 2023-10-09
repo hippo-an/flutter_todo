@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_todo/core/view_models/user_provider.dart';
+import 'package:todo_todo/core/services/auth_service.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/ui/view/deleted_tasks_screen.dart';
 import 'package:todo_todo/ui/view/stared_tasks_screen.dart';
 import 'package:todo_todo/ui/widgets/drawer/drawer_category_tile.dart';
 import 'package:todo_todo/ui/widgets/drawer/drawer_menu.dart';
 
-final _auth = FirebaseAuth.instance;
 
 class TodoCustomDrawer extends StatelessWidget {
   const TodoCustomDrawer({super.key});
@@ -57,16 +55,12 @@ class TodoCustomDrawer extends StatelessWidget {
           ),
           DrawerMenu(
               onTab: () async {
-                var googleSignIn = GoogleSignIn();
+                final googleSignIn = GoogleSignIn();
                 if (await googleSignIn.isSignedIn()) {
                   await googleSignIn.disconnect();
                 }
-
-                if (context.mounted){
-                  context.read<UserProvider>().updateLoginUser(null);
-                }
                 
-                await _auth.signOut();
+                await locator<AuthService>().signOut();
               },
               iconData: Icons.delete_outline,
               menuName: 'Logout'),

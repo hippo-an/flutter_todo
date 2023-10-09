@@ -4,7 +4,7 @@ import 'package:todo_todo/common/colors.dart';
 import 'package:todo_todo/common/enums.dart';
 import 'package:todo_todo/common/tools.dart';
 import 'package:todo_todo/core/models/category_model.dart';
-import 'package:todo_todo/core/services/category_repository.dart';
+import 'package:todo_todo/core/services/repository/category_repository.dart';
 
 final now = DateTime.now();
 

@@ -52,6 +52,7 @@ dependencies:
   flutter_native_splash: ^2.3.3
   google_sign_in: ^6.1.5
   flutter_signin_button: ^2.0.0
+  get_it: ^7.6.4
 
 dev_dependencies:
   flutter_test:

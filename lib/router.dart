@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todo_todo/core/models/task_model.dart';
-import 'package:todo_todo/ui/view/auth/sign_up_screen.dart';
+import 'package:todo_todo/ui/view/auth/sign_up_view.dart';
 import 'package:todo_todo/ui/view/deleted_tasks_screen.dart';
 import 'package:todo_todo/ui/view/manage_category_screen.dart';
 import 'package:todo_todo/ui/view/stared_tasks_screen.dart';
@@ -57,10 +57,10 @@ final router = GoRouter(
           },
         ),
         GoRoute(
-          path: SignUpScreen.routeName,
-          name: SignUpScreen.routeName,
+          path: SignUpView.routeName,
+          name: SignUpView.routeName,
           builder: (BuildContext context, GoRouterState state) {
-            return const SignUpScreen();
+            return const SignUpView();
           },
         ),
       ],
