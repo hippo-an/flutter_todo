@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo_todo/models/task_model.dart';
-import 'package:todo_todo/screens/auth/sign_up_screen.dart';
-import 'package:todo_todo/screens/deleted_tasks_screen.dart';
-import 'package:todo_todo/screens/manage_category_screen.dart';
-import 'package:todo_todo/screens/stared_tasks_screen.dart';
-import 'package:todo_todo/screens/task_calendar_screen.dart';
-import 'package:todo_todo/screens/task_detail_screen.dart';
-import 'package:todo_todo/screens/task_list_screen.dart';
-import 'package:todo_todo/screens/todo_navigation_screen.dart';
+import 'package:todo_todo/core/models/task_model.dart';
+import 'package:todo_todo/ui/view/auth/sign_up_screen.dart';
+import 'package:todo_todo/ui/view/deleted_tasks_screen.dart';
+import 'package:todo_todo/ui/view/manage_category_screen.dart';
+import 'package:todo_todo/ui/view/stared_tasks_screen.dart';
+import 'package:todo_todo/ui/view/task_calendar_screen.dart';
+import 'package:todo_todo/ui/view/task_detail_screen.dart';
+import 'package:todo_todo/ui/view/task_list_screen.dart';
+import 'package:todo_todo/ui/view/todo_navigation_screen.dart';
 
 final router = GoRouter(
   routes: [
