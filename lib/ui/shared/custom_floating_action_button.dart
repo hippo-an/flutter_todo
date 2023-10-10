@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/ui/widgets/task_list_screen/task_bottom_sheet.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
@@ -14,9 +14,7 @@ class CustomFloatingActionButton extends StatelessWidget {
           isScrollControlled: true,
           context: context,
           builder: (context) => TaskBottomSheet(
-            selectedCategory:
-                Provider.of<CategoryListProvider>(context, listen: false)
-                    .selectedCategory,
+            selectedCategory: locator<CategoryViewModel>().selectedCategory,
           ),
         );
       },

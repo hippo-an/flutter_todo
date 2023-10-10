@@ -5,60 +5,62 @@ import 'package:todo_todo/common/enums.dart';
 import 'package:todo_todo/common/tools.dart';
 import 'package:todo_todo/core/models/category_model.dart';
 import 'package:todo_todo/core/services/repository/category_repository.dart';
+import 'package:todo_todo/core/view_models/auth_view_model.dart';
+import 'package:todo_todo/core/view_models/base_model.dart';
+import 'package:todo_todo/locator.dart';
 
-final now = DateTime.now();
+class CategoryViewModel extends BaseModel {
+  final CategoryRepository _categoryRepository;
+  final AuthViewModel _authViewModel;
+  final List<CategoryModel> _categories = [];
+  CategoryModel? _selectedCategory;
+  bool _isLoading;
 
-class CategoryListProvider extends ChangeNotifier {
-  final CategoryRepository categoryRepository;
-  late List<CategoryModel> _categories = [
-    CategoryModel(
-      categoryId: uuid.generate(),
-      name: 'All',
-      colorCode: kDefaultColor.value,
-      createdAt: now,
-      updatedAt: now,
-      isDefault: true,
-    )
-  ];
-  late CategoryModel _selectedCategory;
+  CategoryViewModel()
+      : _categoryRepository = locator<CategoryRepository>(),
+        _authViewModel = locator<AuthViewModel>(),
+        _isLoading = false;
 
-  bool _isLoading = false;
-  CategoryListProvider(this.categoryRepository) {
-    _categories = [
-      CategoryModel(
-        categoryId: uuid.generate(),
-        name: 'All',
-        colorCode: kDefaultColor.value,
-        createdAt: now,
-        updatedAt: now,
-        isDefault: true,
-      ),
-    ];
-
+  Future<void> init() async {
+    if (_categories.isEmpty) {
+      await fetchCategories();
+    }
     _selectedCategory = _categories[0];
   }
 
-  Future<void> initData() async {
+  Future<void> initCategoryForUserSignUp() async {
+    setState(ViewState.busy);
+
     final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.remove('isInitializeData');
     final isInitializeData = sharedPreferences.getBool('isInitializeData');
 
-    if (isInitializeData == null || !isInitializeData ) {
+    if (isInitializeData == null || !isInitializeData) {
       final now = DateTime.now();
+
       final category = CategoryModel(
         categoryId: uuid.generate(),
+        userId: _authViewModel.currentUserId,
         name: 'All',
         colorCode: kDefaultColor.value,
         createdAt: now,
         updatedAt: now,
         isDefault: true,
       );
-      await categoryRepository.initData(category);
-      sharedPreferences.setBool('isInitializeData', true);
+      await _categoryRepository.createCategory(category: category);
+      await fetchCategories();
+      updateSelectedCategoryToDefault();
+      await sharedPreferences.setBool('isInitializeData', true);
     }
+    setState(ViewState.idle);
+  }
 
-    _categories = await categoryRepository.fetchCategories();
-    _selectedCategory = _categories[0];
+  Future<void> fetchCategories() async {
+    setState(ViewState.busy);
+    _categories.clear();
+    final categories =
+        await _categoryRepository.fetchCategories(_authViewModel.currentUserId);
+    _categories.addAll(categories);
+    setState(ViewState.idle);
   }
 
   List<CategoryModel> get categoriesWithoutDefault {
@@ -127,13 +129,14 @@ class CategoryListProvider extends ChangeNotifier {
     final now = DateTime.now();
     final category = CategoryModel(
       categoryId: uuid.generate(),
+      userId: _authViewModel.currentUserId,
       name: name,
       colorCode: kDefaultColor.value,
       createdAt: now,
       updatedAt: now,
     );
 
-    await categoryRepository.createCategory(category: category);
+    await _categoryRepository.createCategory(category: category);
     notifyListeners();
     return category;
   }
@@ -180,8 +183,9 @@ class CategoryListProvider extends ChangeNotifier {
     );
   }
 
-  void deleteCategory(CategoryModel category) {
-    _categories.remove(category);
+  void deleteCategory(CategoryModel category) async {
+    await _categoryRepository.deleteCategory(category);
+    await fetchCategories();
     notifyListeners();
   }
 

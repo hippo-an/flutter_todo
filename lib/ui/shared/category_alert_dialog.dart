@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/common/colors.dart';
 import 'package:todo_todo/core/models/category_model.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/locator.dart';
 
 final _colors = <Color>[
   kDefaultColor,
@@ -57,9 +58,7 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
       return;
     }
 
-    final createdCategory =
-        Provider.of<CategoryListProvider>(context, listen: false)
-            .createCategory(name);
+    final createdCategory = locator<CategoryViewModel>().createCategory(name);
     Navigator.of(context).pop(createdCategory);
   }
 
@@ -76,7 +75,7 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
       return;
     }
 
-    Provider.of<CategoryListProvider>(context, listen: false).updateCategory(
+    locator<CategoryViewModel>().updateCategory(
       widget.category!.categoryId,
       name: name,
       colorCode: _selectedColor,

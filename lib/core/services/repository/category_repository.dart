@@ -11,16 +11,11 @@ class CategoryRepository {
         .set(category.toJson());
   }
 
-  Future<void> initData(CategoryModel category) async {
-    await FirebaseFirestore.instance
+  Future<List<CategoryModel>> fetchCategories(String userId) async {
+    final response = await FirebaseFirestore.instance
         .collection('categories')
-        .doc(category.categoryId)
-        .set(category.toJson());
-  }
-
-  Future<List<CategoryModel>> fetchCategories() async {
-    final response =
-        await FirebaseFirestore.instance.collection('categories').get();
+        .where('userId', isEqualTo: userId)
+        .get();
 
     return response.docs
         .map(
@@ -29,5 +24,12 @@ class CategoryRepository {
           ),
         )
         .toList();
+  }
+
+  Future<void> deleteCategory(CategoryModel category) async {
+    await FirebaseFirestore.instance
+        .collection('categories')
+        .doc(category.categoryId)
+        .delete();
   }
 }

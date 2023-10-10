@@ -1,22 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:todo_todo/core/view_models/sign_up_view_model.dart';
+import 'package:todo_todo/core/services/category_service.dart';
+import 'package:todo_todo/core/view_models/auth_view_model.dart';
 import 'package:todo_todo/locator.dart';
 
 class AuthService {
-  late final FirebaseAuth _firebaseAuth;
-  late final SignUpViewModel _signUpViewModel;
+  final AuthViewModel _authViewModel;
+  final CategoryService _categoryService;
+
 
   AuthService()
-      : _firebaseAuth = FirebaseAuth.instance,
-        _signUpViewModel = locator<SignUpViewModel>();
+      : _authViewModel = locator<AuthViewModel>(),
+        _categoryService = locator<CategoryService>();
 
-  Stream<User?> get streamUser => _firebaseAuth.authStateChanges();
+  Stream<User?> get streamUser => _authViewModel.streamUser;
+
+  String get currentUserId => _authViewModel.currentUserId;
 
   Future<void> signOut() async {
-    try {
-      await _firebaseAuth.signOut();
-    } on FirebaseAuthException catch (e) {}
+    await _authViewModel.signOut();
   }
 
   Future<({bool success, String? message})> signInWithGoogle() async {
@@ -34,12 +36,14 @@ class AuthService {
         );
 
         UserCredential userCredential =
-            await _firebaseAuth.signInWithCredential(credential);
+            await _authViewModel.signInWithCredential(credential);
 
         if (userCredential.user != null) {
           if (userCredential.additionalUserInfo!.isNewUser) {
             await _initializeUser(userCredential);
             return (success: true, message: 'Email verification sent.');
+          } else {
+            await _categoryFetch();
           }
 
           return (success: true, message: null);
@@ -61,10 +65,11 @@ class AuthService {
   Future<({bool success, String? message})> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+      final userCredential = await _authViewModel.signInWithEmailAndPassword(
           email: email, password: password);
 
       if (userCredential.user != null) {
+        await _categoryFetch();
         return (success: true, message: null);
       }
       return (
@@ -86,15 +91,13 @@ class AuthService {
   Future<({bool success, String? message})> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      final userCredential = await _authViewModel.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       if (userCredential.user != null) {
         await _initializeUser(userCredential);
-        await _createUser(userCredential);
-        await _firebaseAuth.currentUser?.sendEmailVerification();
         return (success: true, message: 'Email verification sent.');
       }
       return (
@@ -111,20 +114,24 @@ class AuthService {
 
   Future<void> _initializeUser(UserCredential userCredential) async {
     try {
-      await _createUser(userCredential);
-      await _createCategory();
-      await _firebaseAuth.currentUser?.sendEmailVerification();
-    } catch (e) {
-
+      final userId = await _createUser(userCredential);
+      await _createCategory(userId);
+      await _authViewModel.sendVerificationEmail();
+    } on Exception catch (e) {
     }
   }
 
-  Future<void> _createUser(UserCredential credential) async {
+  Future<String> _createUser(UserCredential credential) async {
     final user = credential.user;
-    await _signUpViewModel.createUser(user!.uid, user.email!);
+    await _authViewModel.createUser(user!.uid, user.email!);
+    return user.uid;
   }
 
-  Future<void> _createCategory() async {
-    // TODO 카테고리 생성
+  Future<void> _createCategory(String userId) async {
+    await _categoryService.initCategoryForUserSignUp();
+  }
+
+  Future<void> _categoryFetch() async {
+    await _categoryService.initCategoryForUserSignIn();
   }
 }

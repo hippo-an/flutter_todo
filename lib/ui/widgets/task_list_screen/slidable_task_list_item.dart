@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/common/colors.dart';
 import 'package:todo_todo/core/models/task_model.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
-import 'package:todo_todo/core/view_models/task_list_provider.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/core/view_models/task_view_model.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/ui/shared/task_list_item.dart';
 import 'package:todo_todo/ui/view/task_detail_screen.dart';
 
@@ -19,7 +20,7 @@ class SlidableTaskListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TaskListProvider>(context);
+    final provider = Provider.of<TaskViewModel>(context);
     return GestureDetector(
       onTap: () {
         context.pushNamed(TaskDetailScreen.routeName, extra: task);
@@ -35,7 +36,7 @@ class SlidableTaskListItem extends StatelessWidget {
             SlidableAction(
               flex: 1,
               onPressed: (context) {
-                Provider.of<TaskListProvider>(context, listen: false)
+                Provider.of<TaskViewModel>(context, listen: false)
                     .updateTask(
                   task: task,
                   stared: !task.stared,
@@ -91,7 +92,7 @@ class SlidableTaskListItem extends StatelessWidget {
                   dueDate: task.dueDate,
                 );
 
-                Provider.of<CategoryListProvider>(context, listen: false)
+                locator<CategoryViewModel>()
                     .updateCategory(task.categoryId, task: -1);
               },
               padding: const EdgeInsets.all(1),

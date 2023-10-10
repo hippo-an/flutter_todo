@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_todo/common/enums.dart';
-import 'package:todo_todo/core/view_models/task_list_provider.dart';
+import 'package:todo_todo/core/view_models/task_view_model.dart';
 import 'package:todo_todo/ui/widgets/task_list_screen/task_list_section.dart';
 
 class TaskListBox extends StatelessWidget {
@@ -12,10 +12,10 @@ class TaskListBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
-        child: Consumer<TaskListProvider>(
-          builder: (BuildContext context, taskListProvider, Widget? child) {
+        child: Consumer<TaskViewModel>(
+          builder: (BuildContext context, taskModel, Widget? child) {
             final now = DateTime.now();
-            final filteredTask = taskListProvider.filteredTask;
+            final filteredTask = taskModel.filteredTask;
             final pastTasks = filteredTask
                 .where((task) => !task.isDone && task.isBeforeThanToday)
                 .toList();

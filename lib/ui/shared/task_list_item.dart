@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/core/models/task_model.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
-import 'package:todo_todo/core/view_models/task_list_provider.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/core/view_models/task_view_model.dart';
+import 'package:todo_todo/locator.dart';
 
 enum TaskItemState { stared, deleted, normal, completed }
 
@@ -98,7 +99,7 @@ class TaskListItem extends StatelessWidget {
             Checkbox(
               value: task.isDone,
               onChanged: (value) {
-                Provider.of<TaskListProvider>(context, listen: false)
+                Provider.of<TaskViewModel>(context, listen: false)
                     .updateTask(
                   task: task,
                   isDone: value ?? false,
@@ -107,7 +108,7 @@ class TaskListItem extends StatelessWidget {
                   deletedAt: task.deletedAt,
                 );
 
-                Provider.of<CategoryListProvider>(context, listen: false)
+                locator<CategoryViewModel>()
                     .updateCategory(task.categoryId);
               },
               shape: const CircleBorder(),
@@ -116,7 +117,7 @@ class TaskListItem extends StatelessWidget {
           if (taskItemState == TaskItemState.stared)
             IconButton(
               onPressed: () {
-                Provider.of<TaskListProvider>(context, listen: false)
+                Provider.of<TaskViewModel>(context, listen: false)
                     .updateTask(
                   task: task,
                   stared: false,
@@ -132,7 +133,7 @@ class TaskListItem extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    Provider.of<TaskListProvider>(context, listen: false)
+                    Provider.of<TaskViewModel>(context, listen: false)
                         .updateTask(
                       task: task,
                       isDeleted: false,
@@ -140,7 +141,7 @@ class TaskListItem extends StatelessWidget {
                       deletedAt: null,
                     );
 
-                    Provider.of<CategoryListProvider>(context, listen: false)
+                    locator<CategoryViewModel>()
                         .updateCategory(task.categoryId, task: 1);
                   },
                   icon: const Icon(Icons.undo),
@@ -172,7 +173,7 @@ class TaskListItem extends StatelessWidget {
                     );
 
                     if (context.mounted) {
-                      Provider.of<TaskListProvider>(context, listen: false)
+                      Provider.of<TaskViewModel>(context, listen: false)
                           .deleteTask(
                         task: task,
                       );

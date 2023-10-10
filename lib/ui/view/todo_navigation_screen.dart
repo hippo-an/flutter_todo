@@ -23,7 +23,7 @@ class TodoNavigationScreen extends StatelessWidget {
         if (snapshot.hasData == true) {
           return Selector<NavigationTabProvider, int>(
             selector: (context, navigationTabProvider) =>
-            navigationTabProvider.index,
+                navigationTabProvider.index,
             builder: (BuildContext context, int index, Widget? child) {
               return NavTabControl(index: index);
             },

@@ -8,8 +8,9 @@ import 'package:todo_todo/core/models/category_model.dart';
 import 'package:todo_todo/core/models/sub_task_form_model.dart';
 import 'package:todo_todo/core/models/sub_task_model.dart';
 import 'package:todo_todo/core/models/task_model.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
-import 'package:todo_todo/core/view_models/task_list_provider.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/core/view_models/task_view_model.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/ui/shared/category_select_dialog.dart';
 import 'package:todo_todo/ui/shared/sub_task_form_list.dart';
 
@@ -45,8 +46,7 @@ class _TaskDetailState extends State<TaskDetail> {
   void initState() {
     super.initState();
     _isDone = widget.task.isDone;
-    _defaultCategory = Provider.of<CategoryListProvider>(context, listen: false)
-        .defaultCategory;
+    _defaultCategory = locator<CategoryViewModel>().defaultCategory;
     _taskNameController = TextEditingController(text: widget.task.taskName);
     _noteController = TextEditingController(text: widget.task.note);
     _categoryId = widget.category.categoryId;
@@ -108,7 +108,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
   void _onSave() {
     if (_formKey.currentState!.validate()) {
-      Provider.of<TaskListProvider>(context, listen: false).updateTask(
+      Provider.of<TaskViewModel>(context, listen: false).updateTask(
         task: widget.task,
         taskName: _taskNameController.text.trim(),
         isDone: _isDone,
@@ -128,8 +128,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
       // 카테고리가 바뀐경우
       if (widget.task.categoryId != _categoryId) {
-        final categoryListProvider =
-            Provider.of<CategoryListProvider>(context, listen: false);
+        final categoryListProvider = locator<CategoryViewModel>();
         categoryListProvider.updateCategory(widget.task.categoryId, task: -1);
         categoryListProvider.updateCategory(_categoryId, task: 1);
       }

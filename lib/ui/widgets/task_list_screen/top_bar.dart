@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/ui/widgets/task_list_screen/category_bar_menu_anchor.dart';
 import 'package:todo_todo/ui/widgets/task_list_screen/category_list_bar.dart';
 

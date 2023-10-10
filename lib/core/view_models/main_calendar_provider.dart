@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_todo/core/services/repository/task_repository.dart';
+import 'package:todo_todo/locator.dart';
 
 class MainCalendarProvider extends ChangeNotifier {
-  MainCalendarProvider(this.taskRepository);
   final TaskRepository taskRepository;
+  MainCalendarProvider() : taskRepository = locator<TaskRepository>();
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _selectedDate = DateTime.utc(
     DateTime.now().year,

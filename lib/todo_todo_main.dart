@@ -3,43 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_todo/common/theme.dart';
-import 'package:todo_todo/core/services/repository/category_repository.dart';
-import 'package:todo_todo/core/services/repository/task_repository.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
-import 'package:todo_todo/core/view_models/drawer_provider.dart';
 import 'package:todo_todo/core/view_models/main_calendar_provider.dart';
 import 'package:todo_todo/core/view_models/navigation_tab_provider.dart';
-import 'package:todo_todo/core/view_models/task_list_provider.dart';
 import 'package:todo_todo/core/view_models/task_list_section_provider.dart';
+import 'package:todo_todo/core/view_models/task_view_model.dart';
 import 'package:todo_todo/firebase_options.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/router.dart';
 
 final provider = [
-  ChangeNotifierProvider(
+  ListenableProvider(
     create: (_) => NavigationTabProvider(),
   ),
   ChangeNotifierProvider(
-    create: (_) => MainCalendarProvider(locator<TaskRepository>()),
+    create: (_) => MainCalendarProvider(),
   ),
   ChangeNotifierProvider(
-    create: (_) => DrawerProvider(),
-  ),
-  ChangeNotifierProvider(
-    create: (_) => CategoryListProvider(locator<CategoryRepository>()),
-  ),
-  ChangeNotifierProxyProvider<CategoryListProvider, TaskListProvider>(
-    create: (context) => TaskListProvider(null, locator<TaskRepository>()),
-    update: (context, categoryListProvider, taskListProvider) =>
-        taskListProvider!
-          ..initializeSelectedCategory(categoryListProvider.selectedCategory),
+    create: (_) => TaskViewModel(),
   ),
   ChangeNotifierProvider(
     create: (_) => TaskListSectionProvider(),
   ),
 ];
-
-
 
 Future<void> _initPrefs() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -53,13 +38,8 @@ Future<void> _initPrefs() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await _initPrefs();
-
   runApp(const TodoTodoApp());
 }
 

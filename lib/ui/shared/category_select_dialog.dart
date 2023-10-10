@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
+import 'package:todo_todo/core/view_models/base_model.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/ui/shared/category_alert_dialog.dart';
 
 class CategorySelectDialog extends StatelessWidget {
@@ -14,84 +16,91 @@ class CategorySelectDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Consumer<CategoryListProvider>(
-      builder: (BuildContext context, CategoryListProvider categoryListProvider, Widget? child) {
-        final categories = categoryListProvider.seenCategoriesWithoutDefault;
-        return  AlertDialog(
-          content: SizedBox(
-            height: size.height * 0.7,
-            width: size.width * 0.7,
-            child: ListView.builder(
-              itemCount: categories.length + 2,
-              itemBuilder: (context, index) {
-                if (index == 0) {
+    return ChangeNotifierProvider(
+      create: (_) => locator<CategoryViewModel>(),
+      child: Consumer<CategoryViewModel>(
+        builder: (_, model, child) {
+          if (model.state == ViewState.busy) {
+            return const CircularProgressIndicator();
+          }
+
+          final categories = model.seenCategoriesWithoutDefault;
+          return AlertDialog(
+            content: SizedBox(
+              height: size.height * 0.7,
+              width: size.width * 0.7,
+              child: ListView.builder(
+                itemCount: categories.length + 2,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return InkWell(
+                      onTap: () {
+                        _onCategorySelected(
+                          context,
+                          id: null,
+                          name: null,
+                        );
+                      },
+                      child: const ListTile(
+                        isThreeLine: false,
+                        title: Text('No Category'),
+                      ),
+                    );
+                  } else if (index == categories.length + 1) {
+                    return InkWell(
+                      onTap: () async {
+                        final createdCategory = await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const CategoryAlertDialog();
+                          },
+                        );
+
+                        if (context.mounted) {
+                          _onCategorySelected(
+                            context,
+                            id: createdCategory.categoryId,
+                            name: createdCategory.name,
+                          );
+                        }
+                      },
+                      child: const ListTile(
+                        isThreeLine: false,
+                        leading: Icon(Icons.add),
+                        title: Text('Create Category'),
+                      ),
+                    );
+                  }
+
+                  final category = categories[index - 1];
+
                   return InkWell(
                     onTap: () {
                       _onCategorySelected(
                         context,
-                        id: null,
-                        name: null,
+                        id: category.categoryId,
+                        name: category.name,
                       );
                     },
-                    child: const ListTile(
+                    child: ListTile(
                       isThreeLine: false,
-                      title: Text('No Category'),
-                    ),
-                  );
-                } else if (index == categories.length + 1) {
-                  return InkWell(
-                    onTap: () async {
-                      final createdCategory = await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const CategoryAlertDialog();
-                        },
-                      );
-
-                      if (context.mounted) {
-                        _onCategorySelected(
-                          context,
-                          id: createdCategory.categoryId,
-                          name: createdCategory.name,
-                        );
-                      }
-                    },
-                    child: const ListTile(
-                      isThreeLine: false,
-                      leading: Icon(Icons.add),
-                      title: Text('Create Category'),
-                    ),
-                  );
-                }
-
-                final category = categories[index - 1];
-
-                return InkWell(
-                  onTap: () {
-                    _onCategorySelected(
-                      context,
-                      id: category.categoryId,
-                      name: category.name,
-                    );
-                  },
-                  child: ListTile(
-                    isThreeLine: false,
-                    leading: Container(
-                      width: 15,
-                      height: 15,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: category.color,
+                      leading: Container(
+                        width: 15,
+                        height: 15,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: category.color,
+                        ),
                       ),
+                      title: Text(category.name),
                     ),
-                    title: Text(category.name),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

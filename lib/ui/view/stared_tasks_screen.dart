@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/core/view_models/task_list_provider.dart';
+import 'package:todo_todo/core/view_models/task_view_model.dart';
 import 'package:todo_todo/ui/shared/task_list_item.dart';
 import 'package:todo_todo/ui/view/task_detail_screen.dart';
 
@@ -18,9 +18,9 @@ class StaredTaskScreen extends StatelessWidget {
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
-        child: Consumer<TaskListProvider>(
+        child: Consumer<TaskViewModel>(
           builder:
-              (BuildContext context, TaskListProvider provider, Widget? child) {
+              (BuildContext context, TaskViewModel provider, Widget? child) {
             final staredTask = provider.staredTask;
             return ListView.builder(
               itemCount: staredTask.length,

@@ -5,8 +5,9 @@ import 'package:todo_todo/common/tools.dart';
 import 'package:todo_todo/core/models/category_model.dart';
 import 'package:todo_todo/core/models/sub_task_form_model.dart';
 import 'package:todo_todo/core/models/sub_task_model.dart';
-import 'package:todo_todo/core/view_models/category_list_provider.dart';
-import 'package:todo_todo/core/view_models/task_list_provider.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/core/view_models/task_view_model.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/ui/shared/category_select_dialog.dart';
 import 'package:todo_todo/ui/shared/sub_task_form_list.dart';
 
@@ -33,8 +34,8 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   @override
   void initState() {
     super.initState();
-    _defaultCategory = Provider.of<CategoryListProvider>(context, listen: false)
-        .defaultCategory;
+    _defaultCategory =
+        locator<CategoryViewModel>().defaultCategory;
     _category = widget.selectedCategory;
     _selectedDate = DateTime.now();
     _subTaskForms = [];
@@ -77,7 +78,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
       });
     } else {
       setState(() {
-        _category = Provider.of<CategoryListProvider>(context, listen: false)
+        _category = locator<CategoryViewModel>()
             .findCategory(id);
       });
     }
@@ -98,13 +99,13 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                   SubTaskModel.fromSubTaskFormModel(subTaskForm))
               .toList();
 
-      Provider.of<TaskListProvider>(context, listen: false).createTask(
+      Provider.of<TaskViewModel>(context, listen: false).createTask(
           _taskNameController.text,
           dueDate: _selectedDate,
           categoryModel: _category,
           subTasks: subTasks);
 
-      Provider.of<CategoryListProvider>(context, listen: false)
+      locator<CategoryViewModel>()
           .updateCategory(_category.categoryId, task: 1);
 
       Navigator.of(context).pop();

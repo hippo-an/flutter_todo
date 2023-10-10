@@ -1,25 +1,37 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_todo/common/tools.dart';
 import 'package:todo_todo/core/models/category_model.dart';
 import 'package:todo_todo/core/models/sub_task_model.dart';
 import 'package:todo_todo/core/models/task_model.dart';
 import 'package:todo_todo/core/services/repository/task_repository.dart';
+import 'package:todo_todo/core/view_models/base_model.dart';
+import 'package:todo_todo/core/view_models/category_view_model.dart';
+import 'package:todo_todo/locator.dart';
 
-class TaskListProvider extends ChangeNotifier {
-  final TaskRepository taskRepository;
+class TaskViewModel extends BaseModel {
+  final CategoryViewModel _categoryViewModel;
+  final TaskRepository _taskRepository;
+  final List<TaskModel> _tasks = [];
 
-  TaskListProvider(
-    CategoryModel? selectedCategory,
-    this.taskRepository,
-  ) : _selectedCategory = selectedCategory;
-  CategoryModel? _selectedCategory;
+  TaskViewModel()
+      : _taskRepository = locator<TaskRepository>(),
+        _categoryViewModel = locator<CategoryViewModel>();
+
+  Future<void> fetchTasks() async {
+    setState(ViewState.busy);
+    _tasks.clear();
+    final tasks =
+        await _taskRepository.fetchTasks(_categoryViewModel.selectedCategory);
+    _tasks.addAll(tasks);
+    setState(ViewState.idle);
+  }
 
   List<TaskModel> get filteredTask {
-    if (_selectedCategory!.isDefault) {
-      final copiedList = taskRepository.tasks.where((task) => !task.isDeleted).toList();
+    if (_categoryViewModel.selectedCategory.isDefault) {
+      final copiedList =
+          _taskRepository.tasks.where((task) => !task.isDeleted).toList();
 
       // TODO: Task 정렬
       copiedList.sort((a, b) {
@@ -29,9 +41,10 @@ class TaskListProvider extends ChangeNotifier {
       return copiedList;
     }
 
-    final categorizedTask = taskRepository.tasks
+    final categorizedTask = _taskRepository.tasks
         .where((task) =>
-            !task.isDeleted && task.categoryId == _selectedCategory!.categoryId)
+            !task.isDeleted &&
+            task.categoryId == _categoryViewModel.selectedCategory.categoryId)
         .toList();
 
     // TODO: Task 정렬
@@ -43,8 +56,9 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   List<TaskModel> get staredTask {
-    final copiedList =
-    taskRepository.tasks.where((task) => !task.isDeleted && task.stared).toList();
+    final copiedList = _taskRepository.tasks
+        .where((task) => !task.isDeleted && task.stared)
+        .toList();
 
     // TODO: Task 정렬
     copiedList.sort((a, b) {
@@ -55,7 +69,8 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   List<TaskModel> get deletedTask {
-    final copiedList = taskRepository.tasks.where((task) => task.isDeleted).toList();
+    final copiedList =
+        _taskRepository.tasks.where((task) => task.isDeleted).toList();
 
     // TODO: Task 정렬
     copiedList.sort((a, b) {
@@ -66,7 +81,7 @@ class TaskListProvider extends ChangeNotifier {
   }
 
   List<TaskModel> calendarList(DateTime selectedDate) {
-    final copiedList = taskRepository.tasks
+    final copiedList = _taskRepository.tasks
         .where(
             (task) => !task.isDeleted && isSameDay(selectedDate, task.dueDate))
         .toList();
@@ -109,7 +124,7 @@ class TaskListProvider extends ChangeNotifier {
         updatedAt: now,
         subTasks: subTasks);
 
-    taskRepository.add(task);
+    _taskRepository.add(task);
 
     notifyListeners();
   }
@@ -128,7 +143,7 @@ class TaskListProvider extends ChangeNotifier {
     List<SubTaskModel>? subTasks,
     File? attachment,
   }) {
-    final index = taskRepository.index(task);
+    final index = _taskRepository.index(task);
     if (index < -1) {
       return null;
     }
@@ -146,22 +161,15 @@ class TaskListProvider extends ChangeNotifier {
         attachment: attachment,
         updatedAt: DateTime.now());
 
-    taskRepository.replace(index, updatedTask);
+    _taskRepository.replace(index, updatedTask);
 
     notifyListeners();
 
     return updatedTask;
   }
 
-  TaskListProvider? initializeSelectedCategory(
-      CategoryModel? selectedCategory) {
-    _selectedCategory = selectedCategory;
-    notifyListeners();
-    return this;
-  }
-
-  void deleteTaskByCategory(CategoryModel category) {
-    taskRepository.tasks.removeWhere((task) => task.categoryId == category.categoryId);
+  Future<void> deleteTaskByCategory(CategoryModel category) async {
+    await _taskRepository.deleteTasksByCategory(category);
     notifyListeners();
   }
 
@@ -178,7 +186,7 @@ class TaskListProvider extends ChangeNotifier {
   // }
 
   void deleteTask({required TaskModel task}) {
-    taskRepository.remove(task);
+    _taskRepository.remove(task);
     notifyListeners();
   }
 }

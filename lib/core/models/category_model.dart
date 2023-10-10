@@ -4,6 +4,7 @@ import 'package:todo_todo/common/enums.dart';
 class CategoryModel {
   CategoryModel({
     required this.categoryId,
+    required this.userId,
     required this.name,
     required this.colorCode,
     this.taskCount = 0,
@@ -15,6 +16,7 @@ class CategoryModel {
   });
 
   final String categoryId;
+  final String userId;
   final String name;
   final int colorCode;
   final int taskCount;
@@ -29,6 +31,7 @@ class CategoryModel {
   static CategoryModel fromJson(Map<String, dynamic> json) {
     return CategoryModel(
       categoryId: json['categoryId'],
+      userId: json['userId'],
       name: json['name'],
       colorCode: int.tryParse(json['colorCode']) ?? 0xFFFFFFFF,
       taskCount: int.tryParse(json['taskCount']) ?? 0,
@@ -43,6 +46,7 @@ class CategoryModel {
   Map<String, dynamic> toJson() {
     return {
       'categoryId': categoryId,
+      'userId': userId,
       'name': name,
       'colorCode': colorCode.toString(),
       'taskCount': taskCount.toString(),
@@ -66,6 +70,7 @@ class CategoryModel {
   }) {
     return CategoryModel(
       categoryId: categoryId,
+      userId: userId,
       name: name ?? this.name,
       colorCode: colorCode ?? this.colorCode,
       taskCount: taskCount ?? this.taskCount,
@@ -85,5 +90,6 @@ class CategoryModel {
       identical(this, other) ||
       other is CategoryModel &&
           runtimeType == other.runtimeType &&
-          categoryId == other.categoryId;
+          categoryId == other.categoryId &&
+          userId == other.userId;
 }
