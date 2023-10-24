@@ -9,7 +9,7 @@ class TodoLogo extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.2,
       child: const Center(
         child: Text(
-          'Todo Todo',
+          'Flutter Todo',
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
