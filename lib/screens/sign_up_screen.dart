@@ -39,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void _toLoginPage()  {
+  void _toLoginPage() {
     context.go(LoginScreen.routeName);
   }
 
@@ -61,17 +61,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     if (success) {
+      if (mounted) {
+        showSnackBar(context, 'Account has been created.');
+      }
       _toLoginPage();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         body: Container(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .background,
           height: double.infinity,
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -96,7 +101,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscure ? Icons.visibility : Icons.visibility_off,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .primary,
                         ),
                         onPressed: () {
                           setState(() {
@@ -118,12 +126,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 _isEmailLoading
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          onPressed: _signUpWithEmail,
-                          child: const Text('Sign Up'),
-                        ),
-                      ),
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  child: ElevatedButton(
+                    onPressed: _signUpWithEmail,
+                    child: const Text('Sign Up'),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

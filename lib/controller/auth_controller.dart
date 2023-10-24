@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_todo/archive/core/models/user_model.dart';
 import 'package:todo_todo/common/auth_exception.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
@@ -22,79 +24,85 @@ class AuthController extends ChangeNotifier {
   })  : _authRepository = authRepository,
         _userRepository = firestoreRepository;
 
-  Future<bool> signOut() async {
+  Future<bool> signOut(BuildContext context) async {
     try {
       await _authRepository.signOut();
       return true;
     } on AuthException catch (e) {
-      print(e.message);
+      showSnackBar(context, 'Logout Error!');
       return false;
     }
   }
 
-  // Future<({bool success, String? message})> signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? googleUser =
-  //         await locator<GoogleSignIn>().signIn();
-  //
-  //     final GoogleSignInAuthentication? googleAuth =
-  //         await googleUser?.authentication;
-  //
-  //     if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
-  //       final credential = GoogleAuthProvider.credential(
-  //         accessToken: googleAuth?.accessToken,
-  //         idToken: googleAuth?.idToken,
-  //       );
-  //
-  //       UserCredential userCredential =
-  //           await _authViewModel.signInWithCredential(credential);
-  //
-  //       if (userCredential.user != null) {
-  //         if (userCredential.additionalUserInfo!.isNewUser) {
-  //           await _initializeUser(userCredential);
-  //           return (success: true, message: 'Email verification sent.');
-  //         }
-  //
-  //         return (success: true, message: null);
-  //       }
-  //     }
-  //
-  //     return (
-  //       success: false,
-  //       message: 'Something went wrong in sign in process..',
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     return (
-  //       success: false,
-  //       message: e.message ?? 'Something went wrong in sign in process...',
-  //     );
-  //   }
-  // }
+  Future<bool> loginWithGoogle({
+    required BuildContext context,
+  }) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-  // Future<({bool success, String? message})> signInWithEmailAndPassword(
-  //     {required String email, required String password}) async {
-  //   try {
-  //     final userCredential = await _authViewModel.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //
-  //     if (userCredential.user != null) {
-  //       return (success: true, message: null);
-  //     }
-  //     return (
-  //       success: false,
-  //       message: 'Something went wrong in sign in process..',
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     return (
-  //       success: false,
-  //       message: switch (e.code) {
-  //         'user-not-found' => 'Check your email and password',
-  //         'wrong-password' => 'Check your email and password',
-  //         _ => 'Check your email and password.',
-  //       },
-  //     );
-  //   }
-  // }
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
+        final email = googleUser!.email;
+
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth!.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        return await _authRepository.loginWithGoogle(credential).then(
+          (userCredential) async {
+            if (userCredential.user != null) {
+              if (userCredential.additionalUserInfo!.isNewUser) {
+                await _userRepository.createUser(
+                  _createUser(
+                    userCredential.user!.uid,
+                    email,
+                    uuid.generate(),
+                  ),
+                );
+              }
+
+              return true;
+            }
+
+            return false;
+          },
+        );
+      }
+
+      return false;
+    } on AuthException catch (e) {
+      showSnackBar(context, e.message);
+      return false;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.message);
+      return false;
+    }
+  }
+
+  Future<bool> loginWithEmail({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      _validate(_Field.email, email, _emailValidate);
+      _validate(_Field.password, password, _passwordValidate);
+      return await _authRepository
+          .loginWithEmail(
+        email: email,
+        password: password,
+      )
+          .then((userCredential) {
+        return userCredential.user != null;
+      });
+    } on AuthException catch (e) {
+      showSnackBar(context, e.message);
+      return false;
+    }
+  }
 
   Future<bool> signUpWithEmailAndPassword({
     required BuildContext context,
@@ -182,7 +190,8 @@ class AuthController extends ChangeNotifier {
     );
   }
 
-  void _validate(_Field field, String value, bool Function(String val) validate) {
+  void _validate(
+      _Field field, String value, bool Function(String val) validate) {
     if (!validate(value)) {
       throw AuthException(message: '${field.name} is invalid. Check it again.');
     }

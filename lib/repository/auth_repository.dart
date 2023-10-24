@@ -29,4 +29,31 @@ class AuthRepository {
       throw AuthException(message: e.message);
     }
   }
+
+  Future<UserCredential> loginWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      return await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      final message = switch (e.code) {
+        'user-not-found' => 'Check your email and password!!',
+        'wrong-password' => 'Check your email and password!!!',
+        _ => 'Check your email and password!',
+      };
+      throw AuthException(message: message);
+    }
+  }
+
+  Future<UserCredential> loginWithGoogle(OAuthCredential credential) async {
+    try {
+      return await _auth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(message: e.message);
+    }
+  }
 }

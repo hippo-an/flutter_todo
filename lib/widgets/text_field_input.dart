@@ -7,6 +7,7 @@ class TextFieldInput extends StatelessWidget {
     required this.label,
     required this.textInputType,
     required this.isPassword,
+    this.maxLength = 30,
     this.suffixIcon,
   });
 
@@ -14,12 +15,15 @@ class TextFieldInput extends StatelessWidget {
   final String label;
   final TextInputType textInputType;
   final bool isPassword;
+  final int maxLength;
   final IconButton? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
-      borderSide: Divider.createBorderSide(context),
+      borderSide: Divider.createBorderSide(context).copyWith(
+        color: Theme.of(context).colorScheme.primary,
+      ),
     );
 
     return TextField(
@@ -36,7 +40,7 @@ class TextFieldInput extends StatelessWidget {
         counter: const SizedBox.shrink()
       ),
       maxLines: 1,
-      maxLength: 30,
+      maxLength: maxLength,
       keyboardType: textInputType,
       scrollPadding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 20),

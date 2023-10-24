@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_todo/controller/auth_controller.dart';
+import 'package:todo_todo/screens/home_screen.dart';
 import 'package:todo_todo/screens/sign_up_screen.dart';
 import 'package:todo_todo/widgets/text_field_input.dart';
 import 'package:todo_todo/widgets/todo_logo.dart';
@@ -18,8 +21,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
-  bool _isGoogleLoading = false;
   bool _isEmailLoading = false;
+  bool _isGoogleLoading = false;
   bool _obscure = true;
 
   @override
@@ -36,9 +39,53 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  Future<void> _loginWithEmail() async {
+    setState(() {
+      _isEmailLoading = true;
+    });
+
+    final success = await Provider.of<AuthController>(context, listen: false)
+        .loginWithEmail(
+      context: context,
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+
+    setState(() {
+      _isEmailLoading = false;
+    });
+
+    if (success) {
+      if (mounted) {
+        context.go(HomeScreen.routeName);
+      }
+    }
+  }
+
+  Future<void> _loginWithGoogle() async {
+    setState(() {
+      _isGoogleLoading = true;
+    });
+
+    final success = await Provider.of<AuthController>(context, listen: false)
+        .loginWithGoogle(
+      context: context,
+    );
+
+    setState(() {
+      _isGoogleLoading = false;
+    });
+
+    if (success) {
+      if (mounted) {
+        context.go(HomeScreen.routeName);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final signInNotPossible = _isGoogleLoading || _isEmailLoading;
+    final loginImpossible = _isGoogleLoading || _isEmailLoading;
 
     return SafeArea(
       child: Scaffold(
@@ -61,21 +108,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     TextFieldInput(
-                        controller: _passwordController,
-                        label: 'Password',
-                        textInputType: TextInputType.text,
-                        isPassword: _obscure,
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscure ? Icons.visibility : Icons.visibility_off,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscure = !_obscure;
-                            });
-                          },
-                        )),
+                      controller: _passwordController,
+                      label: 'Password',
+                      textInputType: TextInputType.text,
+                      isPassword: _obscure,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscure ? Icons.visibility : Icons.visibility_off,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscure = !_obscure;
+                          });
+                        },
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -84,9 +132,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     : SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed:
+                              loginImpossible ? () {} : _loginWithEmail,
                           child: const Text('Login'),
-                        )),
+                        ),
+                      ),
                 const SizedBox(height: 20),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -116,11 +166,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: MediaQuery.of(context).size.width,
                         child: ClipRRect(
                           clipBehavior: Clip.hardEdge,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(12),
                           child: SignInButton(
                             Buttons.Google,
-                            text: 'Start with Google',
-                            onPressed: () {},
+                            text: 'Login with Google',
+                            onPressed: loginImpossible ? () {} : _loginWithGoogle,
                           ),
                         ),
                       ),
@@ -129,11 +179,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: MediaQuery.of(context).size.width,
                   child: ClipRRect(
                     clipBehavior: Clip.hardEdge,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(12),
                     child: SignInButton(
                       Buttons.Facebook,
-                      text: 'Start with Facebook',
-                      onPressed: () {},
+                      text: 'Login with Facebook',
+                      onPressed: loginImpossible ? () {} : () {},
                     ),
                   ),
                 ),
@@ -150,9 +200,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       style: TextButton.styleFrom(
                           foregroundColor: Colors.blueAccent),
-                      onPressed: () {
-                        context.go(SignUpScreen.routeName);
-                      },
+                      onPressed: loginImpossible
+                          ? null
+                          : () {
+                              context.go(SignUpScreen.routeName);
+                            },
                       child: const Text('Sign Up'),
                     ),
                   ],
