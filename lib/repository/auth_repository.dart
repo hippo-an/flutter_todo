@@ -8,6 +8,8 @@ class AuthRepository {
     required FirebaseAuth auth,
   }) : _auth = auth;
 
+  Stream<User?> get userStream => _auth.authStateChanges();
+
   Future<void> signOut() async {
     try {
       await _auth.signOut();

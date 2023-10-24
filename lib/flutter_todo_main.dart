@@ -32,6 +32,7 @@ class FlutterTodoApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           colorScheme: ColorScheme.fromSeed(seedColor: kColorScheme).copyWith(
             background: kBackgroundColor,
+            secondary: kSecondaryColor,
           ),
         ),
         themeMode: ThemeMode.system,

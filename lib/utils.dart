@@ -7,6 +7,9 @@ void showSnackBar(BuildContext context, String? message) {
       ..clearSnackBars()
       ..showSnackBar(
         SnackBar(
+          shape: const BeveledRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
           backgroundColor:
               Theme.of(context).colorScheme.primary.withOpacity(0.8),
           showCloseIcon: true,
