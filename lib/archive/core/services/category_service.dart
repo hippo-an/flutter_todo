@@ -1,4 +1,4 @@
-import 'package:todo_todo/archive/core/models/category_model.dart';
+import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
 import 'package:todo_todo/archive/core/view_models/task_view_model.dart';
 import 'package:todo_todo/archive/locator.dart';

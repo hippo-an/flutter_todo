@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/common/tools.dart';
-import 'package:todo_todo/archive/core/models/category_model.dart';
+import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/models/sub_task_form_model.dart';
 import 'package:todo_todo/archive/core/models/sub_task_model.dart';
 import 'package:todo_todo/archive/core/models/task_model.dart';

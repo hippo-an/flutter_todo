@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/common/colors.dart';
-import 'package:todo_todo/archive/core/models/category_model.dart';
+import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
 
 final _colors = <Color>[

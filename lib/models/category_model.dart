@@ -33,13 +33,13 @@ class CategoryModel {
       categoryId: json['categoryId'],
       userId: json['userId'],
       name: json['name'],
-      colorCode: int.tryParse(json['colorCode']) ?? 0xFFFFFFFF,
-      taskCount: int.tryParse(json['taskCount']) ?? 0,
+      colorCode: json['colorCode'] ?? 0xFFFFFFFF,
+      taskCount: json['taskCount'] ?? 0,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       categoryState: CategoryState.values.byName(json['categoryState']),
-      isDeleted: bool.tryParse(json['isDeleted']) ?? false,
-      isDefault: bool.tryParse(json['isDefault']) ?? false,
+      isDeleted: json['isDeleted'] ?? false,
+      isDefault: json['isDefault'] ?? false,
     );
   }
 
@@ -48,13 +48,13 @@ class CategoryModel {
       'categoryId': categoryId,
       'userId': userId,
       'name': name,
-      'colorCode': colorCode.toString(),
-      'taskCount': taskCount.toString(),
+      'colorCode': colorCode,
+      'taskCount': taskCount,
       'createdAt': createdAt.toString(),
       'updatedAt': updatedAt.toString(),
       'categoryState': categoryState.name,
-      'isDeleted': isDeleted.toString(),
-      'isDefault': isDefault.toString(),
+      'isDeleted': isDeleted,
+      'isDefault': isDefault,
     };
   }
 
@@ -83,13 +83,12 @@ class CategoryModel {
   }
 
   @override
-  int get hashCode => categoryId.hashCode ^ categoryState.hashCode;
+  int get hashCode => categoryId.hashCode ;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is CategoryModel &&
           runtimeType == other.runtimeType &&
-          categoryId == other.categoryId &&
-          userId == other.userId;
+          categoryId == other.categoryId;
 }

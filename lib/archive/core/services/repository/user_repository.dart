@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_todo/archive/core/models/user_model.dart';
+import 'package:todo_todo/models/user_model.dart';
 
 class UserRepository {
   Future<UserModel> fetchUserById(String uid) async {

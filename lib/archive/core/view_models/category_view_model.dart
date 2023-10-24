@@ -4,7 +4,7 @@ import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/common/colors.dart';
 import 'package:todo_todo/archive/common/enums.dart';
 import 'package:todo_todo/archive/common/tools.dart';
-import 'package:todo_todo/archive/core/models/category_model.dart';
+import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/services/repository/category_repository.dart';
 import 'package:todo_todo/archive/core/view_models/auth_view_model.dart';
 

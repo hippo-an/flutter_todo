@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
+import 'package:todo_todo/widgets/drawer_category_tile.dart';
 import 'package:todo_todo/widgets/drawer_menu.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -19,8 +20,13 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      shape: const BeveledRectangleBorder(
-        borderRadius: BorderRadius.zero,
+      backgroundColor: Theme.of(context).colorScheme.onBackground,
+      width: MediaQuery.of(context).size.width * 0.6,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
       ),
       child: ListView(
         children: [
@@ -41,7 +47,7 @@ class CustomDrawer extends StatelessWidget {
             iconData: Icons.star,
             title: 'Stared tasks',
           ),
-          // const DrawerCategoryTile(),
+          const DrawerCategoryTile(),
           DrawerMenu(
               onTab: () {},
               iconData: Icons.delete_outline,

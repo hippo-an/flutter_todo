@@ -19,9 +19,5 @@ final router = GoRouter(
       path: SignUpScreen.routeName,
       builder: (context, state) => const SignUpScreen(),
     ),
-    GoRoute(
-      path: HomeScreen.routeName,
-      builder: (context, state) => const HomeScreen(),
-    ),
   ],
 );

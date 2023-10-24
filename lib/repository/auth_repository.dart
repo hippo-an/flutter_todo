@@ -9,6 +9,7 @@ class AuthRepository {
   }) : _auth = auth;
 
   Stream<User?> get userStream => _auth.authStateChanges();
+  User get currentUser => _auth.currentUser!;
 
   Future<void> signOut() async {
     try {

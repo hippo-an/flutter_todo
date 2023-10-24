@@ -19,7 +19,6 @@ class DrawerMenu extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       onTap: onTab,
-      splashColor: Colors.grey[800],
       child: ListTile(
         isThreeLine: false,
         leading: Icon(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/auth_controller.dart';
+import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/firebase_options.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/router.dart';
@@ -23,6 +24,9 @@ class FlutterTodoApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => locator<AuthController>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => locator<CategoryController>(),
         ),
       ],
       child: MaterialApp.router(

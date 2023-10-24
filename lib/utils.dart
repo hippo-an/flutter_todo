@@ -7,8 +7,11 @@ void showSnackBar(BuildContext context, String? message) {
       ..clearSnackBars()
       ..showSnackBar(
         SnackBar(
-          shape: const BeveledRectangleBorder(
-            borderRadius: BorderRadius.zero,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            ),
           ),
           backgroundColor:
               Theme.of(context).colorScheme.primary.withOpacity(0.8),

@@ -22,6 +22,10 @@ class UserLoginStream extends StatelessWidget {
           );
         }
 
+        if (snapshot.hasData) {
+          return const HomeScreen();
+        }
+
         if (snapshot.hasError) {
           const Scaffold(
             body: Center(
@@ -34,10 +38,6 @@ class UserLoginStream extends StatelessWidget {
               ),
             ),
           );
-        }
-
-        if (snapshot.hasData) {
-          return const HomeScreen();
         }
 
         return const LoginScreen();

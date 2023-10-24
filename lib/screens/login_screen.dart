@@ -8,6 +8,7 @@ import 'package:todo_todo/screens/home_screen.dart';
 import 'package:todo_todo/screens/sign_up_screen.dart';
 import 'package:todo_todo/widgets/text_field_input.dart';
 import 'package:todo_todo/widgets/todo_logo.dart';
+import 'package:todo_todo/widgets/user_login_stream.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (success) {
       if (mounted) {
-        context.go(HomeScreen.routeName);
+        context.go(UserLoginStream.routeName);
       }
     }
   }
@@ -78,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (success) {
       if (mounted) {
-        context.go(HomeScreen.routeName);
+        context.go(UserLoginStream.routeName);
       }
     }
   }

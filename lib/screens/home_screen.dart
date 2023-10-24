@@ -4,8 +4,6 @@ import 'package:todo_todo/widgets/custom_bottom_navigation_bar.dart';
 import 'package:todo_todo/widgets/custom_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/home';
-
   const HomeScreen({super.key});
 
   @override
