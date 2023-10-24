@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_todo/controller/auth_controller.dart';
 import 'package:todo_todo/screens/login_screen.dart';
+import 'package:todo_todo/utils.dart';
 import 'package:todo_todo/widgets/text_field_input.dart';
 import 'package:todo_todo/widgets/todo_logo.dart';
 
@@ -14,8 +17,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _usernameController;
   bool _isEmailLoading = false;
   bool _obscure = true;
 
@@ -23,6 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void initState() {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _usernameController = TextEditingController();
     super.initState();
   }
 
@@ -30,11 +35,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _usernameController.dispose();
     super.dispose();
+  }
+
+  void _toLoginPage()  {
+    context.go(LoginScreen.routeName);
+  }
+
+  Future<void> _signUpWithEmail() async {
+    setState(() {
+      _isEmailLoading = true;
+    });
+
+    final success = await Provider.of<AuthController>(context, listen: false)
+        .signUpWithEmailAndPassword(
+      context: context,
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+      username: _usernameController.text.trim(),
+    );
+
+    setState(() {
+      _isEmailLoading = false;
+    });
+
+    if (success) {
+      _toLoginPage();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -56,21 +89,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 8),
                     TextFieldInput(
-                        controller: _passwordController,
-                        label: 'Password',
-                        textInputType: TextInputType.text,
-                        isPassword: _obscure,
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscure ? Icons.visibility : Icons.visibility_off,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscure = !_obscure;
-                            });
-                          },
-                        )),
+                      controller: _passwordController,
+                      label: 'Password',
+                      textInputType: TextInputType.text,
+                      isPassword: _obscure,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscure ? Icons.visibility : Icons.visibility_off,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscure = !_obscure;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFieldInput(
+                      controller: _usernameController,
+                      label: 'Username',
+                      textInputType: TextInputType.text,
+                      isPassword: false,
+                    ),
                     const SizedBox(height: 8),
                   ],
                 ),
@@ -79,7 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     : SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: _signUpWithEmail,
                           child: const Text('Sign Up'),
                         ),
                       ),
@@ -95,9 +136,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextButton(
                       style: TextButton.styleFrom(
                           foregroundColor: Colors.blueAccent),
-                      onPressed: () {
-                        context.go(LoginScreen.routeName);
-                      },
+                      onPressed: _toLoginPage,
                       child: const Text('Login'),
                     ),
                   ],

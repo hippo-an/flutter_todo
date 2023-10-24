@@ -39,7 +39,7 @@ class TextFieldInput extends StatelessWidget {
       maxLength: 30,
       keyboardType: textInputType,
       scrollPadding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 20),
       obscureText: isPassword,
     );
   }

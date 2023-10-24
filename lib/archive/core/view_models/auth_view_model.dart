@@ -30,7 +30,7 @@ class AuthViewModel extends ChangeNotifier {
       UserModel(
         userId: uid,
         identity: identity,
-        createdAt: DateTime.now(),
+        createdAt: DateTime.now(), username: '', updatedAt: DateTime.now(),
       ),
     );
   }
