@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/core/services/repository/task_repository.dart';
+import 'package:todo_todo/archive/locator.dart';
 
 class MainCalendarProvider extends ChangeNotifier {
   final TaskRepository taskRepository;

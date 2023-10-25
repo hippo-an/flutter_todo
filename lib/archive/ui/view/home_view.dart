@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/core/services/auth_service.dart';
+import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/view/auth/sign_in_view.dart';
 import 'package:todo_todo/archive/ui/view/navigation_view.dart';
 

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/models/task_model.dart';
+import 'package:todo_todo/models/category_model.dart';
 
 class TaskRepository {
   final List<TaskModel> _tasks = [];

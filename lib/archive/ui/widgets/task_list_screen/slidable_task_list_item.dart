@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/common/colors.dart';
 import 'package:todo_todo/archive/core/models/task_model.dart';
 import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
 import 'package:todo_todo/archive/core/view_models/task_view_model.dart';
+import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/shared/task_list_item.dart';
 import 'package:todo_todo/archive/ui/view/task_detail_screen.dart';
 

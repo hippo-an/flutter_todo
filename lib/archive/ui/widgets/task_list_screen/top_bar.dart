@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
 import 'package:todo_todo/archive/ui/widgets/task_list_screen/category_bar_menu_anchor.dart';
 import 'package:todo_todo/archive/ui/widgets/task_list_screen/category_list_bar.dart';
 

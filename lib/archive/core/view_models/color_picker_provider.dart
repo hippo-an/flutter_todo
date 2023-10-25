@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/archive/core/models/color_picker_model.dart';
+import 'package:todo_todo/enums.dart';
 
 class ColorPickerProvider extends ChangeNotifier {
   List<ColorPickerModel> pickerColors = [];

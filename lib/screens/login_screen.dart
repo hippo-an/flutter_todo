@@ -4,11 +4,10 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/controller/auth_controller.dart';
-import 'package:todo_todo/screens/home_screen.dart';
 import 'package:todo_todo/screens/sign_up_screen.dart';
+import 'package:todo_todo/screens/user_login_stream_screen.dart';
 import 'package:todo_todo/widgets/text_field_input.dart';
 import 'package:todo_todo/widgets/todo_logo.dart';
-import 'package:todo_todo/screens/user_login_stream_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';

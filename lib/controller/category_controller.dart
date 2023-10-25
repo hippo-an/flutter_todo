@@ -25,6 +25,7 @@ class CategoryController extends ChangeNotifier {
         _categoryRepository = categoryRepository;
 
   List<CategoryModel> _categories = [];
+  String _selectedCategoryId = '';
 
   List<CategoryModel> get categories => _categories.toList();
 
@@ -34,6 +35,16 @@ class CategoryController extends ChangeNotifier {
   List<CategoryModel> get staredCategories => _categories
       .where((category) => !category.isDefault && category.isStared)
       .toList();
+
+  CategoryModel? get selectedCategory {
+    try {
+      return _categories.firstWhere((category) =>
+      category.categoryState == CategoryState.seen &&
+          category.categoryId == _selectedCategoryId);
+    } catch (e) {
+      return _categories[0];
+    }
+  }
 
   Future<bool> createCategory(BuildContext context, String name) async {
     try {
@@ -71,6 +82,7 @@ class CategoryController extends ChangeNotifier {
     }
 
     await _fetchCategories();
+    _selectedCategoryId = _categories[0].categoryId;
     notifyListeners();
   }
 
@@ -173,5 +185,10 @@ class CategoryController extends ChangeNotifier {
         (a, b) => a.sortNumber - b.sortNumber,
       );
     } catch (e) {}
+  }
+
+  void updateSelectedCategoryId(String categoryId) {
+    _selectedCategoryId = categoryId;
+    notifyListeners();
   }
 }

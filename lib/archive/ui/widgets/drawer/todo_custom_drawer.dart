@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/core/services/auth_service.dart';
+import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/view/deleted_tasks_screen.dart';
 import 'package:todo_todo/archive/ui/view/stared_tasks_screen.dart';
 import 'package:todo_todo/archive/ui/widgets/drawer/drawer_category_tile.dart';

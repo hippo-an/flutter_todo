@@ -53,6 +53,7 @@ dependencies:
   google_sign_in: ^6.1.5
   flutter_signin_button: ^2.0.0
   get_it: ^7.6.4
+  avatar_glow: ^2.0.2
 
 dev_dependencies:
   flutter_test:

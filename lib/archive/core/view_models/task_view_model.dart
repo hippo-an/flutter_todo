@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:table_calendar/table_calendar.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/common/tools.dart';
-import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/models/sub_task_model.dart';
 import 'package:todo_todo/archive/core/models/task_model.dart';
 import 'package:todo_todo/archive/core/services/repository/task_repository.dart';
 import 'package:todo_todo/archive/core/view_models/base_model.dart';
 import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
+import 'package:todo_todo/archive/locator.dart';
+import 'package:todo_todo/models/category_model.dart';
 
 class TaskViewModel extends BaseModel {
   final CategoryViewModel _categoryViewModel;

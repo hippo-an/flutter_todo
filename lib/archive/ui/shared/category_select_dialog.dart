@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/archive/locator.dart';
-import 'package:todo_todo/archive/core/view_models/base_model.dart';
 import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
+import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/shared/category_alert_dialog.dart';
 
 class CategorySelectDialog extends StatelessWidget {

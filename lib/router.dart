@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:todo_todo/screens/category_list_screen.dart';
-import 'package:todo_todo/screens/home_screen.dart';
 import 'package:todo_todo/screens/login_screen.dart';
 import 'package:todo_todo/screens/sign_up_screen.dart';
 import 'package:todo_todo/screens/user_login_stream_screen.dart';

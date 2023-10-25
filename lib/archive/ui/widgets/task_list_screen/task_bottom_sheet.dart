@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/common/colors.dart';
 import 'package:todo_todo/archive/common/tools.dart';
-import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/models/sub_task_form_model.dart';
 import 'package:todo_todo/archive/core/models/sub_task_model.dart';
 import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
 import 'package:todo_todo/archive/core/view_models/task_view_model.dart';
+import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/shared/category_select_dialog.dart';
 import 'package:todo_todo/archive/ui/shared/sub_task_form_list.dart';
+import 'package:todo_todo/models/category_model.dart';
 
 class TaskBottomSheet extends StatefulWidget {
   const TaskBottomSheet({

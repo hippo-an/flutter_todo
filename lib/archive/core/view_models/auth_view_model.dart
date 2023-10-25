@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_todo/archive/core/services/repository/user_repository.dart';
 import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/models/user_model.dart';
-import 'package:todo_todo/archive/core/services/repository/user_repository.dart';
 
 class AuthViewModel extends ChangeNotifier {
   late final UserRepository _userRepository;

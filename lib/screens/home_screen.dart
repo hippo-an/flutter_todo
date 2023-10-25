@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
+import 'package:todo_todo/widgets/animated_floating_button.dart';
 import 'package:todo_todo/widgets/custom_bottom_navigation_bar.dart';
 import 'package:todo_todo/widgets/custom_drawer.dart';
 
@@ -22,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       initialIndex: _selectedIndex,
       child: SafeArea(
         child: Scaffold(
+          floatingActionButton: const AnimatedFloatingButton(),
           drawer: const CustomDrawer(),
           bottomNavigationBar: CustomBottomNavigationBar(
             onTap: (value) {

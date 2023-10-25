@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/core/view_models/category_view_model.dart';
 import 'package:todo_todo/archive/core/view_models/navigation_tab_provider.dart';
+import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/view/task_calendar_screen.dart';
 import 'package:todo_todo/archive/ui/view/task_list_screen.dart';
 import 'package:todo_todo/archive/ui/widgets/drawer/todo_custom_drawer.dart';

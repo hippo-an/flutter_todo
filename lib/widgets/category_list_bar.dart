@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 
 class CategoryListBar extends StatelessWidget {
@@ -11,7 +12,8 @@ class CategoryListBar extends StatelessWidget {
       child: Consumer<CategoryController>(
         builder: (context, categoryController, child) {
           final categories = categoryController.categories;
-          if (categories.isEmpty) {
+          final selectedCategory = categoryController.selectedCategory;
+          if (categories.isEmpty || selectedCategory == null) {
             return const SizedBox(
               height: 10,
               width: 10,
@@ -31,15 +33,19 @@ class CategoryListBar extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(13),
                     ),
-                    side: const BorderSide(
-                      width: 3,
-                      color: Colors.black,
-                    ),
+                    side: selectedCategory == category
+                        ? const BorderSide(
+                            width: 2,
+                            color: kWhiteColor,
+                          )
+                        : null,
                     backgroundColor: category.color,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    categoryController.updateSelectedCategoryId(category.categoryId);
+                  },
                   child: Text(category.name),
                 ),
               );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/category_controller.dart';
-import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/widgets/category_list_item.dart';
 
 class CategoryList extends StatelessWidget {

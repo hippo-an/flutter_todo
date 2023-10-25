@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/archive/core/view_models/color_picker_provider.dart';
+import 'package:todo_todo/enums.dart';
 
 class AppColorPickerScreen extends StatelessWidget {
   const AppColorPickerScreen({super.key});

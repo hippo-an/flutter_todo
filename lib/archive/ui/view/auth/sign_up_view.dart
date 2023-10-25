@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/core/services/auth_service.dart';
+import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/widgets/text_field_input.dart';
 
 import '../../../../widgets/todo_logo.dart';
