@@ -23,16 +23,18 @@ void setupLocator() {
   );
 
   locator.registerLazySingleton(
-    () => AuthController(
-      authRepository: locator<AuthRepository>(),
-      firestoreRepository: locator<UserRepository>(),
-    ),
-  );
-
-  locator.registerLazySingleton(
-    () => CategoryController(
+        () => CategoryController(
       authRepository: locator<AuthRepository>(),
       categoryRepository: locator<CategoryRepository>(),
     ),
   );
+
+  locator.registerLazySingleton(
+    () => AuthController(
+      authRepository: locator<AuthRepository>(),
+      firestoreRepository: locator<UserRepository>(),
+      categoryController: locator<CategoryController>(),
+    ),
+  );
+
 }

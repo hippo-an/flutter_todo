@@ -6,6 +6,13 @@ import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/category_repository.dart';
 import 'package:todo_todo/utils.dart';
 
+const _names = [
+  'All',
+  'Workout',
+  'Business',
+  'Study',
+];
+
 class CategoryController extends ChangeNotifier {
   final AuthRepository _authRepository;
   final CategoryRepository _categoryRepository;
@@ -16,20 +23,84 @@ class CategoryController extends ChangeNotifier {
   })  : _authRepository = authRepository,
         _categoryRepository = categoryRepository;
 
-  Future<void> createCategory(String name) async {
+  List<CategoryModel> _categories = [];
+
+  List<CategoryModel> get categories => _categories;
+
+  Future<bool> createCategory(BuildContext context, String name) async {
     try {
-      final now = DateTime.now();
-      final category = CategoryModel(
-        categoryId: uuid.generate(),
-        userId: _authRepository.currentUser.uid,
+      final category = _createCategory(
+        uid: _authRepository.currentUser.uid,
         name: name,
-        colorCode: kDefaultCategoryColorSet[0].value,
-        createdAt: now,
-        updatedAt: now,
+        sortNumber: _categories.length,
       );
 
       await _categoryRepository.createCategory(category: category);
+      await _fetchCategories();
       notifyListeners();
-    } on FirestoreException catch (e) {}
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<void> initializeForUser(String uid) async {
+
+    List<CategoryModel> createdCategories = [];
+    for (int i = 0; i < _names.length; i++) {
+      final category = _createCategory(
+          uid: uid,
+          name: _names[i],
+          isDefault: _names[i] == _names[0],
+          sortNumber: i
+      );
+
+      createdCategories.add(category);
+
+    }
+
+    for (CategoryModel category in categories) {
+      try {
+        await _categoryRepository.createCategory(category: category);
+      } catch (e) {}
+    }
+
+    try {
+      await _fetchCategories();
+    } catch (e) {}
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      _categories = await _categoryRepository
+          .fetchCategory(_authRepository.currentUser.uid);
+
+      _categories.sort((a, b) => a.sortNumber - b.sortNumber,);
+    } catch (e) {}
+  }
+
+  CategoryModel _createCategory({
+    required String uid,
+    required String name,
+    required int sortNumber,
+    bool? isDefault,
+  }) {
+    final now = DateTime.now();
+    return CategoryModel(
+      categoryId: uuid.generate(),
+      userId: uid,
+      name: name,
+      colorCode: kDefaultCategoryColorSet[0].value,
+      sortNumber: sortNumber,
+      createdAt: now,
+      updatedAt: now,
+      isDefault: isDefault ?? false,
+    );
+  }
+
+  Future<void> fetchCategoriesForInit() async {
+    await _fetchCategories();
+    notifyListeners();
   }
 }

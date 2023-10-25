@@ -46,6 +46,7 @@ class CategoryViewModel extends ChangeNotifier {
         createdAt: now,
         updatedAt: now,
         isDefault: true,
+        sortNumber: 1,
       );
       await _categoryRepository.createCategory(category: category);
       await fetchCategories();
@@ -136,6 +137,7 @@ class CategoryViewModel extends ChangeNotifier {
       colorCode: kCategoryDefaultColor.value,
       createdAt: now,
       updatedAt: now,
+      sortNumber: 0,
     );
 
     await _categoryRepository.createCategory(category: category);

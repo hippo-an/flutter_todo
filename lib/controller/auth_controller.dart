@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:todo_todo/models/user_model.dart';
 import 'package:todo_todo/common/auth_exception.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
+import 'package:todo_todo/controller/category_controller.dart';
+import 'package:todo_todo/models/user_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/user_repository.dart';
 import 'package:todo_todo/utils.dart';
@@ -17,12 +18,15 @@ enum _Field {
 class AuthController extends ChangeNotifier {
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
+  final CategoryController _categoryController;
 
   AuthController({
     required AuthRepository authRepository,
     required UserRepository firestoreRepository,
+    required CategoryController categoryController,
   })  : _authRepository = authRepository,
-        _userRepository = firestoreRepository;
+        _userRepository = firestoreRepository,
+        _categoryController = categoryController;
 
   Future<bool> signOut(BuildContext context) async {
     try {
@@ -61,6 +65,10 @@ class AuthController extends ChangeNotifier {
                     email,
                     uuid.generate(),
                   ),
+                );
+
+                await _categoryController.initializeForUser(
+                  userCredential.user!.uid,
                 );
               }
 
@@ -133,6 +141,10 @@ class AuthController extends ChangeNotifier {
                 email,
                 username,
               ),
+            );
+
+            await _categoryController.initializeForUser(
+              userCredential.user!.uid,
             );
 
             return true;

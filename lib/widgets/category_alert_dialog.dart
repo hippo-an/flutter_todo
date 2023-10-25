@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
+import 'package:todo_todo/utils.dart';
 
 class CategoryAlertDialog extends StatefulWidget {
   const CategoryAlertDialog({
@@ -52,11 +53,19 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
       _isLoading = true;
     });
 
-    await Provider.of<CategoryController>(context, listen: false)
-        .createCategory(name);
+    final success =
+        await Provider.of<CategoryController>(context, listen: false)
+            .createCategory(
+      context,
+      name,
+    );
 
     if (mounted) {
-      Navigator.of(context).pop();
+      if (success) {
+        Navigator.of(context).pop();
+      } else {
+        showSnackBar(context, 'Create category went wrong..Try again.');
+      }
     }
   }
 

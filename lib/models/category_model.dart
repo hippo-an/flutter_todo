@@ -8,6 +8,7 @@ class CategoryModel {
     required this.name,
     required this.colorCode,
     this.taskCount = 0,
+    required this.sortNumber,
     required this.createdAt,
     required this.updatedAt,
     this.categoryState = CategoryState.seen,
@@ -20,6 +21,7 @@ class CategoryModel {
   final String name;
   final int colorCode;
   final int taskCount;
+  final int sortNumber;
   final DateTime createdAt;
   final DateTime updatedAt;
   final CategoryState categoryState;
@@ -35,6 +37,7 @@ class CategoryModel {
       name: json['name'],
       colorCode: json['colorCode'] ?? 0xFFFFFFFF,
       taskCount: json['taskCount'] ?? 0,
+      sortNumber: json['sortNumber'] ?? 0,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       categoryState: CategoryState.values.byName(json['categoryState']),
@@ -50,6 +53,7 @@ class CategoryModel {
       'name': name,
       'colorCode': colorCode,
       'taskCount': taskCount,
+      'sortNumber': sortNumber,
       'createdAt': createdAt.toString(),
       'updatedAt': updatedAt.toString(),
       'categoryState': categoryState.name,
@@ -62,7 +66,7 @@ class CategoryModel {
     String? name,
     int? colorCode,
     int? taskCount,
-    int? completeCount,
+    int? sortNumber,
     DateTime? updatedAt,
     CategoryState? categoryState,
     bool? isDeleted,
@@ -74,6 +78,7 @@ class CategoryModel {
       name: name ?? this.name,
       colorCode: colorCode ?? this.colorCode,
       taskCount: taskCount ?? this.taskCount,
+      sortNumber: sortNumber ?? this.sortNumber,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       categoryState: categoryState ?? this.categoryState,

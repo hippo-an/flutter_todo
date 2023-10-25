@@ -19,4 +19,27 @@ class CategoryRepository {
       throw FirestoreException(message: e.toString());
     }
   }
+
+  Future<List<CategoryModel>> fetchCategory(String uid) async {
+    try {
+      final snap = await _firestore
+          .collection('categories')
+          .where('userId', isEqualTo: uid)
+          .get();
+
+      if (snap.docs.isNotEmpty) {
+        return snap.docs
+            .map(
+              (e) => CategoryModel.fromJson(
+                e.data(),
+              ),
+            )
+            .toList();
+      }
+
+      return [];
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
 }
