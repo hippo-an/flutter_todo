@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:todo_todo/screens/category_list_screen.dart';
 
 const _menuList = ['Manage Categories', 'Change Default Color'];
 
@@ -34,6 +36,7 @@ class CategoryBarMenuAnchor extends StatelessWidget {
         (int index) => MenuItemButton(
           onPressed: () {
             if (index == 0) {
+              context.push(CategoryListScreen.routeName);
             } else if (index == 1) {}
           },
           child: Text(_menuList[index]),

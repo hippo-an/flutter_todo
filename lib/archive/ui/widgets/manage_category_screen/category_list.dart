@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/archive/locator.dart';
-import 'package:todo_todo/archive/common/enums.dart';
+import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/archive/core/services/category_service.dart';
 import 'package:todo_todo/archive/core/view_models/base_model.dart';

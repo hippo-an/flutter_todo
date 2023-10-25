@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:todo_todo/archive/common/enums.dart';
+import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/archive/core/models/task_model.dart';
 import 'package:todo_todo/archive/core/view_models/task_view_model.dart';
 import 'package:todo_todo/archive/ui/widgets/task_list_screen/task_list_section.dart';

@@ -5,16 +5,16 @@ import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/screens/home_screen.dart';
 import 'package:todo_todo/screens/login_screen.dart';
 
-class UserLoginStream extends StatefulWidget {
+class UserLoginStreamScreen extends StatefulWidget {
 
   static const routeName = '/';
-  const UserLoginStream({super.key});
+  const UserLoginStreamScreen({super.key});
 
   @override
-  State<UserLoginStream> createState() => _UserLoginStreamState();
+  State<UserLoginStreamScreen> createState() => _UserLoginStreamScreenState();
 }
 
-class _UserLoginStreamState extends State<UserLoginStream> {
+class _UserLoginStreamScreenState extends State<UserLoginStreamScreen> {
   @override
   void initState() {
     super.initState();

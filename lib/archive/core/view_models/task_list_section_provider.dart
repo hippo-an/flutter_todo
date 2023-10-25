@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/archive/common/enums.dart';
+import 'package:todo_todo/enums.dart';
 
 class TaskListSectionProvider extends ChangeNotifier {
   bool _isPastOpen = true;

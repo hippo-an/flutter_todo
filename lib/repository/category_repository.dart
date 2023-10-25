@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
+import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
 
 class CategoryRepository {
@@ -38,6 +39,49 @@ class CategoryRepository {
       }
 
       return [];
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> deleteCategory(String categoryId) async {
+    try {
+      await _firestore.collection('categories').doc(categoryId).delete();
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> changeCategoryStar(String categoryId, bool isStared) async {
+    try {
+      await _firestore
+          .collection('categories')
+          .doc(categoryId)
+          .update({'isStared': !isStared});
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> changeHide(
+      String categoryId, CategoryState categoryState) async {
+    try {
+      await _firestore
+          .collection('categories')
+          .doc(categoryId)
+          .update({'categoryState': categoryState.name});
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> updateCategory(
+      String categoryId, String name, int colorCode) async {
+    try {
+      await _firestore.collection('categories').doc(categoryId).update({
+        'name': name,
+        'colorCode': colorCode,
+      });
     } catch (e) {
       throw FirestoreException(message: e.toString());
     }

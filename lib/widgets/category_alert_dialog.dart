@@ -69,25 +69,38 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
     }
   }
 
-  void _onUpdate() {
-    // final name = _categoryController.text.trim();
-    // if (name.isEmpty) {
-    //   _categoryController.clear();
-    //   return;
-    // }
-    //
-    // if (widget.category != null &&
-    //     name == widget.category!.name &&
-    //     _selectedColor == widget.category!.color) {
-    //   return;
-    // }
-    //
-    // locator<CategoryViewModel>().updateCategory(
-    //   widget.category!.categoryId,
-    //   name: name,
-    //   colorCode: _selectedColor,
-    // );
-    // Navigator.of(context).pop();
+  void _onUpdate() async {
+    final name = _categoryController.text.trim();
+    if (name.isEmpty) {
+      _categoryController.clear();
+      return;
+    }
+
+    if (widget.category != null &&
+        name == widget.category!.name &&
+        _selectedColor == widget.category!.color) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final bool success = await Provider.of<CategoryController>(context, listen: false)
+        .updateCategory(
+      context,
+      widget.category!.categoryId,
+      name,
+      _selectedColor
+    );
+
+    if (mounted) {
+      if (success) {
+        Navigator.of(context).pop();
+      } else {
+        showSnackBar(context, 'Update category went wrong..Try again.');
+      }
+    }
   }
 
   @override

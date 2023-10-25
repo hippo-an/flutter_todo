@@ -38,6 +38,10 @@ class FlutterTodoApp extends StatelessWidget {
             background: kBackgroundColor,
             secondary: kSecondaryColor,
           ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: kBackgroundColor,
+            elevation: 0,
+          )
         ),
         themeMode: ThemeMode.system,
       ),

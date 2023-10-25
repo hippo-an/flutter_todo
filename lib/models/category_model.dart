@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/archive/common/enums.dart';
+import 'package:todo_todo/enums.dart';
 
 class CategoryModel {
   CategoryModel({
@@ -14,6 +14,7 @@ class CategoryModel {
     this.categoryState = CategoryState.seen,
     this.isDeleted = false,
     this.isDefault = false,
+    this.isStared = false,
   });
 
   final String categoryId;
@@ -27,6 +28,7 @@ class CategoryModel {
   final CategoryState categoryState;
   final bool isDeleted;
   final bool isDefault;
+  final bool isStared;
 
   get color => Color(colorCode);
 
@@ -43,6 +45,7 @@ class CategoryModel {
       categoryState: CategoryState.values.byName(json['categoryState']),
       isDeleted: json['isDeleted'] ?? false,
       isDefault: json['isDefault'] ?? false,
+      isStared: json['isStared'] ?? false,
     );
   }
 
@@ -59,6 +62,7 @@ class CategoryModel {
       'categoryState': categoryState.name,
       'isDeleted': isDeleted,
       'isDefault': isDefault,
+      'isStared': isStared,
     };
   }
 
@@ -71,6 +75,7 @@ class CategoryModel {
     CategoryState? categoryState,
     bool? isDeleted,
     bool? isDefault,
+    bool? isStared,
   }) {
     return CategoryModel(
       categoryId: categoryId,
@@ -84,6 +89,7 @@ class CategoryModel {
       categoryState: categoryState ?? this.categoryState,
       isDeleted: isDeleted ?? this.isDeleted,
       isDefault: isDefault ?? this.isDefault,
+      isStared: isStared ?? this.isStared,
     );
   }
 

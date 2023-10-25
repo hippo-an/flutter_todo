@@ -17,51 +17,41 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CategoryController>(
-      builder: (context, categoryController, child) {
-        final categories = categoryController.categories;
-
-        return DefaultTabController(
-          length: 3,
-          initialIndex: _selectedIndex,
-          child: SafeArea(
-            child: Scaffold(
-              drawer: const CustomDrawer(),
-              bottomNavigationBar: CustomBottomNavigationBar(
-                onTap: (value) {
-                  if (value != _selectedIndex) {
-                    setState(() {
-                      _selectedIndex = value;
-                    });
-                  }
-                },
-              ),
-              body: IndexedStack(
-                index: _selectedIndex,
-                children: [
-                  categories.isEmpty
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : const TaskListScreen(),
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    child: const Center(
-                      child: Text('2'),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    child: const Center(
-                      child: Text('3'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+    return DefaultTabController(
+      length: 3,
+      initialIndex: _selectedIndex,
+      child: SafeArea(
+        child: Scaffold(
+          drawer: const CustomDrawer(),
+          bottomNavigationBar: CustomBottomNavigationBar(
+            onTap: (value) {
+              if (value != _selectedIndex) {
+                setState(() {
+                  _selectedIndex = value;
+                });
+              }
+            },
           ),
-        );
-      },
+          body: IndexedStack(
+            index: _selectedIndex,
+            children: [
+              const TaskListScreen(),
+              Container(
+                padding: const EdgeInsets.all(20),
+                child: const Center(
+                  child: Text('2'),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(20),
+                child: const Center(
+                  child: Text('3'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

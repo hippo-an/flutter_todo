@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
+import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/category_repository.dart';
@@ -25,7 +26,14 @@ class CategoryController extends ChangeNotifier {
 
   List<CategoryModel> _categories = [];
 
-  List<CategoryModel> get categories => _categories;
+  List<CategoryModel> get categories => _categories.toList();
+
+  List<CategoryModel> get categoriesWithoutDefault =>
+      _categories.where((category) => !category.isDefault).toList();
+
+  List<CategoryModel> get staredCategories => _categories
+      .where((category) => !category.isDefault && category.isStared)
+      .toList();
 
   Future<bool> createCategory(BuildContext context, String name) async {
     try {
@@ -36,12 +44,13 @@ class CategoryController extends ChangeNotifier {
       );
 
       await _categoryRepository.createCategory(category: category);
-      await _fetchCategories();
-      notifyListeners();
       return true;
     } on FirestoreException catch (e) {
       showSnackBar(context, e.toString());
       return false;
+    } finally {
+      await _fetchCategories();
+      notifyListeners();
     }
   }
 
@@ -61,22 +70,79 @@ class CategoryController extends ChangeNotifier {
       } catch (e) {}
     }
 
-    try {
-      await _fetchCategories();
-    } catch (e) {}
-
+    await _fetchCategories();
     notifyListeners();
   }
 
-  Future<void> _fetchCategories() async {
-    try {
-      _categories = await _categoryRepository
-          .fetchCategory(_authRepository.currentUser.uid);
+  Future<void> fetchCategoriesForInit() async {
+    await _fetchCategories();
+    notifyListeners();
+  }
 
-      _categories.sort(
-        (a, b) => a.sortNumber - b.sortNumber,
+  Future<void> deleteCategory(BuildContext context, String categoryId) async {
+    try {
+      await _categoryRepository.deleteCategory(categoryId);
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+    } finally {
+      await _fetchCategories();
+      notifyListeners();
+    }
+  }
+
+  Future<void> changeCategoryStar(
+      BuildContext context, String categoryId, bool isStared) async {
+    try {
+      await _categoryRepository.changeCategoryStar(categoryId, isStared);
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+    } finally {
+      await _fetchCategories();
+      notifyListeners();
+    }
+  }
+
+  Future<void> changeHide(
+    BuildContext context,
+    String categoryId,
+    CategoryState categoryState,
+  ) async {
+    try {
+      await _categoryRepository.changeHide(
+        categoryId,
+        categoryState == CategoryState.seen
+            ? CategoryState.hide
+            : CategoryState.seen,
       );
-    } catch (e) {}
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+    } finally {
+      await _fetchCategories();
+      notifyListeners();
+    }
+  }
+
+  Future<bool> updateCategory(
+    BuildContext context,
+    String categoryId,
+    String name,
+    Color selectedColor,
+  ) async {
+    try {
+      await _categoryRepository.updateCategory(
+        categoryId,
+        name,
+        selectedColor.value,
+      );
+
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    } finally {
+      await _fetchCategories();
+      notifyListeners();
+    }
   }
 
   CategoryModel _createCategory({
@@ -98,8 +164,14 @@ class CategoryController extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchCategoriesForInit() async {
-    await _fetchCategories();
-    notifyListeners();
+  Future<void> _fetchCategories() async {
+    try {
+      _categories = await _categoryRepository
+          .fetchCategory(_authRepository.currentUser.uid);
+
+      _categories.sort(
+        (a, b) => a.sortNumber - b.sortNumber,
+      );
+    } catch (e) {}
   }
 }

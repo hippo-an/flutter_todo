@@ -10,11 +10,10 @@ class DrawerCategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CategoryController>(
       builder: (context, categoryController, child) {
-        final categories = categoryController.categories;
+        final categories = categoryController.categories.take(8);
         return Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
-            onExpansionChanged: (value) {},
             initiallyExpanded: false,
             leading: Icon(
               Icons.category,
