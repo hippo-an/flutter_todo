@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/common/auth_exception.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
 import 'package:todo_todo/controller/category_controller.dart';
@@ -199,6 +200,7 @@ class AuthController extends ChangeNotifier {
       username: username,
       createdAt: now,
       updatedAt: now,
+      colorCode: kDefaultCategoryColorSet[0].value,
     );
   }
 

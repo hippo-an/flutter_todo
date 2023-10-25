@@ -46,19 +46,14 @@ class CategoryController extends ChangeNotifier {
   }
 
   Future<void> initializeForUser(String uid) async {
-
-    List<CategoryModel> createdCategories = [];
-    for (int i = 0; i < _names.length; i++) {
-      final category = _createCategory(
+    final categories = List<CategoryModel>.generate(
+      _names.length,
+      (index) => _createCategory(
           uid: uid,
-          name: _names[i],
-          isDefault: _names[i] == _names[0],
-          sortNumber: i
-      );
-
-      createdCategories.add(category);
-
-    }
+          name: _names[index],
+          isDefault: _names[index] == _names[0],
+          sortNumber: index),
+    );
 
     for (CategoryModel category in categories) {
       try {
@@ -69,6 +64,8 @@ class CategoryController extends ChangeNotifier {
     try {
       await _fetchCategories();
     } catch (e) {}
+
+    notifyListeners();
   }
 
   Future<void> _fetchCategories() async {
@@ -76,7 +73,9 @@ class CategoryController extends ChangeNotifier {
       _categories = await _categoryRepository
           .fetchCategory(_authRepository.currentUser.uid);
 
-      _categories.sort((a, b) => a.sortNumber - b.sortNumber,);
+      _categories.sort(
+        (a, b) => a.sortNumber - b.sortNumber,
+      );
     } catch (e) {}
   }
 

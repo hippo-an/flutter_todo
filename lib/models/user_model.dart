@@ -5,6 +5,7 @@ class UserModel {
   final String userId;
   final String username;
   final String identity;
+  final int colorCode;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -12,6 +13,7 @@ class UserModel {
     required this.userId,
     required this.username,
     required this.identity,
+    required this.colorCode,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -21,6 +23,7 @@ class UserModel {
       userId: map['userId'],
       username: map['username'],
       identity: map['identity'],
+      colorCode: map['colorCode'],
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );
@@ -31,6 +34,7 @@ class UserModel {
       'userId': userId,
       'username': username,
       'identity': identity,
+      'colorCode': colorCode,
       'createdAt': createdAt.toString(),
       'updatedAt': updatedAt.toString(),
     };

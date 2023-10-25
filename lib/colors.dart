@@ -6,12 +6,12 @@ const Color kSecondaryColor = Color.fromARGB(253, 122, 118, 118);
 const Color kWhiteColor = Colors.white;
 
 const kDefaultCategoryColorSet = <Color>[
-  kColorScheme,
-  Color.fromARGB(255, 217, 122, 122),
-  Color.fromARGB(255, 217, 158, 122),
-  Color.fromARGB(255, 217, 195, 122),
-  Color.fromARGB(255, 135, 217, 122),
-  Color.fromARGB(255, 122, 177, 217),
-  Color.fromARGB(255, 122, 138, 217),
-  Color.fromARGB(255, 193, 122, 217),
+  Color.fromARGB(255, 89, 128, 85),
+  Color.fromARGB(255, 128, 85, 85),
+  Color.fromARGB(255, 128, 104, 85),
+  Color.fromARGB(255, 128, 124, 85),
+  Color.fromARGB(255, 85, 128, 94),
+  Color.fromARGB(255, 85, 107, 128),
+  Color.fromARGB(255, 85, 91, 128),
+  Color.fromARGB(255, 114, 85, 128),
 ];
