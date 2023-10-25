@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/archive/core/models/sub_task_form_model.dart';
+import 'package:todo_todo/colors.dart';
+import 'package:todo_todo/models/sub_task_form_model.dart';
 
 class SubTaskForm extends StatefulWidget {
   const SubTaskForm({
@@ -23,7 +24,8 @@ class _SubTaskFormState extends State<SubTaskForm> {
 
   @override
   void initState() {
-    _textEditingController = TextEditingController(text: widget.subTaskFormModel.name);
+    _textEditingController =
+        TextEditingController(text: widget.subTaskFormModel.name);
     _isChecked = widget.subTaskFormModel.isDone;
     super.initState();
   }
@@ -39,10 +41,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       key: ValueKey<String>(widget.subTaskFormModel.subTaskId),
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.05,
+      height: MediaQuery.of(context).size.height * 0.05,
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
@@ -68,7 +67,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
               maxLength: 30,
               maxLines: 1,
               decoration: const InputDecoration(
-                hintText: 'New subtask max 30 length',
+                hintText: 'Input new subtask',
                 hintStyle: TextStyle(
                   fontSize: 14,
                 ),
@@ -79,8 +78,9 @@ class _SubTaskFormState extends State<SubTaskForm> {
                     ? TextDecoration.lineThrough
                     : null,
                 color: _isChecked && _textEditingController.text.isNotEmpty
-                    ? Colors.grey
-                    : Colors.black,
+                    ? kGreyColor
+                    : kWhiteColor,
+                fontSize: 14,
               ),
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
@@ -92,9 +92,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
                 }
               },
               validator: (String? value) {
-                if (value == null || value
-                    .trim()
-                    .isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Fill the blank';
                 }
 
@@ -110,7 +108,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
               Icons.close_sharp,
               size: 12,
             ),
-          )
+          ),
         ],
       ),
     );

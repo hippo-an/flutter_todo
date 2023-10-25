@@ -44,6 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> _signUpWithEmail() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     setState(() {
       _isEmailLoading = true;
     });
@@ -80,79 +81,82 @@ class _SignUpScreenState extends State<SignUpScreen> {
           height: double.infinity,
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const TodoLogo(),
-                Column(
-                  children: [
-                    TextFieldInput(
-                      controller: _emailController,
-                      label: 'Email',
-                      textInputType: TextInputType.emailAddress,
-                      isPassword: false,
-                    ),
-                    const SizedBox(height: 8),
-                    TextFieldInput(
-                      controller: _passwordController,
-                      label: 'Password',
-                      textInputType: TextInputType.text,
-                      isPassword: _obscure,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscure ? Icons.visibility : Icons.visibility_off,
-                          color: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
+          child: AbsorbPointer(
+            absorbing: _isEmailLoading,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const TodoLogo(),
+                  Column(
+                    children: [
+                      TextFieldInput(
+                        controller: _emailController,
+                        label: 'Email',
+                        textInputType: TextInputType.emailAddress,
+                        isPassword: false,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFieldInput(
+                        controller: _passwordController,
+                        label: 'Password',
+                        textInputType: TextInputType.text,
+                        isPassword: _obscure,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscure ? Icons.visibility : Icons.visibility_off,
+                            color: Theme
+                                .of(context)
+                                .colorScheme
+                                .primary,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscure = !_obscure;
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscure = !_obscure;
-                          });
-                        },
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextFieldInput(
-                      controller: _usernameController,
-                      label: 'Username',
-                      textInputType: TextInputType.text,
-                      isPassword: false,
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-                _isEmailLoading
-                    ? const CircularProgressIndicator()
-                    : SizedBox(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  child: ElevatedButton(
-                    onPressed: _signUpWithEmail,
-                    child: const Text('Sign Up'),
+                      const SizedBox(height: 8),
+                      TextFieldInput(
+                        controller: _usernameController,
+                        label: 'Username',
+                        textInputType: TextInputType.text,
+                        isPassword: false,
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Already have account?',
-                      style: TextStyle(
-                        color: Colors.grey,
+                  _isEmailLoading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    child: ElevatedButton(
+                      onPressed: _signUpWithEmail,
+                      child: const Text('Sign Up'),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Already have account?',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                          foregroundColor: Colors.blueAccent),
-                      onPressed: _toLoginPage,
-                      child: const Text('Login'),
-                    ),
-                  ],
-                ),
-              ],
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            foregroundColor: Colors.blueAccent),
+                        onPressed: _toLoginPage,
+                        child: const Text('Login'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

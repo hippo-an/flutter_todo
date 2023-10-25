@@ -24,11 +24,11 @@ class NavigationView extends StatefulWidget {
 class _NavigationViewState extends State<NavigationView> {
   @override
   void initState() {
-    super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) => _initCategoryAndTask(),
     );
+    super.initState();
   }
 
   Future<void> _initCategoryAndTask() async {

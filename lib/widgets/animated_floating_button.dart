@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_todo/widgets/task_bottom_sheet.dart';
 
 class AnimatedFloatingButton extends StatelessWidget {
   const AnimatedFloatingButton({super.key});
@@ -16,12 +17,12 @@ class AnimatedFloatingButton extends StatelessWidget {
       child: Material(     // Replace this child with your own
         elevation: 8,
         shape: const CircleBorder(),
-        child: InkWell(
+        child: GestureDetector(
           onTap: () {
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (context) => Container(),
+              builder: (context) => TaskBottomSheet(),
             );
           },
           child: Container(

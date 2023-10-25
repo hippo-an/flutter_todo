@@ -27,24 +27,36 @@ class CategoryController extends ChangeNotifier {
   List<CategoryModel> _categories = [];
   String _selectedCategoryId = '';
 
-  List<CategoryModel> get categories => _categories.toList();
+  List<CategoryModel> get categories => _categories
+      .where((category) => category.categoryState == CategoryState.seen)
+      .toList();
 
   List<CategoryModel> get categoriesWithoutDefault =>
       _categories.where((category) => !category.isDefault).toList();
 
   List<CategoryModel> get staredCategories => _categories
-      .where((category) => !category.isDefault && category.isStared)
+      .where((category) =>
+          !category.isDefault &&
+          category.categoryState == CategoryState.seen &&
+          category.isStared)
+      .toList();
+
+  List<CategoryModel> get seenCategoriesWithoutDefault => _categories
+      .where((category) =>
+          !category.isDefault && category.categoryState == CategoryState.seen)
       .toList();
 
   CategoryModel? get selectedCategory {
     try {
       return _categories.firstWhere((category) =>
-      category.categoryState == CategoryState.seen &&
+          category.categoryState == CategoryState.seen &&
           category.categoryId == _selectedCategoryId);
     } catch (e) {
       return _categories[0];
     }
   }
+
+  CategoryModel get defaultCategory => _categories[0];
 
   Future<bool> createCategory(BuildContext context, String name) async {
     try {
@@ -182,7 +194,15 @@ class CategoryController extends ChangeNotifier {
           .fetchCategory(_authRepository.currentUser.uid);
 
       _categories.sort(
-        (a, b) => a.sortNumber - b.sortNumber,
+        (a, b) {
+          if (a.isDefault) {
+            return 0;
+          } else if (b.isDefault) {
+            return 1;
+          } else {
+            return a.createdAt.compareTo(b.createdAt);
+          }
+        },
       );
     } catch (e) {}
   }
@@ -190,5 +210,30 @@ class CategoryController extends ChangeNotifier {
   void updateSelectedCategoryId(String categoryId) {
     _selectedCategoryId = categoryId;
     notifyListeners();
+  }
+
+  CategoryModel? findCategory(String categoryId) {
+    try {
+      return _categories.firstWhere((category) =>
+          category.categoryState == CategoryState.seen &&
+          category.categoryId == categoryId);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> taskCountIncrease(BuildContext context, {required String categoryId, required int value}) async {
+    try {
+      await _categoryRepository.taskCountIncrease(
+        categoryId: categoryId,
+        value: value,
+      );
+
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+    } finally {
+      await _fetchCategories();
+      notifyListeners();
+    }
   }
 }

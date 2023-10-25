@@ -12,14 +12,15 @@ class CategoryListBar extends StatelessWidget {
       child: Consumer<CategoryController>(
         builder: (context, categoryController, child) {
           final categories = categoryController.categories;
-          final selectedCategory = categoryController.selectedCategory;
-          if (categories.isEmpty || selectedCategory == null) {
+          if (categories.isEmpty) {
             return const SizedBox(
               height: 10,
               width: 10,
               child: CircularProgressIndicator(),
             );
           }
+
+          final selectedCategory = categoryController.selectedCategory;
 
           return ListView.builder(
             itemCount: categories.length,

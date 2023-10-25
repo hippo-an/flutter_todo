@@ -30,13 +30,13 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
 
   @override
   void initState() {
-    super.initState();
     _defaultCategory = locator<CategoryViewModel>().defaultCategory;
     _category = locator<CategoryViewModel>().selectedCategory;
     _selectedDate = DateTime.now();
     _subTaskForms = [];
     _formKey = GlobalKey<FormState>();
     _taskNameController = TextEditingController();
+    super.initState();
   }
 
   @override

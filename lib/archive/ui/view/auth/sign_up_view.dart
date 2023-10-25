@@ -23,10 +23,10 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   void initState() {
-    super.initState();
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    super.initState();
   }
 
   @override

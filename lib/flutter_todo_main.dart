@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/auth_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
+import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/firebase_options.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/router.dart';
@@ -28,6 +29,9 @@ class FlutterTodoApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => locator<CategoryController>(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => locator<TaskController>(),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: router,
@@ -38,10 +42,29 @@ class FlutterTodoApp extends StatelessWidget {
             background: kBackgroundColor,
             secondary: kSecondaryColor,
           ),
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             backgroundColor: kBackgroundColor,
             elevation: 0,
-          )
+          ),
+          datePickerTheme: DatePickerThemeData(
+            backgroundColor: kWhiteColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: const BorderSide(
+                  color: kWhiteColor,
+                ),
+              ),
+              textStyle: const TextStyle(
+                color: kWhiteColor,
+              ),
+            ),
+          ),
         ),
         themeMode: ThemeMode.system,
       ),

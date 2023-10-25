@@ -34,7 +34,6 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
 
   @override
   void initState() {
-    super.initState();
     _categoryController = TextEditingController();
 
     if (widget.isEditMode) {
@@ -42,6 +41,7 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
     }
 
     _selectedColor = widget.category?.color ?? kCategoryDefaultColor;
+    super.initState();
   }
 
   @override

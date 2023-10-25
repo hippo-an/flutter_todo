@@ -17,10 +17,10 @@ class UserLoginStreamScreen extends StatefulWidget {
 class _UserLoginStreamScreenState extends State<UserLoginStreamScreen> {
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
           (timeStamp) async => await _fetchCategory(),
     );
+    super.initState();
   }
   Future<void> _fetchCategory() async {
     print('fetch category @@@@@@@@@@@@@@@@@@@@@@@@@@');

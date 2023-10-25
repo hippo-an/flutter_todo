@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo_todo/controller/auth_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
+import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/category_repository.dart';
+import 'package:todo_todo/repository/task_repository.dart';
 import 'package:todo_todo/repository/user_repository.dart';
 
 final locator = GetIt.I;
@@ -23,7 +25,11 @@ void setupLocator() {
   );
 
   locator.registerLazySingleton(
-        () => CategoryController(
+    () => TaskRepository(firestore: FirebaseFirestore.instance),
+  );
+
+  locator.registerLazySingleton(
+    () => CategoryController(
       authRepository: locator<AuthRepository>(),
       categoryRepository: locator<CategoryRepository>(),
     ),
@@ -37,4 +43,10 @@ void setupLocator() {
     ),
   );
 
+  locator.registerLazySingleton(
+    () => TaskController(
+      taskRepository: locator<TaskRepository>(),
+      categoryController: locator<CategoryController>(),
+    ),
+  );
 }

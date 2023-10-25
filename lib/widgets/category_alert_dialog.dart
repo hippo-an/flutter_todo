@@ -49,6 +49,8 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
       return;
     }
 
+    FocusManager.instance.primaryFocus?.unfocus();
+
     setState(() {
       _isLoading = true;
     });
@@ -70,6 +72,8 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
   }
 
   void _onUpdate() async {
+
+
     final name = _categoryController.text.trim();
     if (name.isEmpty) {
       _categoryController.clear();
@@ -82,17 +86,16 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
       return;
     }
 
+    FocusManager.instance.primaryFocus?.unfocus();
+
     setState(() {
       _isLoading = true;
     });
 
-    final bool success = await Provider.of<CategoryController>(context, listen: false)
-        .updateCategory(
-      context,
-      widget.category!.categoryId,
-      name,
-      _selectedColor
-    );
+    final bool success =
+        await Provider.of<CategoryController>(context, listen: false)
+            .updateCategory(
+                context, widget.category!.categoryId, name, _selectedColor);
 
     if (mounted) {
       if (success) {
@@ -105,113 +108,110 @@ class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      title: Text(
-        widget.isEditMode ? 'Edit category' : 'New category',
-      ),
-      titleTextStyle: const TextStyle(
-        fontSize: 18,
-        color: kWhiteColor,
-        fontWeight: FontWeight.bold,
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            autofocus: !widget.isEditMode,
-            controller: _categoryController,
-            maxLines: 1,
-            maxLength: 30,
-            expands: false,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              floatingLabelAlignment: FloatingLabelAlignment.start,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.secondary,
+    return AbsorbPointer(
+      absorbing: _isLoading,
+      child: AlertDialog(
+        elevation: 1,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        title: Text(
+          widget.isEditMode ? 'Edit category' : 'New category',
+        ),
+        titleTextStyle: const TextStyle(
+          fontSize: 18,
+          color: kWhiteColor,
+          fontWeight: FontWeight.bold,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              autofocus: !widget.isEditMode,
+              controller: _categoryController,
+              maxLines: 1,
+              maxLength: 30,
+              expands: false,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                floatingLabelAlignment: FloatingLabelAlignment.start,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ),
+                labelText: 'Add Category',
+                labelStyle: const TextStyle(fontSize: 12),
               ),
-              labelText: 'Add Category',
-              labelStyle: const TextStyle(fontSize: 12),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          if (widget.isEditMode)
-            Row(
-              children: kDefaultCategoryColorSet
-                  .map(
-                    (color) => GestureDetector(
-                      onTap: () {
-                        if (_selectedColor == color) {
-                          return;
-                        }
+            const SizedBox(
+              height: 10,
+            ),
+            if (widget.isEditMode)
+              Row(
+                children: kDefaultCategoryColorSet
+                    .map(
+                      (color) => GestureDetector(
+                        onTap: () {
+                          if (_selectedColor == color) {
+                            return;
+                          }
 
-                        setState(() {
-                          _selectedColor = color;
-                        });
-                      },
-                      child: SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: _selectedColor.value == color.value
-                                      ? 3
-                                      : 0),
-                              shape: BoxShape.circle,
-                            ),
-                            child: CircleAvatar(
-                              backgroundColor: color,
+                          setState(() {
+                            _selectedColor = color;
+                          });
+                        },
+                        child: SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: _selectedColor.value == color.value
+                                        ? 3
+                                        : 0),
+                                shape: BoxShape.circle,
+                              ),
+                              child: CircleAvatar(
+                                backgroundColor: color,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
-            ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: _isLoading
-              ? () {}
-              : () {
-                  Navigator.of(context).pop();
-                },
-          child: const Text(
-            'Cancel',
-            style: TextStyle(
-              color: kWhiteColor,
+                    )
+                    .toList(),
+              ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: kWhiteColor,
+              ),
             ),
           ),
-        ),
-        ElevatedButton(
-          onPressed: _isLoading
-              ? null
-              : widget.isEditMode
-                  ? _onUpdate
-                  : _onCreate,
-          child: _isLoading
-              ? const SizedBox(
-                  height: 10,
-                  width: 10,
-                  child: CircularProgressIndicator(
-                    color: kWhiteColor,
-                  ),
-                )
-              : const Text("Save"),
-        ),
-      ],
+          ElevatedButton(
+            onPressed: widget.isEditMode ? _onUpdate : _onCreate,
+            child: _isLoading
+                ? const SizedBox(
+                    height: 10,
+                    width: 10,
+                    child: CircularProgressIndicator(
+                      color: kWhiteColor,
+                    ),
+                  )
+                : const Text("Save"),
+          ),
+        ],
+      ),
     );
   }
 }

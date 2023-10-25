@@ -44,7 +44,6 @@ class _TaskDetailState extends State<TaskDetail> {
 
   @override
   void initState() {
-    super.initState();
     _isDone = widget.task.isDone;
     _defaultCategory = locator<CategoryViewModel>().defaultCategory;
     _taskNameController = TextEditingController(text: widget.task.taskName);
@@ -56,6 +55,7 @@ class _TaskDetailState extends State<TaskDetail> {
     _subTaskFormList = [];
     _imagePicker = ImagePicker();
     _attachment = widget.task.attachment;
+    super.initState();
   }
 
   @override

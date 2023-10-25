@@ -54,10 +54,10 @@ class CategoryRepository {
 
   Future<void> changeCategoryStar(String categoryId, bool isStared) async {
     try {
-      await _firestore
-          .collection('categories')
-          .doc(categoryId)
-          .update({'isStared': !isStared});
+      await _firestore.collection('categories').doc(categoryId).update({
+        'isStared': !isStared,
+        'updatedAt': DateTime.now().toString(),
+      });
     } catch (e) {
       throw FirestoreException(message: e.toString());
     }
@@ -66,10 +66,10 @@ class CategoryRepository {
   Future<void> changeHide(
       String categoryId, CategoryState categoryState) async {
     try {
-      await _firestore
-          .collection('categories')
-          .doc(categoryId)
-          .update({'categoryState': categoryState.name});
+      await _firestore.collection('categories').doc(categoryId).update({
+        'categoryState': categoryState.name,
+        'updatedAt': DateTime.now().toString(),
+      });
     } catch (e) {
       throw FirestoreException(message: e.toString());
     }
@@ -81,6 +81,18 @@ class CategoryRepository {
       await _firestore.collection('categories').doc(categoryId).update({
         'name': name,
         'colorCode': colorCode,
+        'updatedAt': DateTime.now().toString(),
+      });
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> taskCountIncrease({required String categoryId, required int value}) async {
+    try {
+      await _firestore.collection('categories').doc(categoryId).update({
+        'taskCount': FieldValue.increment(value),
+        'updatedAt': DateTime.now().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
