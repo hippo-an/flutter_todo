@@ -4,17 +4,21 @@ import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/models/sub_task_model.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/task_repository.dart';
 import 'package:todo_todo/utils.dart';
 
 class TaskController extends ChangeNotifier {
   final TaskRepository _taskRepository;
+  final AuthRepository _authRepository;
   final CategoryController _categoryController;
 
   TaskController({
     required TaskRepository taskRepository,
+    required AuthRepository authRepository,
     required CategoryController categoryController,
   })  : _taskRepository = taskRepository,
+        _authRepository = authRepository,
         _categoryController = categoryController;
 
   List<TaskModel> _tasks = [];
@@ -82,6 +86,7 @@ class TaskController extends ChangeNotifier {
       taskId: uuid.generate(),
       taskName: taskName,
       categoryId: categoryId,
+      uid: _authRepository.currentUser.uid,
       dueDate: dueDate,
       createdAt: now,
       updatedAt: now,

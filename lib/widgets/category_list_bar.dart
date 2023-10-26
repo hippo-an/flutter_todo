@@ -15,8 +15,7 @@ class CategoryListBar extends StatelessWidget {
           if (categories.isEmpty) {
             return const SizedBox(
               height: 10,
-              width: 10,
-              child: CircularProgressIndicator(),
+              child: LinearProgressIndicator(),
             );
           }
 

@@ -46,6 +46,7 @@ void setupLocator() {
   locator.registerLazySingleton(
     () => TaskController(
       taskRepository: locator<TaskRepository>(),
+      authRepository: locator<AuthRepository>(),
       categoryController: locator<CategoryController>(),
     ),
   );

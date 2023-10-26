@@ -23,7 +23,7 @@ class SubTaskModel {
     return SubTaskModel(
       subTaskId: json['subTaskId'],
       name: json['name'],
-      isDone: bool.tryParse(json['isDone']) ?? false,
+      isDone: json['isDone']
     );
   }
 

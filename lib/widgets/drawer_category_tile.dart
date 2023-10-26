@@ -27,30 +27,35 @@ class DrawerCategoryTile extends StatelessWidget {
                     const CategoryAddButton(),
                   ]
                 : [
-                    ...categories
-                        .map(
-                          (category) => Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.background,
-                            ),
-                            // key: UniqueKey(),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: InkWell(
-                              onTap: () {},
-                              child: ListTile(
-                                isThreeLine: false,
-                                title: Text(
-                                  category.name,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                trailing: Text('${category.taskCount}'),
+                    ...categories.map(
+                      (category) {
+                        int count = category.taskCount;
+                        if (category.isDefault) {
+                          count = categories
+                              .map((e) => e.taskCount)
+                              .reduce((value, element) => value + element);
+                        }
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: InkWell(
+                            onTap: () {},
+                            child: ListTile(
+                              isThreeLine: false,
+                              title: Text(
+                                category.name,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
                               ),
+                              trailing: Text('$count'),
                             ),
                           ),
-                        )
-                        .toList(),
+                        );
+                      },
+                    ).toList(),
                     const CategoryAddButton(),
                   ],
           ),

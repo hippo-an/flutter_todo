@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:todo_todo/enums.dart';
@@ -17,6 +16,7 @@ class TaskModel {
   final bool stared;
   final DateTime? completedDate;
   final String categoryId;
+  final String uid;
   final DateTime? dueDate;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -37,6 +37,7 @@ class TaskModel {
     this.stared = false,
     this.completedDate,
     required this.categoryId,
+    required this.uid,
     this.dueDate,
     required this.createdAt,
     required this.updatedAt,
@@ -55,6 +56,7 @@ class TaskModel {
       priority: Priority.values.byName(mapObject['priority']),
       progression: Progression.values.byName(mapObject['progression']),
       categoryId: mapObject['categoryId'],
+      uid: mapObject['uid'],
       isDone: mapObject['isDone'] ?? false,
       isDeleted: mapObject['isDeleted'] ?? false,
       stared: mapObject['stared'] ?? false,
@@ -62,11 +64,11 @@ class TaskModel {
       completedDate: DateTime.tryParse(mapObject['completedDate']),
       createdAt: DateTime.parse(mapObject['createdAt']),
       updatedAt: DateTime.parse(mapObject['updatedAt']),
-      deletedAt: DateTime.parse(mapObject['deletedAt']),
+      deletedAt: DateTime.tryParse(mapObject['deletedAt']),
       subTasks: List<SubTaskModel>.from(
-        json.decode(mapObject['subTasks']).map(
-              (model) => SubTaskModel.fromJson(model),
-            ),
+        mapObject['subTasks'].map(
+          (model) => SubTaskModel.fromJson(model),
+        ),
       ),
     );
   }
@@ -81,6 +83,7 @@ class TaskModel {
       'priority': priority.name,
       'progression': progression.name,
       'categoryId': categoryId,
+      'uid': uid,
       'isDone': isDone,
       'isDeleted': isDeleted,
       'stared': stared,
@@ -89,7 +92,7 @@ class TaskModel {
       'createdAt': createdAt.toString(),
       'updatedAt': updatedAt.toString(),
       'deletedAt': deletedAt.toString(),
-      'subTasks': jsonEncode(subTasks),
+      'subTasks': subTasks.map((e) => e.toJson()),
     };
   }
 
@@ -122,8 +125,10 @@ class TaskModel {
       isDone: isDone ?? this.isDone,
       isDeleted: isDeleted ?? this.isDeleted,
       stared: stared ?? this.stared,
-      completedDate: completedDate != null ? completedDate() : this.completedDate,
+      completedDate:
+          completedDate != null ? completedDate() : this.completedDate,
       categoryId: categoryId ?? this.categoryId,
+      uid: uid,
       dueDate: dueDate != null ? dueDate() : this.dueDate,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -160,13 +165,13 @@ class TaskModel {
   }
 
   @override
-  int get hashCode =>
-      taskId.hashCode ^ categoryId.hashCode ^ isDone.hashCode;
+  int get hashCode => taskId.hashCode ^ uid.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is TaskModel &&
           runtimeType == other.runtimeType &&
-          taskId == other.taskId;
+          taskId == other.taskId &&
+          uid == other.uid;
 }

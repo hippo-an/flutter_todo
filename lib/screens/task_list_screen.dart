@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/widgets/category_bar.dart';
+import 'package:todo_todo/widgets/task_list_widget.dart';
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});
@@ -11,6 +12,8 @@ class TaskListScreen extends StatelessWidget {
       child: const Column(
         children: [
           CategoryBar(),
+          SizedBox(height: 10),
+          TaskListWidget(),
         ],
       ),
     );

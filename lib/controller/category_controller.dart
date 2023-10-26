@@ -52,7 +52,7 @@ class CategoryController extends ChangeNotifier {
           category.categoryState == CategoryState.seen &&
           category.categoryId == _selectedCategoryId);
     } catch (e) {
-      return _categories[0];
+      return _categories.isNotEmpty ? _categories[0] : null;
     }
   }
 
