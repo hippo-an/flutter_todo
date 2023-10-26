@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/widgets/animated_check_box.dart';
 
 enum TaskItemState { stared, deleted, normal, completed }
 
@@ -94,17 +95,16 @@ class TaskListItem extends StatelessWidget {
             ),
           ),
           if (taskItemState == TaskItemState.normal)
-            Checkbox(
+            AnimatedCheckBox(
               value: task.isDone,
-              onChanged: (value) async {
-                await Provider.of<TaskController>(context, listen: false).updateTaskToDone(
+              onChanged: (bool value) async {
+                await Provider.of<TaskController>(context, listen: false)
+                    .updateTaskToDone(
                   context,
                   taskId: task.taskId,
                   done: value ?? false,
                 );
               },
-              shape: const CircleBorder(),
-              activeColor: Colors.grey,
             ),
           if (taskItemState == TaskItemState.stared)
             IconButton(
@@ -177,7 +177,8 @@ class TaskListItem extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
+          SizedBox(width: 16),
         ],
       ),
     );

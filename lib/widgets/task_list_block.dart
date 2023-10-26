@@ -3,6 +3,7 @@ import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/controller/task_tab_open_controller.dart';
 import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/widgets/animated_arrow_button.dart';
 import 'package:todo_todo/widgets/slidable_task_list_item.dart';
 
 class TaskListBlock extends StatefulWidget {
@@ -38,6 +39,9 @@ class _TaskListBlockState extends State<TaskListBlock> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              padding: const EdgeInsets.all(4),
               onPressed: () {
                 setState(() {
                   _open = locator<TaskTabOpenController>()
@@ -45,9 +49,18 @@ class _TaskListBlockState extends State<TaskListBlock> {
                 });
               },
               icon: _open
-                  ? const Icon(Icons.arrow_drop_up_outlined)
-                  : const Icon(Icons.arrow_drop_down_outlined),
+                  ? const Icon(Icons.arrow_drop_up)
+                  : const Icon(Icons.arrow_drop_down),
             ),
+            // AnimatedArrowButton(
+            //   onTap: () {
+            //     setState(() {
+            //       _open = locator<TaskTabOpenController>()
+            //           .changeState(widget.taskListBlockState);
+            //     });
+            //   },
+            //   open: _open,
+            // ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
