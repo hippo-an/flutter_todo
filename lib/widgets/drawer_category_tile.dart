@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/widgets/category_add_button.dart';
 
@@ -36,13 +37,24 @@ class DrawerCategoryTile extends StatelessWidget {
                               .reduce((value, element) => value + element);
                         }
 
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: InkWell(
-                            onTap: () {},
+                        return InkWell(
+                          onTap: () {
+                            final controller = Provider.of<CategoryController>(
+                                context,
+                                listen: false);
+                            if (controller.selectedCategory != category) {
+                              controller.updateSelectedCategoryId(
+                                  category.categoryId);
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          splashColor: kGreyColor,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background,
+                            ),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
                             child: ListTile(
                               isThreeLine: false,
                               title: Text(

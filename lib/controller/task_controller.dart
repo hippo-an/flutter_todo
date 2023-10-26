@@ -48,8 +48,8 @@ class TaskController extends ChangeNotifier {
       showSnackBar(context, e.toString());
       return false;
     } finally {
-      await _fetchTask(task.taskId);
-      notifyListeners();
+      // await _fetchTask(task.taskId);
+      // notifyListeners();
     }
   }
 
@@ -92,5 +92,66 @@ class TaskController extends ChangeNotifier {
       updatedAt: now,
       subTasks: subtasks,
     );
+  }
+
+  Future<bool> updateTaskToDone(BuildContext context,
+      {required String taskId, required bool done}) async {
+    try {
+      await _taskRepository.updateTaskToDone(taskId: taskId, isDone: done);
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> deleteTask(
+    BuildContext context, {
+    required String taskId,
+    required String categoryId,
+  }) async {
+    try {
+      await _categoryController.taskCountIncrease(
+        context,
+        categoryId: categoryId,
+        value: -1,
+      );
+      await _taskRepository.deleteTask(taskId: taskId);
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> startStateChange(
+    BuildContext context, {
+    required String taskId,
+    required bool value,
+  }) async {
+    try {
+      await _taskRepository.startStateChange(taskId: taskId, value: value);
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateDueDate(
+    BuildContext context, {
+    required String taskId,
+    DateTime? dueDate,
+  }) async {
+    try {
+      await _taskRepository.updateDueDate(
+        taskId: taskId,
+        dueDate: dueDate,
+      );
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
   }
 }

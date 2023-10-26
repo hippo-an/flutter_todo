@@ -23,8 +23,9 @@ class _UserLoginStreamScreenState extends State<UserLoginStreamScreen> {
     super.initState();
   }
   Future<void> _fetchCategory() async {
-    print('fetch category @@@@@@@@@@@@@@@@@@@@@@@@@@');
     await locator<CategoryController>().fetchCategoriesForInit();
+    locator<CategoryController>().selectedCategoryForInit();
+    print('fetch category @@@@@@@@@@@@@@@@@@@@@@@@@@');
   }
 
   @override

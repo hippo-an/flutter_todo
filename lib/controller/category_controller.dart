@@ -103,6 +103,12 @@ class CategoryController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void selectedCategoryForInit() {
+    if (_categories.isNotEmpty) {
+      _selectedCategoryId = _categories[0].categoryId;
+    }
+  }
+
   Future<void> deleteCategory(BuildContext context, String categoryId) async {
     try {
       await _categoryRepository.deleteCategory(categoryId);

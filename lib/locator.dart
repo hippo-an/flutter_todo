@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:todo_todo/controller/auth_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
+import 'package:todo_todo/controller/task_tab_open_controller.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/category_repository.dart';
 import 'package:todo_todo/repository/task_repository.dart';
@@ -26,6 +27,10 @@ void setupLocator() {
 
   locator.registerLazySingleton(
     () => TaskRepository(firestore: FirebaseFirestore.instance),
+  );
+
+  locator.registerLazySingleton(
+        () => TaskTabOpenController(),
   );
 
   locator.registerLazySingleton(

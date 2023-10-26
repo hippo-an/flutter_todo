@@ -13,7 +13,7 @@ class TaskListSection extends StatelessWidget {
   });
 
   final List<TaskModel> tasks;
-  final TaskListSectionState taskListSectionState;
+  final TaskListBlockState taskListSectionState;
 
   @override
   Widget build(BuildContext context) {

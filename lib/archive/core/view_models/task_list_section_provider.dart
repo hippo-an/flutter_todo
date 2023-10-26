@@ -15,25 +15,25 @@ class TaskListSectionProvider extends ChangeNotifier {
 
   bool get isCompleteTodayOpen => _isCompleteTodayOpen;
 
-  void update(TaskListSectionState taskListSectionState) {
+  void update(TaskListBlockState taskListSectionState) {
     switch (taskListSectionState) {
-      case TaskListSectionState.past:
+      case TaskListBlockState.past:
         _isPastOpen = !_isPastOpen;
-      case TaskListSectionState.today:
+      case TaskListBlockState.today:
         _isTodayOpen = !_isTodayOpen;
-      case TaskListSectionState.future:
+      case TaskListBlockState.future:
         _isFutureOpen = !_isFutureOpen;
-      case TaskListSectionState.complete:
+      case TaskListBlockState.complete:
         _isCompleteTodayOpen = !_isCompleteTodayOpen;
     }
     notifyListeners();
   }
 
-  openState(TaskListSectionState taskListSectionState) =>
+  openState(TaskListBlockState taskListSectionState) =>
       switch (taskListSectionState) {
-        TaskListSectionState.past => _isPastOpen,
-        TaskListSectionState.today => _isTodayOpen,
-        TaskListSectionState.future => _isFutureOpen,
-        TaskListSectionState.complete => _isCompleteTodayOpen,
+        TaskListBlockState.past => _isPastOpen,
+        TaskListBlockState.today => _isTodayOpen,
+        TaskListBlockState.future => _isFutureOpen,
+        TaskListBlockState.complete => _isCompleteTodayOpen,
       };
 }

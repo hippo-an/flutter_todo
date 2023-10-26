@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_todo/colors.dart';
+import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/task_model.dart';
 
 enum TaskItemState { stared, deleted, normal, completed }
@@ -19,7 +22,7 @@ class TaskListItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 2),
       height: MediaQuery.of(context).size.height * 0.08,
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Theme.of(context).colorScheme.onBackground,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
@@ -47,10 +50,11 @@ class TaskListItem extends StatelessWidget {
                     softWrap: true,
                     maxLines: 1,
                     style: TextStyle(
-                      decoration:
-                          task.isDone ? TextDecoration.lineThrough : null,
-                      color: task.isDone ? Colors.grey : Colors.black,
-                    ),
+                        decoration:
+                            task.isDone ? TextDecoration.lineThrough : null,
+                        color: task.isDone ? kGreyColor : kWhiteColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16),
                   ),
                   task.dueDate != null
                       ? const SizedBox(height: 12)
@@ -60,9 +64,7 @@ class TaskListItem extends StatelessWidget {
                       '${task.dueDate!.year}-${task.dueDate!.month.toString().padLeft(2, '0')}-${task.dueDate!.day.toString().padLeft(2, '0')}',
                       style: TextStyle(
                         fontSize: 12,
-                        color: task.isBeforeThanToday
-                            ? Colors.red[300]
-                            : Colors.grey[500],
+                        color: task.isBeforeThanToday ? kRedColor : kGreyColor,
                       ),
                     ),
                   // const SizedBox(height: 4),
@@ -94,18 +96,12 @@ class TaskListItem extends StatelessWidget {
           if (taskItemState == TaskItemState.normal)
             Checkbox(
               value: task.isDone,
-              onChanged: (value) {
-                // Provider.of<TaskViewModel>(context, listen: false)
-                //     .updateTask(
-                //   task: task,
-                //   isDone: value ?? false,
-                //   completedDate: !task.isDone ? DateTime.now() : null,
-                //   dueDate: task.dueDate,
-                //   deletedAt: task.deletedAt,
-                // );
-                //
-                // locator<CategoryViewModel>()
-                //     .updateCategory(task.categoryId);
+              onChanged: (value) async {
+                await Provider.of<TaskController>(context, listen: false).updateTaskToDone(
+                  context,
+                  taskId: task.taskId,
+                  done: value ?? false,
+                );
               },
               shape: const CircleBorder(),
               activeColor: Colors.grey,

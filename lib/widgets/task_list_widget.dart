@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/task_repository.dart';
-import 'package:todo_todo/widgets/task_list_section.dart';
 import 'package:todo_todo/widgets/task_stream_builder.dart';
 
 class TaskListWidget extends StatelessWidget {
@@ -13,6 +11,8 @@ class TaskListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    print('Rebuild Task list widget%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
     final selectedCategory =
         Provider
             .of<CategoryController>(context)
@@ -38,6 +38,7 @@ class TaskListWidget extends StatelessWidget {
               TaskStreamBuilder(
                 stream: locator<TaskRepository>().defaultTodayDoneTask(
                     locator<AuthRepository>().currentUser.uid),
+                isComplete:  true,
               ),
             ],
           ),
@@ -54,6 +55,7 @@ class TaskListWidget extends StatelessWidget {
             ),
             TaskStreamBuilder(
               stream: locator<TaskRepository>().categoryTodayDoneTask(selectedCategory),
+              isComplete: true,
             ),
           ],
         ),

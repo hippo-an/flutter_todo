@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/models/task_model.dart';
-import 'package:todo_todo/widgets/task_list_section.dart';
+import 'package:todo_todo/widgets/complete_task_list_section.dart';
+import 'package:todo_todo/widgets/not_complete_task_list_section.dart';
 
 class TaskStreamBuilder extends StatelessWidget {
   const TaskStreamBuilder({
     super.key,
     required this.stream,
+    this.isComplete = false,
   });
 
   final Stream<List<TaskModel>> stream;
+  final bool isComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +34,12 @@ class TaskStreamBuilder extends StatelessWidget {
             snapshot.hasData) {
           if (snapshot.data!.isEmpty) {
             return const SizedBox.shrink();
+          } else if (!isComplete) {
+            return NotCompleteTaskListSection(tasks: snapshot.data!);
           } else {
-            return TaskListSection(tasks: snapshot.data!);
+            return CompleteTaskListSection(
+              tasks: snapshot.data!,
+            );
           }
         }
 

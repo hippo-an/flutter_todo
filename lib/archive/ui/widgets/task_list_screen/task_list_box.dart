@@ -36,22 +36,22 @@ class TaskListBox extends StatelessWidget {
                 if (pastTasks.isNotEmpty)
                   TaskListSection(
                     tasks: pastTasks,
-                    taskListSectionState: TaskListSectionState.past,
+                    taskListSectionState: TaskListBlockState.past,
                   ),
                 if (todayTasks.isNotEmpty)
                   TaskListSection(
                     tasks: todayTasks,
-                    taskListSectionState: TaskListSectionState.today,
+                    taskListSectionState: TaskListBlockState.today,
                   ),
                 if (futureTasks.isNotEmpty)
                   TaskListSection(
                     tasks: futureTasks,
-                    taskListSectionState: TaskListSectionState.future,
+                    taskListSectionState: TaskListBlockState.future,
                   ),
                 if (completeTodayTasks.isNotEmpty)
                   TaskListSection(
                     tasks: completeTodayTasks,
-                    taskListSectionState: TaskListSectionState.complete,
+                    taskListSectionState: TaskListBlockState.complete,
                   ),
               ],
             );
