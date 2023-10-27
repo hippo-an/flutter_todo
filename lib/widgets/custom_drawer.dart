@@ -51,7 +51,7 @@ class CustomDrawer extends StatelessWidget {
           DrawerMenu(
               onTab: () {},
               iconData: Icons.delete_outline,
-              title: 'Manage Delete'),
+              title: 'Deleted tasks'),
           DrawerMenu(
             onTab: () {},
             iconData: Icons.settings,

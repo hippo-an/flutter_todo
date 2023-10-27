@@ -98,4 +98,13 @@ class CategoryRepository {
       throw FirestoreException(message: e.toString());
     }
   }
+
+  Future<CategoryModel> category(String categoryId) async {
+    try {
+      final snap = await _firestore.collection('categories').doc(categoryId).get();
+      return CategoryModel.fromJson(snap.data()!);
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
 }

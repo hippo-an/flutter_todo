@@ -58,6 +58,11 @@ class CategoryController extends ChangeNotifier {
 
   CategoryModel get defaultCategory => _categories[0];
 
+  List<String> get seenCategoryIds => _categories
+      .where((category) => category.categoryState == CategoryState.seen)
+      .map((e) => e.categoryId)
+      .toList();
+
   Future<bool> createCategory(BuildContext context, String name) async {
     try {
       final category = _createCategory(
@@ -228,18 +233,23 @@ class CategoryController extends ChangeNotifier {
     }
   }
 
-  Future<void> taskCountIncrease(BuildContext context, {required String categoryId, required int value}) async {
+  Future<void> taskCountIncrease(BuildContext context,
+      {required String categoryId, required int value}) async {
     try {
       await _categoryRepository.taskCountIncrease(
         categoryId: categoryId,
         value: value,
       );
-
     } on FirestoreException catch (e) {
       showSnackBar(context, e.toString());
     } finally {
       await _fetchCategories();
       notifyListeners();
     }
+  }
+
+  CategoryModel category(String categoryId) {
+    return _categories
+        .firstWhere((element) => element.categoryId == categoryId);
   }
 }

@@ -23,12 +23,13 @@ While working on this project, I tried to focus on what I needed and wanted to l
 |               | Profile Update                  |               |
 | Category      | create / edit / delete / star   | ✅ / ✅ / ✅ / ✅ |
 |               | List State Management           | ✅             |
+|               | hide & seen                     | ✅             |
 | Task          | create                          | ✅             |
 |               | subtask                         | ✅             |
 |               | realtime editing                |               |
 |               | temp delete / perm delete       | ✅ /           |
 |               | star                            | ✅             |
-|               | Main Task List State Management | ✅              |
+|               | Main Task List State Management | ✅             |
 |               | notify                          |               |
 |               | repeat                          |               |
 | Calendar View | Mark on Calendar                |               |

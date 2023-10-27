@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
+import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/screens/task_detail_screen.dart';
 import 'package:todo_todo/widgets/task_list_item.dart';
 
 class SlidableTaskListItem extends StatelessWidget {
@@ -19,7 +22,10 @@ class SlidableTaskListItem extends StatelessWidget {
     // final provider = Provider.of<TaskViewModel>(context);
     return GestureDetector(
       onTap: () {
-        // context.pushNamed(TaskDetailScreen.routeName, extra: task);
+        context.push(
+          TaskDetailScreen.routeName,
+          extra: task,
+        );
       },
       child: Slidable(
         key: ValueKey(task.taskId),

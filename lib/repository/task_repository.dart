@@ -34,12 +34,14 @@ class TaskRepository {
     }
   }
 
-  Stream<List<TaskModel>> categoryNotDoneTask(CategoryModel selectedCategory) {
+  Stream<List<TaskModel>> categoryNotDoneTask(
+      CategoryModel selectedCategory, List<String> seenCategoryIds) {
     return _firestore
         .collection('tasks')
         .where('categoryId', isEqualTo: selectedCategory.categoryId)
         .where('isDeleted', isEqualTo: false)
         .where('isDone', isEqualTo: false)
+        .where('categoryId', whereIn: seenCategoryIds)
         .orderBy('dueDate')
         .limit(100)
         .snapshots()
@@ -55,7 +57,7 @@ class TaskRepository {
   }
 
   Stream<List<TaskModel>> categoryTodayDoneTask(
-      CategoryModel selectedCategory) {
+      CategoryModel selectedCategory, List<String> seenCategoryIds) {
     final now = DateTime.now();
     final from = DateTime(now.year, now.month, now.day).toString();
     final to = DateTime(now.year, now.month, now.day + 1).toString();
@@ -64,6 +66,7 @@ class TaskRepository {
         .where('categoryId', isEqualTo: selectedCategory.categoryId)
         .where('isDeleted', isEqualTo: false)
         .where('isDone', isEqualTo: true)
+        .where('categoryId', whereIn: seenCategoryIds)
         .where('completedDate', isGreaterThanOrEqualTo: from)
         .where('completedDate', isLessThan: to)
         .orderBy('completedDate')
@@ -80,9 +83,11 @@ class TaskRepository {
         );
   }
 
-  Stream<List<TaskModel>> defaultNotDoneTask(String uid) {
+  Stream<List<TaskModel>> defaultNotDoneTask(
+      String uid, List<String> seenCategoryIds) {
     return _firestore
         .collection('tasks')
+        .where('categoryId', whereIn: seenCategoryIds)
         .where('uid', isEqualTo: uid)
         .where('isDeleted', isEqualTo: false)
         .where('isDone', isEqualTo: false)
@@ -100,7 +105,8 @@ class TaskRepository {
         );
   }
 
-  Stream<List<TaskModel>> defaultTodayDoneTask(String uid) {
+  Stream<List<TaskModel>> defaultTodayDoneTask(
+      String uid, List<String> seenCategoryIds) {
     final now = DateTime.now();
     final from = DateTime(now.year, now.month, now.day).toString();
     final to = DateTime(now.year, now.month, now.day + 1).toString();
@@ -109,6 +115,7 @@ class TaskRepository {
         .where('uid', isEqualTo: uid)
         .where('isDeleted', isEqualTo: false)
         .where('isDone', isEqualTo: true)
+        .where('categoryId', whereIn: seenCategoryIds)
         .where('completedDate', isGreaterThanOrEqualTo: from)
         .where('completedDate', isLessThan: to)
         .orderBy('completedDate')
@@ -164,10 +171,11 @@ class TaskRepository {
     }
   }
 
-  Future<void>  updateDueDate({required String taskId, DateTime? dueDate}) async {
+  Future<void> updateDueDate(
+      {required String taskId, DateTime? dueDate}) async {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
-        'dueDate': dueDate == null ? 'null': dueDate.toString(),
+        'dueDate': dueDate == null ? 'null' : dueDate.toString(),
         'updatedAt': DateTime.now().toString(),
       });
     } catch (e) {

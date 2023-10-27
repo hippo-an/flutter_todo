@@ -11,13 +11,11 @@ class TaskListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    print('Rebuild Task list widget%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-    final selectedCategory =
-        Provider
-            .of<CategoryController>(context)
-            .selectedCategory;
-
+    print(
+        'Rebuild Task list widget%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+    final categoryController = Provider.of<CategoryController>(context);
+    final selectedCategory = categoryController.selectedCategory;
+    final seenCategoryIds = categoryController.seenCategoryIds;
     if (selectedCategory == null) {
       return const Expanded(
         child: SingleChildScrollView(
@@ -33,12 +31,16 @@ class TaskListWidget extends StatelessWidget {
             children: [
               TaskStreamBuilder(
                 stream: locator<TaskRepository>().defaultNotDoneTask(
-                    locator<AuthRepository>().currentUser.uid),
+                  locator<AuthRepository>().currentUser.uid,
+                  seenCategoryIds,
+                ),
               ),
               TaskStreamBuilder(
                 stream: locator<TaskRepository>().defaultTodayDoneTask(
-                    locator<AuthRepository>().currentUser.uid),
-                isComplete:  true,
+                  locator<AuthRepository>().currentUser.uid,
+                  seenCategoryIds,
+                ),
+                isComplete: true,
               ),
             ],
           ),
@@ -51,10 +53,16 @@ class TaskListWidget extends StatelessWidget {
         child: Column(
           children: [
             TaskStreamBuilder(
-              stream: locator<TaskRepository>().categoryNotDoneTask(selectedCategory),
+              stream: locator<TaskRepository>().categoryNotDoneTask(
+                selectedCategory,
+                seenCategoryIds,
+              ),
             ),
             TaskStreamBuilder(
-              stream: locator<TaskRepository>().categoryTodayDoneTask(selectedCategory),
+              stream: locator<TaskRepository>().categoryTodayDoneTask(
+                selectedCategory,
+                seenCategoryIds,
+              ),
               isComplete: true,
             ),
           ],

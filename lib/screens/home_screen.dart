@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_todo/screens/task_calendar_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/widgets/animated_floating_button.dart';
 import 'package:todo_todo/widgets/custom_bottom_navigation_bar.dart';
@@ -36,12 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             index: _selectedIndex,
             children: [
               const TaskListScreen(),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: const Center(
-                  child: Text('2'),
-                ),
-              ),
+              const TaskCalendarScreen(),
               Container(
                 padding: const EdgeInsets.all(20),
                 child: const Center(
