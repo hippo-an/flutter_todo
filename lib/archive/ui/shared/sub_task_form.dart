@@ -5,12 +5,12 @@ class SubTaskForm extends StatefulWidget {
   const SubTaskForm({
     super.key,
     required this.index,
-    required this.subTaskFormModel,
+    required this.subtaskFormModel,
     required this.onRemove,
   });
 
   final int index;
-  final SubTaskFormModel subTaskFormModel;
+  final SubTaskFormModel subtaskFormModel;
   final void Function(int) onRemove;
 
   @override
@@ -23,8 +23,8 @@ class _SubTaskFormState extends State<SubTaskForm> {
 
   @override
   void initState() {
-    _textEditingController = TextEditingController(text: widget.subTaskFormModel.name);
-    _isChecked = widget.subTaskFormModel.isDone;
+    _textEditingController = TextEditingController(text: widget.subtaskFormModel.name);
+    _isChecked = widget.subtaskFormModel.isDone;
     super.initState();
   }
 
@@ -38,7 +38,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
-      key: ValueKey<String>(widget.subTaskFormModel.subTaskId),
+      key: ValueKey<String>(widget.subtaskFormModel.subtaskId),
       height: MediaQuery
           .of(context)
           .size
@@ -54,7 +54,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
                 if (_textEditingController.text.isNotEmpty) {
                   setState(() {
                     _isChecked = value ?? false;
-                    widget.subTaskFormModel.isDone = _isChecked;
+                    widget.subtaskFormModel.isDone = _isChecked;
                   });
                 }
               },
@@ -84,7 +84,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
               ),
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
-                  widget.subTaskFormModel.name = value;
+                  widget.subtaskFormModel.name = value;
                 } else {
                   setState(() {
                     _isChecked = false;

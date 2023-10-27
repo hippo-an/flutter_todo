@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/controller/category_controller.dart';
-import 'package:todo_todo/widgets/category_alert_dialog.dart';
+import 'package:todo_todo/widgets/category_edit_alert_dialog.dart';
 import 'package:todo_todo/widgets/category_list.dart';
 
 class CategoryListScreen extends StatefulWidget {
@@ -33,11 +33,11 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
-                onPressed: () {
-                  showDialog(
+                onPressed: () async {
+                  await showDialog(
                     context: context,
                     builder: (context) {
-                      return const CategoryAlertDialog();
+                      return const CategoryEditAlertDialog();
                     },
                   );
                 },

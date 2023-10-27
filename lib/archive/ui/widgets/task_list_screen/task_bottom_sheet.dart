@@ -24,7 +24,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   late final CategoryModel _defaultCategory;
   late CategoryModel? _category;
   DateTime? _selectedDate;
-  late final List<SubTaskFormModel> _subTaskForms;
+  late final List<SubTaskFormModel> _subtaskForms;
   late final GlobalKey<FormState> _formKey;
   late TextEditingController _taskNameController;
 
@@ -33,7 +33,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
     _defaultCategory = locator<CategoryViewModel>().defaultCategory;
     _category = locator<CategoryViewModel>().selectedCategory;
     _selectedDate = DateTime.now();
-    _subTaskForms = [];
+    _subtaskForms = [];
     _formKey = GlobalKey<FormState>();
     _taskNameController = TextEditingController();
     super.initState();
@@ -81,17 +81,17 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
 
   void _onRemove(int index) {
     setState(() {
-      _subTaskForms.removeAt(index);
+      _subtaskForms.removeAt(index);
     });
   }
 
   void _onSubmit() {
     if (_formKey.currentState!.validate()) {
-      final List<SubTaskModel> subTasks = _subTaskForms.isEmpty
+      final List<SubTaskModel> subtasks = _subtaskForms.isEmpty
           ? []
-          : _subTaskForms
-              .map((subTaskForm) =>
-                  SubTaskModel.fromSubTaskFormModel(subTaskForm))
+          : _subtaskForms
+              .map((subtaskForm) =>
+                  SubTaskModel.fromSubTaskFormModel(subtaskForm))
               .toList();
 
       Provider.of<TaskViewModel>(context, listen: false).createTask(
@@ -99,7 +99,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
           dueDate: _selectedDate,
           // todo
           categoryModel: _category!,
-          subTasks: subTasks);
+          subtasks: subtasks);
 
       locator<CategoryViewModel>()
       // todo
@@ -150,9 +150,9 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  if (_subTaskForms.isNotEmpty)
+                  if (_subtaskForms.isNotEmpty)
                     SubTaskFormList(
-                      subTaskForms: _subTaskForms,
+                      subtaskForms: _subtaskForms,
                       onRemove: _onRemove,
                     ),
                   Row(
@@ -209,11 +209,11 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                             ),
                       IconButton(
                         onPressed: () {
-                          if (_subTaskForms.length < 6) {
+                          if (_subtaskForms.length < 6) {
                             setState(() {
-                              _subTaskForms.add(
+                              _subtaskForms.add(
                                 SubTaskFormModel(
-                                  subTaskId: uuid.generate(),
+                                  subtaskId: uuid.generate(),
                                 ),
                               );
                             });

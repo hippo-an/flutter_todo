@@ -1,30 +1,29 @@
+import 'package:todo_todo/models/subtask_form_model.dart';
 
-import 'package:todo_todo/archive/core/models/sub_task_form_model.dart';
-
-class SubTaskModel {
+class SubtaskModel {
   final String subtaskId;
   final String name;
   final bool isDone;
 
-  SubTaskModel({
+  SubtaskModel({
     required this.subtaskId,
     required this.name,
     this.isDone = false,
   });
 
-  static SubTaskModel fromSubTaskFormModel(SubTaskFormModel subtaskFormModel) {
-    return SubTaskModel(
+  static SubtaskModel fromSubTaskFormModel(SubtaskFormModel subtaskFormModel) {
+    return SubtaskModel(
       subtaskId: subtaskFormModel.subtaskId,
       name: subtaskFormModel.name!,
       isDone: subtaskFormModel.isDone,
     );
   }
 
-  static SubTaskModel fromJson(Map<String, dynamic> json) {
-    return SubTaskModel(
+  static SubtaskModel fromJson(Map<String, dynamic> json) {
+    return SubtaskModel(
       subtaskId: json['subtaskId'],
       name: json['name'],
-      isDone: bool.tryParse(json['isDone']) ?? false,
+      isDone: json['isDone']
     );
   }
 
@@ -32,23 +31,23 @@ class SubTaskModel {
     return {
       'subtaskId': subtaskId,
       'name': name,
-      'isDone': isDone.toString(),
+      'isDone': isDone,
     };
   }
 
-  SubTaskFormModel toSubTaskFormModel() {
-    return SubTaskFormModel(
+  SubtaskFormModel toSubTaskFormModel() {
+    return SubtaskFormModel(
       subtaskId: subtaskId,
       name: name,
       isDone: isDone,
     );
   }
 
-  SubTaskModel copyWith({
+  SubtaskModel copyWith({
     String? name,
     bool? isDone,
   }) {
-    return SubTaskModel(
+    return SubtaskModel(
       subtaskId: subtaskId,
       name: name ?? this.name,
       isDone: isDone ?? this.isDone,

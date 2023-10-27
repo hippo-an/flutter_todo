@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
-import 'package:todo_todo/models/sub_task_form_model.dart';
-import 'package:todo_todo/models/sub_task_model.dart';
+import 'package:todo_todo/models/subtask_form_model.dart';
+import 'package:todo_todo/models/subtask_model.dart';
 import 'package:todo_todo/utils.dart';
 import 'package:todo_todo/widgets/category_select_dialog.dart';
 import 'package:todo_todo/widgets/sub_task_form_list.dart';
@@ -23,7 +23,7 @@ class TaskBottomSheet extends StatefulWidget {
 class _TaskBottomSheetState extends State<TaskBottomSheet> {
   late CategoryModel? _category;
   DateTime? _selectedDate;
-  late final List<SubTaskFormModel> _subTaskForms;
+  late final List<SubtaskFormModel> _subtaskForms;
   late final GlobalKey<FormState> _formKey;
   late final TextEditingController _taskNameController;
 
@@ -38,7 +38,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
         ? null
         : selectedCategory;
     _selectedDate = DateTime.now();
-    _subTaskForms = [];
+    _subtaskForms = [];
     _formKey = GlobalKey<FormState>();
     _taskNameController = TextEditingController();
     super.initState();
@@ -66,19 +66,16 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   }
 
   void _categorySelectDialog() async {
-    final categoryId = await showDialog<String>(
+    final category = await showDialog<CategoryModel>(
       context: context,
       builder: (context) {
         return const CategorySelectDialog();
       },
     );
 
-    if (categoryId == null) {
-      _category = null;
-    } else {
+    if (category != null) {
       if (mounted) {
-        _category = Provider.of<CategoryController>(context, listen: false)
-            .findCategory(categoryId);
+        _category = category;
       }
     }
 
@@ -87,15 +84,15 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
 
   void _onRemove(int index) {
     setState(() {
-      _subTaskForms.removeAt(index);
+      _subtaskForms.removeAt(index);
     });
   }
 
   Future<void> _onSubmit() async {
     if (_formKey.currentState!.validate()) {
       FocusManager.instance.primaryFocus?.unfocus();
-      final List<SubTaskModel> subtasks = _subTaskForms
-          .map((subTaskForm) => SubTaskModel.fromSubTaskFormModel(subTaskForm))
+      final List<SubtaskModel> subtasks = _subtaskForms
+          .map((subtaskForm) => SubtaskModel.fromSubTaskFormModel(subtaskForm))
           .toList();
 
       setState(() {
@@ -173,9 +170,9 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                       },
                     ),
                     const SizedBox(height: 10),
-                    if (_subTaskForms.isNotEmpty)
+                    if (_subtaskForms.isNotEmpty)
                       SubTaskFormList(
-                        subTaskForms: _subTaskForms,
+                        subtaskForms: _subtaskForms,
                         onRemove: _onRemove,
                       ),
                     Row(
@@ -246,11 +243,11 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                               ),
                         IconButton(
                           onPressed: () {
-                            if (_subTaskForms.length < 6) {
+                            if (_subtaskForms.length < 6) {
                               setState(() {
-                                _subTaskForms.add(
-                                  SubTaskFormModel(
-                                    subTaskId: uuid.generate(),
+                                _subtaskForms.add(
+                                  SubtaskFormModel(
+                                    subtaskId: uuid.generate(),
                                   ),
                                 );
                               });

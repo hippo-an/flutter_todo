@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/utils.dart';
 import 'package:todo_todo/widgets/animated_check_box.dart';
 
 enum TaskItemState { stared, deleted, normal, completed }
@@ -62,7 +63,7 @@ class TaskListItem extends StatelessWidget {
                       : const SizedBox.shrink(),
                   if (task.dueDate != null)
                     Text(
-                      '${task.dueDate!.year}-${task.dueDate!.month.toString().padLeft(2, '0')}-${task.dueDate!.day.toString().padLeft(2, '0')}',
+                      formatDate(task.dueDate!),
                       style: TextStyle(
                         fontSize: 12,
                         color: task.isBeforeThanToday ? kRedColor : kGreyColor,

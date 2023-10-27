@@ -23,5 +23,8 @@ void showSnackBar(BuildContext context, String? message) {
   }
 }
 
-
 const uuid = UuidV4();
+
+String formatDate(DateTime date) {
+  return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+}

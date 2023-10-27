@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:todo_todo/enums.dart';
-import 'package:todo_todo/models/sub_task_model.dart';
+import 'package:todo_todo/models/subtask_model.dart';
 
 class TaskModel {
   final String taskId;
@@ -21,7 +21,7 @@ class TaskModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
-  final List<SubTaskModel> subTasks;
+  final List<SubtaskModel> subtasks;
   final File? attachment;
 
   TaskModel({
@@ -42,7 +42,7 @@ class TaskModel {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
-    this.subTasks = const <SubTaskModel>[],
+    this.subtasks = const <SubtaskModel>[],
     this.attachment,
   });
 
@@ -65,9 +65,9 @@ class TaskModel {
       createdAt: DateTime.parse(mapObject['createdAt']),
       updatedAt: DateTime.parse(mapObject['updatedAt']),
       deletedAt: DateTime.tryParse(mapObject['deletedAt']),
-      subTasks: List<SubTaskModel>.from(
-        mapObject['subTasks'].map(
-          (model) => SubTaskModel.fromJson(model),
+      subtasks: List<SubtaskModel>.from(
+        mapObject['subtasks'].map(
+          (model) => SubtaskModel.fromJson(model),
         ),
       ),
     );
@@ -92,7 +92,7 @@ class TaskModel {
       'createdAt': createdAt.toString(),
       'updatedAt': updatedAt.toString(),
       'deletedAt': deletedAt.toString(),
-      'subTasks': subTasks.map((e) => e.toJson()),
+      'subtasks': subtasks.map((e) => e.toJson()),
     };
   }
 
@@ -111,7 +111,7 @@ class TaskModel {
     DateTime? Function()? dueDate,
     DateTime? updatedAt,
     DateTime? Function()? deletedAt,
-    List<SubTaskModel>? subTasks,
+    List<SubtaskModel>? subtasks,
     File? attachment,
   }) {
     return TaskModel(
@@ -133,7 +133,7 @@ class TaskModel {
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt != null ? deletedAt() : this.deletedAt,
-      subTasks: subTasks ?? [...this.subTasks],
+      subtasks: subtasks ?? [...this.subtasks],
       attachment: attachment ?? this.attachment,
     );
   }

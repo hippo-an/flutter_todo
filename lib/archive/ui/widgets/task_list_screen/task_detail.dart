@@ -37,8 +37,8 @@ class _TaskDetailState extends State<TaskDetail> {
   late String _categoryId;
   String? _categoryName;
   DateTime? _dueDate;
-  late List<SubTaskModel> _subTaskList;
-  late List<SubTaskFormModel> _subTaskFormList;
+  late List<SubTaskModel> _subtaskList;
+  late List<SubTaskFormModel> _subtaskFormList;
   late ImagePicker? _imagePicker;
   File? _attachment;
 
@@ -51,8 +51,8 @@ class _TaskDetailState extends State<TaskDetail> {
     _categoryId = widget.category.categoryId;
     _categoryName = widget.category.name;
     _dueDate = widget.task.dueDate;
-    _subTaskList = [...widget.task.subTasks];
-    _subTaskFormList = [];
+    _subtaskList = [...widget.task.subtasks];
+    _subtaskFormList = [];
     _imagePicker = ImagePicker();
     _attachment = widget.task.attachment;
     super.initState();
@@ -114,11 +114,11 @@ class _TaskDetailState extends State<TaskDetail> {
         isDone: _isDone,
         completedDate: _isDone ? DateTime.now() : null,
         categoryId: _categoryId,
-        subTasks: [
-          ..._subTaskList,
-          ..._subTaskFormList
-              .map((subTaskForm) =>
-                  SubTaskModel.fromSubTaskFormModel(subTaskForm))
+        subtasks: [
+          ..._subtaskList,
+          ..._subtaskFormList
+              .map((subtaskForm) =>
+                  SubTaskModel.fromSubTaskFormModel(subtaskForm))
               .toList(),
         ],
         dueDate: _dueDate,
@@ -372,43 +372,43 @@ class _TaskDetailState extends State<TaskDetail> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      if (_subTaskList.isNotEmpty)
+                      if (_subtaskList.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 4),
                           child: SubTaskFormList(
-                            subTaskForms: _subTaskList
+                            subtaskForms: _subtaskList
                                 .map(
-                                  (subTaskModel) =>
-                                      subTaskModel.toSubTaskFormModel(),
+                                  (subtaskModel) =>
+                                      subtaskModel.toSubTaskFormModel(),
                                 )
                                 .toList(),
                             onRemove: (index) {
                               setState(() {
-                                _subTaskList.removeAt(index);
+                                _subtaskList.removeAt(index);
                               });
                             },
                           ),
                         ),
-                      if (_subTaskFormList.isNotEmpty)
+                      if (_subtaskFormList.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 4),
                           child: SubTaskFormList(
-                            subTaskForms: _subTaskFormList,
+                            subtaskForms: _subtaskFormList,
                             onRemove: (index) {
                               setState(() {
-                                _subTaskFormList.removeAt(index);
+                                _subtaskFormList.removeAt(index);
                               });
                             },
                           ),
                         ),
                       TextButton.icon(
                         onPressed: () {
-                          if (_subTaskFormList.length + _subTaskList.length <
+                          if (_subtaskFormList.length + _subtaskList.length <
                               6) {
                             setState(() {
-                              _subTaskFormList.add(
+                              _subtaskFormList.add(
                                 SubTaskFormModel(
-                                  subTaskId: uuid.generate(),
+                                  subtaskId: uuid.generate(),
                                 ),
                               );
                             });

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
-import 'package:todo_todo/models/sub_task_model.dart';
+import 'package:todo_todo/models/subtask_model.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/task_repository.dart';
@@ -28,7 +28,7 @@ class TaskController extends ChangeNotifier {
     required String taskName,
     DateTime? dueDate,
     CategoryModel? category,
-    required List<SubTaskModel> subtasks,
+    required List<SubtaskModel> subtasks,
   }) async {
     final categoryModel = (category ?? _categoryController.defaultCategory);
 
@@ -79,7 +79,7 @@ class TaskController extends ChangeNotifier {
     required String taskName,
     required String categoryId,
     required DateTime? dueDate,
-    required List<SubTaskModel> subtasks,
+    required List<SubtaskModel> subtasks,
   }) {
     final now = DateTime.now();
     return TaskModel(
@@ -90,7 +90,7 @@ class TaskController extends ChangeNotifier {
       dueDate: dueDate,
       createdAt: now,
       updatedAt: now,
-      subTasks: subtasks,
+      subtasks: subtasks,
     );
   }
 
@@ -147,6 +147,77 @@ class TaskController extends ChangeNotifier {
       await _taskRepository.updateDueDate(
         taskId: taskId,
         dueDate: dueDate,
+      );
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateCategory(
+    BuildContext context, {
+    required String taskId,
+    required String categoryId,
+    required String oldCategoryId,
+  }) async {
+    try {
+      await _taskRepository.updateCategory(
+        taskId: taskId,
+        categoryId: categoryId,
+      );
+
+      await _categoryController.taskCountIncrease(context,
+          categoryId: categoryId, value: 1);
+      await _categoryController.taskCountIncrease(context,
+          categoryId: oldCategoryId, value: -1);
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateTaskName(
+    BuildContext context, {
+    required String taskId,
+    required String taskName,
+  }) async {
+    try {
+      await _taskRepository.updateTaskName(
+        taskId: taskId,
+        taskName: taskName,
+      );
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateNote(
+    BuildContext context, {
+    required String taskId,
+    required String note,
+  }) async {
+    try {
+      await _taskRepository.updateNote(
+        taskId: taskId,
+        note: note,
+      );
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateSubtasks(BuildContext context,
+      {required String taskId, required List<SubtaskModel> subtasks}) async {
+    try {
+      await _taskRepository.updateSubtask(
+        taskId: taskId,
+        subtasks: subtasks,
       );
       return true;
     } on FirestoreException catch (e) {

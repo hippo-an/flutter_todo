@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
 import 'package:todo_todo/models/category_model.dart';
+import 'package:todo_todo/models/subtask_model.dart';
 import 'package:todo_todo/models/task_model.dart';
 
 class TaskRepository {
@@ -176,6 +177,70 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'dueDate': dueDate == null ? 'null' : dueDate.toString(),
+        'updatedAt': DateTime.now().toString(),
+      });
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Stream<TaskModel> task(String taskId) {
+    try {
+      return _firestore.collection('tasks').doc(taskId).snapshots().map(
+            (query) => TaskModel.fromJson(
+              query.data()!,
+            ),
+          );
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> updateCategory(
+      {required String taskId, required String categoryId}) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).update({
+        'categoryId': categoryId,
+        'updatedAt': DateTime.now().toString(),
+      });
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> updateTaskName({
+    required String taskId,
+    required String taskName,
+  }) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).update({
+        'taskName': taskName,
+        'updatedAt': DateTime.now().toString(),
+      });
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> updateNote(
+      {required String taskId, required String note}) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).update({
+        'note': note,
+        'updatedAt': DateTime.now().toString(),
+      });
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> updateSubtask({
+    required String taskId,
+    required List<SubtaskModel> subtasks,
+  }) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).update({
+        'subtasks': subtasks.map((e) => e.toJson()),
         'updatedAt': DateTime.now().toString(),
       });
     } catch (e) {

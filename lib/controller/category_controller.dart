@@ -26,6 +26,7 @@ class CategoryController extends ChangeNotifier {
 
   List<CategoryModel> _categories = [];
   String _selectedCategoryId = '';
+  List<String> _seenCategoryIds = [];
 
   List<CategoryModel> get categories => _categories
       .where((category) => category.categoryState == CategoryState.seen)
@@ -58,10 +59,7 @@ class CategoryController extends ChangeNotifier {
 
   CategoryModel get defaultCategory => _categories[0];
 
-  List<String> get seenCategoryIds => _categories
-      .where((category) => category.categoryState == CategoryState.seen)
-      .map((e) => e.categoryId)
-      .toList();
+  List<String> get seenCategoryIds => _seenCategoryIds;
 
   Future<bool> createCategory(BuildContext context, String name) async {
     try {
@@ -204,6 +202,11 @@ class CategoryController extends ChangeNotifier {
       _categories = await _categoryRepository
           .fetchCategory(_authRepository.currentUser.uid);
 
+      _seenCategoryIds = _categories
+          .where((category) => category.categoryState == CategoryState.seen)
+          .map((e) => e.categoryId)
+          .toList();
+
       _categories.sort(
         (a, b) {
           if (a.isDefault) {
@@ -249,7 +252,12 @@ class CategoryController extends ChangeNotifier {
   }
 
   CategoryModel category(String categoryId) {
-    return _categories
-        .firstWhere((element) => element.categoryId == categoryId);
+    try {
+      return _categories.firstWhere((element) =>
+          element.categoryState == CategoryState.seen &&
+          element.categoryId == categoryId);
+    } catch (e) {
+      return _categories[0];
+    }
   }
 }

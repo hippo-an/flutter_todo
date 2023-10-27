@@ -112,7 +112,7 @@ class TaskViewModel extends BaseModel {
     String name, {
     DateTime? dueDate,
     required CategoryModel categoryModel,
-    List<SubTaskModel> subTasks = const [],
+    List<SubTaskModel> subtasks = const [],
   }) {
     final now = DateTime.now();
     final task = TaskModel(
@@ -122,7 +122,7 @@ class TaskViewModel extends BaseModel {
         dueDate: dueDate,
         createdAt: now,
         updatedAt: now,
-        subTasks: subTasks);
+        subtasks: subtasks);
 
     _taskRepository.add(task);
 
@@ -140,7 +140,7 @@ class TaskViewModel extends BaseModel {
     String? categoryId,
     DateTime? dueDate,
     DateTime? deletedAt,
-    List<SubTaskModel>? subTasks,
+    List<SubTaskModel>? subtasks,
     File? attachment,
   }) {
     final index = _taskRepository.index(task);
@@ -157,7 +157,7 @@ class TaskViewModel extends BaseModel {
         categoryId: categoryId,
         dueDate: () => dueDate,
         deletedAt: () => deletedAt,
-        subTasks: subTasks,
+        subtasks: subtasks,
         attachment: attachment,
         updatedAt: DateTime.now());
 

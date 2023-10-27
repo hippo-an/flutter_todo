@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/controller/category_controller.dart';
-import 'package:todo_todo/widgets/category_alert_dialog.dart';
+import 'package:todo_todo/models/category_model.dart';
+import 'package:todo_todo/widgets/category_edit_alert_dialog.dart';
 
 class CategorySelectDialog extends StatelessWidget {
   const CategorySelectDialog({super.key});
 
   void _onCategorySelected(
     BuildContext context, {
-    required String? id,
+    required CategoryModel category,
   }) {
-    Navigator.of(context).pop(id);
+    Navigator.of(context).pop(category);
   }
 
   @override
@@ -32,7 +33,7 @@ class CategorySelectDialog extends StatelessWidget {
                     onTap: () {
                       _onCategorySelected(
                         context,
-                        id: null,
+                        category: categoryController.defaultCategory,
                       );
                     },
                     child: const ListTile(
@@ -43,19 +44,12 @@ class CategorySelectDialog extends StatelessWidget {
                 } else if (index == categories.length + 1) {
                   return InkWell(
                     onTap: () async {
-                      final createdCategory = await showDialog(
+                      await showDialog(
                         context: context,
                         builder: (context) {
-                          return const CategoryAlertDialog();
+                          return const CategoryEditAlertDialog();
                         },
                       );
-
-                      if (context.mounted) {
-                        _onCategorySelected(
-                          context,
-                          id: createdCategory.categoryId,
-                        );
-                      }
                     },
                     child: const ListTile(
                       isThreeLine: false,
@@ -71,7 +65,7 @@ class CategorySelectDialog extends StatelessWidget {
                   onTap: () {
                     _onCategorySelected(
                       context,
-                      id: category.categoryId,
+                      category: category,
                     );
                   },
                   child: ListTile(

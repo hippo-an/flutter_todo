@@ -16,9 +16,17 @@ class TaskDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: TaskDetail(
-          task: task,
-          // category: _category!,
+        appBar: AppBar(
+          title: const Text('Task Detail'),
+          centerTitle: true,
+          actions: [
+          ],
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          child: TaskDetail(
+            task: task,
+          ),
         ),
       ),
     );

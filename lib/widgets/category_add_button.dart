@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/widgets/category_alert_dialog.dart';
+import 'package:todo_todo/widgets/category_edit_alert_dialog.dart';
 
 class CategoryAddButton extends StatelessWidget {
   const CategoryAddButton({super.key});
@@ -8,11 +8,11 @@ class CategoryAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: TextButton.icon(
-        onPressed: () {
-          showDialog(
+        onPressed: () async {
+          await showDialog(
             context: context,
             builder: (context) {
-              return const CategoryAlertDialog();
+              return const CategoryEditAlertDialog();
             },
           );
         },

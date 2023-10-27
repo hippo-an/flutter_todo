@@ -5,8 +5,8 @@ import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/utils.dart';
 
-class CategoryAlertDialog extends StatefulWidget {
-  const CategoryAlertDialog({
+class CategoryEditAlertDialog extends StatefulWidget {
+  const CategoryEditAlertDialog({
     super.key,
     this.isEditMode = false,
     this.category,
@@ -16,10 +16,10 @@ class CategoryAlertDialog extends StatefulWidget {
   final CategoryModel? category;
 
   @override
-  State<CategoryAlertDialog> createState() => _CategoryAlertDialogState();
+  State<CategoryEditAlertDialog> createState() => _CategoryEditAlertDialogState();
 }
 
-class _CategoryAlertDialogState extends State<CategoryAlertDialog> {
+class _CategoryEditAlertDialogState extends State<CategoryEditAlertDialog> {
   late final TextEditingController _categoryController;
   late Color _selectedColor;
   bool _isLoading = false;

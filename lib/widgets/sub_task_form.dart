@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/colors.dart';
-import 'package:todo_todo/models/sub_task_form_model.dart';
+import 'package:todo_todo/models/subtask_form_model.dart';
 
 class SubTaskForm extends StatefulWidget {
   const SubTaskForm({
     super.key,
     required this.index,
-    required this.subTaskFormModel,
+    required this.subtaskFormModel,
     required this.onRemove,
   });
 
   final int index;
-  final SubTaskFormModel subTaskFormModel;
+  final SubtaskFormModel subtaskFormModel;
   final void Function(int) onRemove;
 
   @override
@@ -25,8 +25,8 @@ class _SubTaskFormState extends State<SubTaskForm> {
   @override
   void initState() {
     _textEditingController =
-        TextEditingController(text: widget.subTaskFormModel.name);
-    _isChecked = widget.subTaskFormModel.isDone;
+        TextEditingController(text: widget.subtaskFormModel.name);
+    _isChecked = widget.subtaskFormModel.isDone;
     super.initState();
   }
 
@@ -40,7 +40,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
-      key: ValueKey<String>(widget.subTaskFormModel.subTaskId),
+      key: ValueKey<String>(widget.subtaskFormModel.subtaskId),
       height: MediaQuery.of(context).size.height * 0.05,
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
@@ -53,7 +53,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
                 if (_textEditingController.text.isNotEmpty) {
                   setState(() {
                     _isChecked = value ?? false;
-                    widget.subTaskFormModel.isDone = _isChecked;
+                    widget.subtaskFormModel.isDone = _isChecked;
                   });
                 }
               },
@@ -84,7 +84,7 @@ class _SubTaskFormState extends State<SubTaskForm> {
               ),
               onChanged: (String? value) {
                 if (value != null && value.isNotEmpty) {
-                  widget.subTaskFormModel.name = value;
+                  widget.subtaskFormModel.name = value;
                 } else {
                   setState(() {
                     _isChecked = false;

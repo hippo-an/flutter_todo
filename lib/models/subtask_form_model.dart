@@ -1,10 +1,10 @@
 
-class SubTaskFormModel {
+class SubtaskFormModel {
   final String subtaskId;
   String? name;
   bool isDone;
 
-  SubTaskFormModel({
+  SubtaskFormModel({
     required this.subtaskId,
     this.name,
     this.isDone = false,

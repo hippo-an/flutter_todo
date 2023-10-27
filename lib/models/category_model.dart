@@ -30,7 +30,7 @@ class CategoryModel {
   final bool isDefault;
   final bool isStared;
 
-  get color => Color(colorCode);
+  Color get color => Color(colorCode);
 
   static CategoryModel fromJson(Map<String, dynamic> json) {
     return CategoryModel(
