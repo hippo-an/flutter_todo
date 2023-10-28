@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
+import 'package:todo_todo/screens/deleted_task_screen.dart';
 import 'package:todo_todo/widgets/drawer_category_tile.dart';
 import 'package:todo_todo/widgets/drawer_menu.dart';
 
@@ -49,7 +51,9 @@ class CustomDrawer extends StatelessWidget {
           ),
           const DrawerCategoryTile(),
           DrawerMenu(
-              onTab: () {},
+              onTab: () {
+                context.push(DeletedTaskScreen.routeName);
+              },
               iconData: Icons.delete_outline,
               title: 'Deleted tasks'),
           DrawerMenu(

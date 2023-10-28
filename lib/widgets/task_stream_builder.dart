@@ -33,6 +33,14 @@ class TaskStreamBuilder extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active &&
             snapshot.hasData) {
           if (snapshot.data!.isEmpty) {
+            if (!isComplete) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: const Center(
+                  child: Text('Task is empty!'),
+                ),
+              );
+            }
             return const SizedBox.shrink();
           } else if (!isComplete) {
             return NotCompleteTaskListSection(tasks: snapshot.data!);

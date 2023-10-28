@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/category_controller.dart';
+import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
 
 class CategoryDeleteDialog extends StatelessWidget {
@@ -30,8 +31,17 @@ class CategoryDeleteDialog extends StatelessWidget {
             side: const BorderSide(color: kRedColor),
           ),
           onPressed: () async {
-            await Provider.of<CategoryController>(context, listen: false)
-                .deleteCategory(context, category.categoryId);
+            final categoryController =
+                Provider.of<CategoryController>(context, listen: false);
+            await categoryController.deleteCategory(
+                context, category.categoryId);
+
+            await Provider.of<TaskController>(context, listen: false)
+                .deleteTaskByCategory(
+              context,
+              category.categoryId,
+              categoryController.defaultCategory.categoryId,
+            );
 
             if (context.mounted) {
               Navigator.of(context).pop();

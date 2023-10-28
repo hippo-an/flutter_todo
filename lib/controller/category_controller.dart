@@ -25,6 +25,7 @@ class CategoryController extends ChangeNotifier {
         _categoryRepository = categoryRepository;
 
   List<CategoryModel> _categories = [];
+  // Map<String, CategoryModel> _categoryMap = {};
   String _selectedCategoryId = '';
   List<String> _seenCategoryIds = [];
 
@@ -97,7 +98,7 @@ class CategoryController extends ChangeNotifier {
     }
 
     await _fetchCategories();
-    _selectedCategoryId = _categories[0].categoryId;
+    // _selectedCategoryId = _categories[0].categoryId;
     notifyListeners();
   }
 

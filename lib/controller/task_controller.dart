@@ -116,7 +116,10 @@ class TaskController extends ChangeNotifier {
         categoryId: categoryId,
         value: -1,
       );
-      await _taskRepository.deleteTask(taskId: taskId);
+      await _taskRepository.deleteTask(
+        taskId: taskId,
+        defaultCategoryId: _categoryController.defaultCategory.categoryId,
+      );
       return true;
     } on FirestoreException catch (e) {
       showSnackBar(context, e.toString());
@@ -218,6 +221,57 @@ class TaskController extends ChangeNotifier {
       await _taskRepository.updateSubtask(
         taskId: taskId,
         subtasks: subtasks,
+      );
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> deleteTaskByCategory(
+      BuildContext context, String categoryId, String defaultCategoryId) async {
+    try {
+      await _taskRepository.deleteTaskByCategory(
+        categoryId: categoryId,
+        defaultCategoryId: defaultCategoryId,
+      );
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> returnTask(
+    BuildContext context, {
+    required String taskId,
+    required String categoryId,
+  }) async {
+    try {
+      await _taskRepository.returnTask(
+        taskId: taskId,
+      );
+
+      await _categoryController.taskCountIncrease(
+        context,
+        categoryId: categoryId,
+        value: 1,
+      );
+      return true;
+    } on FirestoreException catch (e) {
+      showSnackBar(context, e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> deleteTaskPermanently(
+    BuildContext context, {
+    required String taskId,
+  }) async {
+    try {
+      await _taskRepository.deleteTaskPermanently(
+        taskId: taskId,
       );
       return true;
     } on FirestoreException catch (e) {

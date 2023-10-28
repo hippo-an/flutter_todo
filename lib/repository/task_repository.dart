@@ -147,11 +147,15 @@ class TaskRepository {
     }
   }
 
-  Future<void> deleteTask({required String taskId}) async {
+  Future<void> deleteTask({
+    required String taskId,
+    required String defaultCategoryId,
+  }) async {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'isDeleted': true,
         'deletedAt': DateTime.now().toString(),
+        'categoryId': defaultCategoryId,
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -243,6 +247,56 @@ class TaskRepository {
         'subtasks': subtasks.map((e) => e.toJson()),
         'updatedAt': DateTime.now().toString(),
       });
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> deleteTaskByCategory({
+    required String categoryId,
+    required String defaultCategoryId,
+  }) async {
+    try {
+      final tasks = await _firestore
+          .collection('tasks')
+          .where(
+            'categoryId',
+            isEqualTo: categoryId,
+          )
+          .get();
+
+      final batch = _firestore.batch();
+
+      for (final doc in tasks.docs) {
+        final String taskId = doc.data()['taskId'];
+        final task = _firestore.collection('tasks').doc(taskId);
+        batch.update(task, {
+          'isDeleted': true,
+          'deletedAt': DateTime.now().toString(),
+          'categoryId': defaultCategoryId,
+        });
+      }
+
+      await batch.commit();
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> returnTask({required String taskId}) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).update({
+        'isDeleted': false,
+        'deletedAt': 'null',
+      });
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<void> deleteTaskPermanently({required String taskId}) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).delete();
     } catch (e) {
       throw FirestoreException(message: e.toString());
     }

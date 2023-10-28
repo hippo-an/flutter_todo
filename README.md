@@ -6,34 +6,37 @@ As beginner of Flutter and Dart, this project is stared to learn effectively Flu
 While working on this project, I tried to focus on what I needed and wanted to learn.
 
 1. Layout widgets without overflow
-
-- Understanding flutter widget
-- Constraint
-
+    - Understanding flutter widget
+    - Constraint
 2. State management using Provider
+    - Dependency injection with GetIt
+    - State management with Provider
 3. Actively utilize firebase
+    - Authentication with firebase auth
+    - Data store with firebase firestore
+    - File store with firebase storage
 
 ## 2. Main Features
 
-| Domain        | Feature                         | Complete                |
-|---------------|---------------------------------|-------------------------|
-| User          | Email Login / Email Sign Up     | ✅ / ✅                   |
-|               | Google Login / Google Sign Up   | ✅ / ✅                   |
-|               | Persist User Data               | ✅                       |
-|               | Profile Update                  |                         |
-| Category      | create / edit / delete / star   | ✅ / ✅ / ✅ / ✅           |
-|               | List State Management           | ✅                       |
-|               | hide & seen                     | ✅                       |
-| Task          | create                          | ✅                       |
-|               | subtask                         | ✅                       |
-|               | realtime editing                | ⚠️(subtask manual save) |
-|               | temp delete / perm delete       | ✅ /                     |
-|               | star                            | ✅                       |
-|               | Main Task List State Management | ✅                       |
-|               | notify                          |                         |
-|               | repeat                          |                         |
-| Calendar View | Mark on Calendar                |                         |
-| Statics       | Task statics completed task     |                         |
+| Domain        | Feature                                     | Complete                 |
+|---------------|---------------------------------------------|--------------------------|
+| User          | Email Login / Email Sign Up                 | ✅ / ✅                    |
+|               | Google Login / Google Sign Up               | ✅ / ✅                    |
+|               | Persist User Data                           | ✅                        |
+|               | Profile Update                              |                          |
+| Category      | create / edit / delete / star               | ✅ / ✅ / ✅ / ✅            |
+|               | List State Management                       | ✅                        |
+|               | hide & seen                                 | ✅                        |
+| Task          | create                                      | ✅                        |
+|               | subtask                                     | ✅                        |
+|               | realtime editing                            | ⚠️(subtasks manual save) |
+|               | temp delete / perm delete (infinity scroll) | ✅ / ✅                    |
+|               | star (infinity scroll)                      | ✅                        |
+|               | Main Task List State Management             | ✅                        |
+|               | notify                                      |                          |
+|               | repeat                                      |                          |
+| Calendar View | Mark on Calendar                            |                          |
+| Statics       | Task statics completed task                 |                          |
 
 ## 3. Dependencies
 

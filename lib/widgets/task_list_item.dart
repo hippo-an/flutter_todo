@@ -13,10 +13,14 @@ class TaskListItem extends StatelessWidget {
     super.key,
     required this.task,
     this.taskItemState = TaskItemState.normal,
+    this.onReturn,
+    this.onDelete,
   });
 
   final TaskModel task;
   final TaskItemState taskItemState;
+  final void Function()? onReturn;
+  final void Function()? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -125,53 +129,11 @@ class TaskListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  onPressed: () {
-                    // Provider.of<TaskViewModel>(context, listen: false)
-                    //     .updateTask(
-                    //   task: task,
-                    //   isDeleted: false,
-                    //   dueDate: task.dueDate,
-                    //   deletedAt: null,
-                    // );
-                    //
-                    // locator<CategoryViewModel>()
-                    //     .updateCategory(task.categoryId, task: 1);
-                  },
-                  icon: const Icon(Icons.undo),
+                  onPressed: onReturn,
+                  icon: const Icon(Icons.refresh_outlined),
                 ),
                 IconButton(
-                  onPressed: () async {
-                    // await showDialog(
-                    //   context: context,
-                    //   builder: (context) => AlertDialog(
-                    //     title: const Text('Delete task permanently'),
-                    //     actions: [
-                    //       TextButton(
-                    //         onPressed: () {},
-                    //         child: const Text('Cancel'),
-                    //       ),
-                    //       OutlinedButton(
-                    //         style: OutlinedButton.styleFrom(
-                    //             side: const BorderSide(color: Colors.red)),
-                    //         onPressed: () {},
-                    //         child: const Text(
-                    //           'Delete',
-                    //           style: TextStyle(
-                    //             color: Colors.red,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
-                    //
-                    // if (context.mounted) {
-                    //   Provider.of<TaskViewModel>(context, listen: false)
-                    //       .deleteTask(
-                    //     task: task,
-                    //   );
-                    // }
-                  },
+                  onPressed: onDelete,
                   icon: const Icon(
                     Icons.delete_forever_sharp,
                     color: Colors.red,
