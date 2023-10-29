@@ -301,4 +301,67 @@ class TaskRepository {
       throw FirestoreException(message: e.toString());
     }
   }
+
+  Future<List<TaskModel>> calendarTasks(DateTime selectedDate) async {
+    try {
+      final snap = await _firestore.collection('tasks').get();
+      return snap.docs
+          .map(
+            (e) => TaskModel.fromJson(
+              e.data(),
+            ),
+          )
+          .toList();
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<List<TaskModel>> selectedDateTasks({
+    required String uid,
+    required DateTime selectedDate,
+    required List<String> categoryIds,
+  }) async {
+    try {
+      final from =
+          DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+      final to = from.copyWith(day: selectedDate.day + 1);
+
+      final snap = await _firestore
+          .collection('tasks')
+          .where('uid', isEqualTo: uid)
+          .where('isDeleted', isEqualTo: false)
+          .where('categoryId', whereIn: categoryIds)
+          .where(
+            'dueDate',
+            isGreaterThanOrEqualTo: from.toString(),
+          )
+          .where(
+            'dueDate',
+            isLessThan: to.toString(),
+          )
+          .orderBy('dueDate')
+          .get();
+
+      // stream ..
+      // return snap.map(
+      //   (e) => e.docs
+      //       .map(
+      //         (e) => TaskModel.fromJson(
+      //           e.data(),
+      //         ),
+      //       )
+      //       .toList(),
+      // );
+      return snap.docs
+          .map(
+            (e) => TaskModel.fromJson(
+              e.data(),
+            ),
+          )
+          .toList();
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
 }

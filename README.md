@@ -36,6 +36,8 @@ While working on this project, I tried to focus on what I needed and wanted to l
 |               | notify                                      |                          |
 |               | repeat                                      |                          |
 | Calendar View | Mark on Calendar                            |                          |
+|               | Calendar view                               | ✅                        |
+|               | Selected date task list                     | ✅                        |
 | Statics       | Task statics completed task                 |                          |
 
 ## 3. Dependencies

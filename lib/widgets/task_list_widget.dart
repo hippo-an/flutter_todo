@@ -11,8 +11,6 @@ class TaskListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'Rebuild Task list widget%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
     final categoryController = Provider.of<CategoryController>(context);
     final selectedCategory = categoryController.selectedCategory;
     final seenCategoryIds = categoryController.seenCategoryIds;

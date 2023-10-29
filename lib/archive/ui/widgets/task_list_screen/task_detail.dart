@@ -12,6 +12,7 @@ import 'package:todo_todo/archive/core/view_models/task_view_model.dart';
 import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/shared/category_select_dialog.dart';
 import 'package:todo_todo/archive/ui/shared/sub_task_form_list.dart';
+import 'package:todo_todo/constants.dart';
 import 'package:todo_todo/models/category_model.dart';
 
 class TaskDetail extends StatefulWidget {
@@ -75,8 +76,8 @@ class _TaskDetailState extends State<TaskDetail> {
     final selectedDueDate = await showDatePicker(
       context: context,
       initialDate: dueDate,
-      firstDate: DateTime(dueDate.year - 20),
-      lastDate: DateTime(dueDate.year + 20),
+      firstDate: firstDay,
+      lastDate: lastDay,
       cancelText: 'Reset',
     );
 

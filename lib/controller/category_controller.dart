@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
+import 'package:todo_todo/constants.dart';
 import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
@@ -25,7 +26,7 @@ class CategoryController extends ChangeNotifier {
         _categoryRepository = categoryRepository;
 
   List<CategoryModel> _categories = [];
-  // Map<String, CategoryModel> _categoryMap = {};
+  Map<String, CategoryModel> _categoryMap = {};
   String _selectedCategoryId = '';
   List<String> _seenCategoryIds = [];
 
@@ -187,7 +188,7 @@ class CategoryController extends ChangeNotifier {
   }) {
     final now = DateTime.now();
     return CategoryModel(
-      categoryId: uuid.generate(),
+      categoryId: uuidV4.generate(),
       userId: uid,
       name: name,
       colorCode: kDefaultCategoryColorSet[0].value,
@@ -207,6 +208,14 @@ class CategoryController extends ChangeNotifier {
           .where((category) => category.categoryState == CategoryState.seen)
           .map((e) => e.categoryId)
           .toList();
+
+      for (final category in _categories) {
+        _categoryMap.update(
+          category.categoryId,
+          (value) => category,
+          ifAbsent: () => category,
+        );
+      }
 
       _categories.sort(
         (a, b) {
@@ -229,9 +238,8 @@ class CategoryController extends ChangeNotifier {
 
   CategoryModel? findCategory(String categoryId) {
     try {
-      return _categories.firstWhere((category) =>
-          category.categoryState == CategoryState.seen &&
-          category.categoryId == categoryId);
+      final category = _categoryMap[categoryId];
+      return category?.categoryState == CategoryState.seen ? category : null;
     } catch (e) {
       return null;
     }
@@ -260,5 +268,9 @@ class CategoryController extends ChangeNotifier {
     } catch (e) {
       return _categories[0];
     }
+  }
+
+  void reload() {
+    notifyListeners();
   }
 }

@@ -9,6 +9,7 @@ import 'package:todo_todo/archive/core/view_models/task_view_model.dart';
 import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/shared/category_select_dialog.dart';
 import 'package:todo_todo/archive/ui/shared/sub_task_form_list.dart';
+import 'package:todo_todo/constants.dart';
 import 'package:todo_todo/models/category_model.dart';
 
 class TaskBottomSheet extends StatefulWidget {
@@ -50,8 +51,8 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
     final dateTime = await showDatePicker(
       context: context,
       initialDate: now,
-      firstDate: DateTime(now.year - 10),
-      lastDate: DateTime(now.year + 10),
+      firstDate: firstDay,
+      lastDate: lastDay,
       cancelText: 'Reset',
     );
 

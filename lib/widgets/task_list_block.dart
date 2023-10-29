@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/controller/task_tab_open_controller.dart';
 import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/models/task_model.dart';
-import 'package:todo_todo/widgets/animated_arrow_button.dart';
+import 'package:todo_todo/screens/task_detail_screen.dart';
 import 'package:todo_todo/widgets/slidable_task_list_item.dart';
 
 class TaskListBlock extends StatefulWidget {
@@ -35,55 +36,48 @@ class _TaskListBlockState extends State<TaskListBlock> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              padding: const EdgeInsets.all(4),
-              onPressed: () {
-                setState(() {
-                  _open = locator<TaskTabOpenController>()
-                      .changeState(widget.taskListBlockState);
-                });
-              },
-              icon: _open
-                  ? const Icon(Icons.arrow_drop_up)
-                  : const Icon(Icons.arrow_drop_down),
-            ),
-            // AnimatedArrowButton(
-            //   onTap: () {
-            //     setState(() {
-            //       _open = locator<TaskTabOpenController>()
-            //           .changeState(widget.taskListBlockState);
-            //     });
-            //   },
-            //   open: _open,
-            // ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  widget.taskListBlockState.mappingValue,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+        InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: () {
+            setState(() {
+              _open = locator<TaskTabOpenController>()
+                  .changeState(widget.taskListBlockState);
+            });
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: _open
+                    ? const Icon(Icons.arrow_drop_up)
+                    : const Icon(Icons.arrow_drop_down),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.taskListBlockState.mappingValue,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '${widget.tasks.length} items',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
+                  const SizedBox(width: 8),
+                  Text(
+                    '${widget.tasks.length} items',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(width: 8),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 16),
         _open
@@ -95,9 +89,17 @@ class _TaskListBlockState extends State<TaskListBlock> {
                   itemCount: widget.tasks.length,
                   itemBuilder: (context, index) {
                     final TaskModel task = widget.tasks[index];
-                    return SlidableTaskListItem(
-                      key: ValueKey(task.taskId),
-                      task: task,
+                    return GestureDetector(
+                      onTap: () {
+                        context.push(
+                          TaskDetailScreen.routeName,
+                          extra: task,
+                        );
+                      },
+                      child: SlidableTaskListItem(
+                        key: ValueKey(task.taskId),
+                        task: task,
+                      ),
                     );
                   },
                 ),

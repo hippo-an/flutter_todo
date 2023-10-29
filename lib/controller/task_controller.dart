@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
+import 'package:todo_todo/constants.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/models/subtask_model.dart';
@@ -83,7 +84,7 @@ class TaskController extends ChangeNotifier {
   }) {
     final now = DateTime.now();
     return TaskModel(
-      taskId: uuid.generate(),
+      taskId: uuidV4.generate(),
       taskName: taskName,
       categoryId: categoryId,
       uid: _authRepository.currentUser.uid,
@@ -243,7 +244,7 @@ class TaskController extends ChangeNotifier {
     }
   }
 
-  Future<bool> returnTask(
+  Future<bool> backTask(
     BuildContext context, {
     required String taskId,
     required String categoryId,
@@ -277,6 +278,29 @@ class TaskController extends ChangeNotifier {
     } on FirestoreException catch (e) {
       showSnackBar(context, e.toString());
       return false;
+    }
+  }
+
+  Future<List<TaskModel>> calendarTasks(DateTime selectedDate) async {
+    try {
+      return await _taskRepository.calendarTasks(selectedDate);
+    } on FirestoreException catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<TaskModel>> selectedDateTasks({
+    required String uid,
+    required DateTime selectedDate,
+    required List<String> categoryIds,
+  }) async {
+    try {
+      return await  _taskRepository.selectedDateTasks(
+          uid: uid,
+          selectedDate: selectedDate,
+          categoryIds: categoryIds);
+    } on FirestoreException catch (e) {
+      return [];
     }
   }
 }

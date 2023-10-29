@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
+import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/utils.dart';
@@ -8,7 +9,7 @@ import 'package:todo_todo/widgets/animated_check_box.dart';
 
 enum TaskItemState { stared, deleted, normal, completed }
 
-class TaskListItem extends StatelessWidget {
+class TaskListItem extends StatefulWidget {
   const TaskListItem({
     super.key,
     required this.task,
@@ -23,6 +24,19 @@ class TaskListItem extends StatelessWidget {
   final void Function()? onDelete;
 
   @override
+  State<TaskListItem> createState() => _TaskListItemState();
+}
+
+class _TaskListItemState extends State<TaskListItem> {
+  late bool _isDone;
+
+  @override
+  void initState() {
+    _isDone = widget.task.isDone;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 2),
@@ -34,14 +48,17 @@ class TaskListItem extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 10,
-            // decoration: BoxDecoration(
-            //   color: task.categoryModel?.color ?? Colors.lightBlue[100],
-            //   borderRadius: const BorderRadius.only(
-            //     topLeft: Radius.circular(5),
-            //     bottomLeft: Radius.circular(5),
-            //   ),
-            // ),
+            width: 6,
+            decoration: BoxDecoration(
+              color: Provider.of<CategoryController>(context)
+                      .findCategory(widget.task.categoryId)
+                      ?.color ??
+                  Colors.transparent,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(5),
+                bottomLeft: Radius.circular(5),
+              ),
+            ),
           ),
           Expanded(
             child: Container(
@@ -51,26 +68,27 @@ class TaskListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    task.taskName,
+                    widget.task.taskName,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
                     maxLines: 1,
                     style: TextStyle(
-                        decoration:
-                            task.isDone ? TextDecoration.lineThrough : null,
-                        color: task.isDone ? kGreyColor : kWhiteColor,
+                        decoration: _isDone ? TextDecoration.lineThrough : null,
+                        color: _isDone ? kGreyColor : kWhiteColor,
                         fontWeight: FontWeight.w400,
                         fontSize: 16),
                   ),
-                  task.dueDate != null
+                  widget.task.dueDate != null
                       ? const SizedBox(height: 12)
                       : const SizedBox.shrink(),
-                  if (task.dueDate != null)
+                  if (widget.task.dueDate != null)
                     Text(
-                      formatDate(task.dueDate!),
+                      formatDate(widget.task.dueDate!),
                       style: TextStyle(
                         fontSize: 12,
-                        color: task.isBeforeThanToday ? kRedColor : kGreyColor,
+                        color: widget.task.isBeforeThanToday
+                            ? kRedColor
+                            : kGreyColor,
                       ),
                     ),
                   // const SizedBox(height: 4),
@@ -99,19 +117,24 @@ class TaskListItem extends StatelessWidget {
               ),
             ),
           ),
-          if (taskItemState == TaskItemState.normal)
+          if (widget.taskItemState == TaskItemState.normal)
             AnimatedCheckBox(
-              value: task.isDone,
+              key: ValueKey(widget.task.taskId),
+              value: _isDone,
               onChanged: (bool value) async {
                 await Provider.of<TaskController>(context, listen: false)
                     .updateTaskToDone(
                   context,
-                  taskId: task.taskId,
+                  taskId: widget.task.taskId,
                   done: value ?? false,
                 );
+
+                setState(() {
+                  _isDone = !_isDone;
+                });
               },
             ),
-          if (taskItemState == TaskItemState.stared)
+          if (widget.taskItemState == TaskItemState.stared)
             IconButton(
               onPressed: () {
                 // Provider.of<TaskViewModel>(context, listen: false)
@@ -124,16 +147,16 @@ class TaskListItem extends StatelessWidget {
               },
               icon: const Icon(Icons.star_outline),
             ),
-          if (taskItemState == TaskItemState.deleted)
+          if (widget.taskItemState == TaskItemState.deleted)
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  onPressed: onReturn,
+                  onPressed: widget.onReturn,
                   icon: const Icon(Icons.refresh_outlined),
                 ),
                 IconButton(
-                  onPressed: onDelete,
+                  onPressed: widget.onDelete,
                   icon: const Icon(
                     Icons.delete_forever_sharp,
                     color: Colors.red,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
+import 'package:todo_todo/constants.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/models/task_model.dart';
@@ -16,7 +17,6 @@ class DeletedTaskList extends StatefulWidget {
 }
 
 class _DeletedTaskListState extends State<DeletedTaskList> {
-  static const PAGE_SIZE = 30;
 
   bool _allFetched = false;
   bool _isLoading = false;
@@ -43,9 +43,9 @@ class _DeletedTaskListState extends State<DeletedTaskList> {
         .orderBy('deletedAt', descending: true);
 
     if (_lastDocument != null) {
-      query = query.startAfterDocument(_lastDocument!).limit(PAGE_SIZE);
+      query = query.startAfterDocument(_lastDocument!).limit(pageSize);
     } else {
-      query = query.limit(PAGE_SIZE);
+      query = query.limit(pageSize);
     }
 
     final List<TaskModel> pagedData = await query.get().then((value) {
@@ -65,7 +65,7 @@ class _DeletedTaskListState extends State<DeletedTaskList> {
 
     setState(() {
       _deletedTasks.addAll(pagedData);
-      if (pagedData.length < PAGE_SIZE) {
+      if (pagedData.length < pageSize) {
         _allFetched = true;
       }
       _isLoading = false;
@@ -95,11 +95,12 @@ class _DeletedTaskListState extends State<DeletedTaskList> {
           }
           final task = _deletedTasks[index];
           return TaskListItem(
+            key: ValueKey(task.taskId),
             task: task,
             taskItemState: TaskItemState.deleted,
             onReturn: () async {
               await Provider.of<TaskController>(context, listen: false)
-                  .returnTask(
+                  .backTask(
                 context,
                 taskId: task.taskId,
                 categoryId: task.categoryId,

@@ -9,6 +9,7 @@ import 'package:todo_todo/archive/core/view_models/task_view_model.dart';
 import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/archive/ui/shared/task_list_item.dart';
 import 'package:todo_todo/archive/ui/view/task_detail_screen.dart';
+import 'package:todo_todo/constants.dart';
 
 class SlidableTaskListItem extends StatelessWidget {
   const SlidableTaskListItem({
@@ -58,8 +59,8 @@ class SlidableTaskListItem extends StatelessWidget {
                 final newDueDate = await showDatePicker(
                   context: context,
                   initialDate: task.dueDate ?? now,
-                  firstDate: DateTime(now.year - 10),
-                  lastDate: DateTime(now.year + 10),
+                  firstDate: firstDay,
+                  lastDate: lastDay,
                   cancelText: 'Reset',
                 );
                 final dueDate = task.dueDate;

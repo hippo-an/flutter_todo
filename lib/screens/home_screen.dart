@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/screens/task_calendar_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/widgets/animated_floating_button.dart';
@@ -29,6 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
               if (value != _selectedIndex) {
                 setState(() {
                   _selectedIndex = value;
+                  if (value == 1) {
+                    Provider.of<CategoryController>(context, listen: false).reload();
+                  }
                 });
               }
             },

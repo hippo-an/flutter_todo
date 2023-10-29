@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/common/auth_exception.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
+import 'package:todo_todo/constants.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/models/user_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
@@ -64,7 +65,7 @@ class AuthController extends ChangeNotifier {
                   _createUser(
                     userCredential.user!.uid,
                     email,
-                    uuid.generate(),
+                    uuidV4.generate(),
                   ),
                 );
 

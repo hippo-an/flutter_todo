@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo_todo/controller/auth_controller.dart';
+import 'package:todo_todo/controller/calendar_format_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
+import 'package:todo_todo/controller/calendar_selected_date_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/controller/task_tab_open_controller.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
@@ -30,7 +32,7 @@ void setupLocator() {
   );
 
   locator.registerLazySingleton(
-        () => TaskTabOpenController(),
+    () => TaskTabOpenController(),
   );
 
   locator.registerLazySingleton(
@@ -54,5 +56,13 @@ void setupLocator() {
       authRepository: locator<AuthRepository>(),
       categoryController: locator<CategoryController>(),
     ),
+  );
+
+  locator.registerLazySingleton(
+    () => CalendarSelectedDateController(),
+  );
+
+  locator.registerLazySingleton(
+        () => CalendarFormatController(),
   );
 }

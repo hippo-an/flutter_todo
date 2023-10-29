@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
+import 'package:todo_todo/constants.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
@@ -135,8 +136,8 @@ class _TaskDetailState extends State<TaskDetail> {
     final selectedDueDate = await showDatePicker(
       context: context,
       initialDate: dueDate,
-      firstDate: DateTime(dueDate.year - 20),
-      lastDate: DateTime(dueDate.year + 20),
+      firstDate: firstDay,
+      lastDate: lastDay,
       cancelText: 'Reset',
     );
     await _updateDueDate(selectedDueDate);
@@ -295,6 +296,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     ),
                     const SizedBox(width: 8),
                     AnimatedCheckBox(
+                      key: ValueKey(widget.task.taskId),
                       value: _isDone,
                       onChanged: _updateIsDone,
                     ),
@@ -354,7 +356,7 @@ class _TaskDetailState extends State<TaskDetail> {
                         setState(() {
                           _subtaskFormList.add(
                             SubtaskFormModel(
-                              subtaskId: uuid.generate(),
+                              subtaskId: uuidV4.generate(),
                             ),
                           );
                         });
