@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo_todo/archive/locator.dart';
 import 'package:todo_todo/controller/task_tab_open_controller.dart';
 import 'package:todo_todo/enums.dart';
+import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/screens/task_detail_screen.dart';
 import 'package:todo_todo/widgets/slidable_task_list_item.dart';

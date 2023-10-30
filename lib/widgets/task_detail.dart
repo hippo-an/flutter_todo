@@ -58,7 +58,7 @@ class _TaskDetailState extends State<TaskDetail> {
     _noteTemp = _noteController.text.trim();
 
     final category = Provider.of<CategoryController>(context, listen: false)
-        .category(widget.task.categoryId);
+        .findSeenCategory(widget.task.categoryId);
 
     setState(() {
       _category = category;

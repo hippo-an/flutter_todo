@@ -50,8 +50,8 @@ class _TaskListItemState extends State<TaskListItem> {
           Container(
             width: 6,
             decoration: BoxDecoration(
-              color: Provider.of<CategoryController>(context)
-                      .findCategory(widget.task.categoryId)
+              color: Provider.of<CategoryController>(context, listen: false)
+                      .findNullableSeenCategory(widget.task.categoryId)
                       ?.color ??
                   Colors.transparent,
               borderRadius: const BorderRadius.only(
@@ -136,6 +136,8 @@ class _TaskListItemState extends State<TaskListItem> {
             ),
           if (widget.taskItemState == TaskItemState.stared)
             IconButton(
+              splashColor: Colors.transparent,
+              splashRadius:16,
               onPressed: () {
                 // Provider.of<TaskViewModel>(context, listen: false)
                 //     .updateTask(
@@ -152,14 +154,19 @@ class _TaskListItemState extends State<TaskListItem> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
+                  splashColor: Colors.transparent,
+                  splashRadius:16,
                   onPressed: widget.onReturn,
-                  icon: const Icon(Icons.refresh_outlined),
+                  icon: const Icon(Icons.refresh_outlined, size: 18,),
                 ),
                 IconButton(
+                  splashColor: Colors.transparent,
+                  splashRadius:16,
                   onPressed: widget.onDelete,
                   icon: const Icon(
                     Icons.delete_forever_sharp,
                     color: Colors.red,
+                    size: 18,
                   ),
                 ),
               ],

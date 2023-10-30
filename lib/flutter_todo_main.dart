@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/controller/auth_controller.dart';
 import 'package:todo_todo/controller/calendar_format_controller.dart';
+import 'package:todo_todo/controller/calendar_marker_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/calendar_selected_date_controller.dart';
+import 'package:todo_todo/controller/task_calendar_reload_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/firebase_options.dart';
 import 'package:todo_todo/locator.dart';
@@ -39,6 +41,12 @@ class FlutterTodoApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => locator<CalendarFormatController>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => locator<TaskCalendarReloadController>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => locator<CalendarMarkerController>(),
         ),
       ],
       child: MaterialApp.router(

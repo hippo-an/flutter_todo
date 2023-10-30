@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/constants.dart';
+import 'package:todo_todo/controller/calendar_marker_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/widgets/task_list_item.dart';
@@ -79,6 +80,11 @@ class SlidableTaskListItem extends StatelessWidget {
           SlidableAction(
             flex: 1,
             onPressed: (context) async {
+              if (task.dueDate != null) {
+                Provider.of<CalendarMarkerController>(context, listen: false)
+                    .removeMarkerCache(task.dueDate!);
+              }
+
               await Provider.of<TaskController>(context, listen: false)
                   .deleteTask(
                 context,

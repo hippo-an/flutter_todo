@@ -22,4 +22,11 @@ class TaskTabOpenController {
         return completeTodayOpen;
     }
   }
+
+  void init() {
+    pastOpen = false;
+    todayOpen = false;
+    futureOpen = false;
+    completeTodayOpen = false;
+  }
 }

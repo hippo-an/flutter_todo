@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_todo/common/firestore_exception.dart';
 import 'package:todo_todo/models/category_model.dart';
+import 'package:todo_todo/models/marker_model.dart';
 import 'package:todo_todo/models/subtask_model.dart';
 import 'package:todo_todo/models/task_model.dart';
 
@@ -356,6 +357,43 @@ class TaskRepository {
       return snap.docs
           .map(
             (e) => TaskModel.fromJson(
+              e.data(),
+            ),
+          )
+          .toList();
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<List<MarkerModel>> fetchMarkerData({
+    required String uid,
+    required DateTime selectedMonth,
+    required List<String> categoryIds,
+  }) async {
+    try {
+      final from = DateTime(selectedMonth.year, selectedMonth.month, 1);
+      final to = DateTime(selectedMonth.year, selectedMonth.month + 1, 1);
+
+      final snap = await _firestore
+          .collection('tasks')
+          .where('uid', isEqualTo: uid)
+          .where('isDeleted', isEqualTo: false)
+          .where('categoryId', whereIn: categoryIds)
+          .where(
+            'dueDate',
+            isGreaterThanOrEqualTo: from.toString(),
+          )
+          .where(
+            'dueDate',
+            isLessThan: to.toString(),
+          )
+          .orderBy('dueDate')
+          .get();
+
+      return snap.docs
+          .map(
+            (e) => MarkerModel.fromJson(
               e.data(),
             ),
           )

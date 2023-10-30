@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_todo/controller/calendar_marker_controller.dart';
+import 'package:todo_todo/controller/calendar_selected_date_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
+import 'package:todo_todo/controller/task_calendar_reload_controller.dart';
+import 'package:todo_todo/locator.dart';
+import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/screens/task_calendar_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/widgets/animated_floating_button.dart';
@@ -32,7 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   _selectedIndex = value;
                   if (value == 1) {
-                    Provider.of<CategoryController>(context, listen: false).reload();
+                    Provider.of<TaskCalendarReloadController>(context, listen: false).reload();
+                    Provider.of<CalendarMarkerController>(context, listen: false).fetchMarker(
+                      uid: locator<AuthRepository>().currentUser.uid,
+                      selectedMonth: context.read<CalendarSelectedDateController>().selectedDate,
+                      categoryIds: Provider.of<CategoryController>(context,listen: false).seenCategoryIds,
+                    );
                   }
                 });
               }

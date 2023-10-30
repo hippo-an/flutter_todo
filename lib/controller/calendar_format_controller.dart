@@ -12,4 +12,8 @@ class CalendarFormatController extends ChangeNotifier {
   }
 
   bool isMonthFormat() => _calendarFormat == CalendarFormat.month;
+
+  void init() {
+    _calendarFormat = CalendarFormat.month;
+  }
 }

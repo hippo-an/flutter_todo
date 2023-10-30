@@ -22,7 +22,7 @@ class TaskController extends ChangeNotifier {
         _authRepository = authRepository,
         _categoryController = categoryController;
 
-  List<TaskModel> _tasks = [];
+  // List<TaskModel> _tasks = [];
 
   Future<bool> createTask(
     BuildContext context, {
@@ -54,27 +54,27 @@ class TaskController extends ChangeNotifier {
     }
   }
 
-  Future<void> _fetchTask(String taskId) async {
-    try {
-      final TaskModel? task = await _taskRepository.fetchTask(taskId);
-
-      if (task != null) {
-        _tasks.add(task);
-      }
-
-      // _categories.sort(
-      //   (a, b) {
-      //     if (a.isDefault) {
-      //       return 0;
-      //     } else if (b.isDefault) {
-      //       return 1;
-      //     } else {
-      //       return a.createdAt.compareTo(b.createdAt);
-      //     }
-      //   },
-      // );
-    } catch (e) {}
-  }
+  // Future<void> _fetchTask(String taskId) async {
+  //   try {
+  //     final TaskModel? task = await _taskRepository.fetchTask(taskId);
+  //
+  //     if (task != null) {
+  //       _tasks.add(task);
+  //     }
+  //
+  //     // _categories.sort(
+  //     //   (a, b) {
+  //     //     if (a.isDefault) {
+  //     //       return 0;
+  //     //     } else if (b.isDefault) {
+  //     //       return 1;
+  //     //     } else {
+  //     //       return a.createdAt.compareTo(b.createdAt);
+  //     //     }
+  //     //   },
+  //     // );
+  //   } catch (e) {}
+  // }
 
   TaskModel _createTask({
     required String taskName,

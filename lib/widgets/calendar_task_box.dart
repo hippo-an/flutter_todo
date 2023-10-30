@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/controller/calendar_selected_date_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
+import 'package:todo_todo/controller/task_calendar_reload_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/models/task_model.dart';
@@ -13,8 +14,15 @@ class CalendarTaskBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<CalendarSelectedDateController, CategoryController>(
-      builder: (context, calendarController, categoryController, child) {
+    return Consumer3<CalendarSelectedDateController, CategoryController,
+        TaskCalendarReloadController>(
+      builder: (
+        context,
+        calendarController,
+        categoryController,
+        taskCalendarReloadController,
+        child,
+      ) {
         final categoryIds = categoryController.seenCategoryIds;
 
         if (categoryIds.isEmpty) {

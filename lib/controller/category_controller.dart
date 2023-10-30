@@ -236,7 +236,7 @@ class CategoryController extends ChangeNotifier {
     notifyListeners();
   }
 
-  CategoryModel? findCategory(String categoryId) {
+  CategoryModel? findNullableSeenCategory(String categoryId) {
     try {
       final category = _categoryMap[categoryId];
       return category?.categoryState == CategoryState.seen ? category : null;
@@ -260,7 +260,7 @@ class CategoryController extends ChangeNotifier {
     }
   }
 
-  CategoryModel category(String categoryId) {
+  CategoryModel findSeenCategory(String categoryId) {
     try {
       return _categories.firstWhere((element) =>
           element.categoryState == CategoryState.seen &&
