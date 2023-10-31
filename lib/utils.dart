@@ -22,6 +22,22 @@ void showSnackBar(BuildContext context, String? message) {
   }
 }
 
-String formatDate(DateTime date) {
+String dashFormatDate(DateTime date) {
   return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
 }
+
+String slashFormatDate(DateTime date) {
+  return '${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}';
+}
+
+DateTime mostRecentMonday(DateTime date) =>
+    DateTime(date.year, date.month, date.day - (date.weekday - 1)).toUtc();
+
+DateTime toSunday(DateTime date) =>
+    DateTime(date.year, date.month, (date.day - date.weekday % 7) + 7).toUtc();
+
+DateTime lastWeek(DateTime date) =>
+    DateTime.utc(date.year, date.month, date.day - 7);
+
+DateTime nextWeek(DateTime date) =>
+    DateTime.utc(date.year, date.month, date.day + 7);

@@ -143,7 +143,7 @@ class TaskModel {
       return false;
     }
 
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     return dueDate!.year < now.year ||
         (dueDate!.year == now.year && dueDate!.month < now.month) ||
         (dueDate!.year == now.year &&
@@ -156,7 +156,7 @@ class TaskModel {
       return true;
     }
 
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     return dueDate!.year > now.year ||
         (dueDate!.year == now.year && dueDate!.month > now.month) ||
         (dueDate!.year == now.year &&

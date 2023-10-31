@@ -56,7 +56,7 @@ class CategoryRepository {
     try {
       await _firestore.collection('categories').doc(categoryId).update({
         'isStared': !isStared,
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -68,7 +68,7 @@ class CategoryRepository {
     try {
       await _firestore.collection('categories').doc(categoryId).update({
         'categoryState': categoryState.name,
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -81,7 +81,7 @@ class CategoryRepository {
       await _firestore.collection('categories').doc(categoryId).update({
         'name': name,
         'colorCode': colorCode,
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -92,7 +92,7 @@ class CategoryRepository {
     try {
       await _firestore.collection('categories').doc(categoryId).update({
         'taskCount': FieldValue.increment(value),
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());

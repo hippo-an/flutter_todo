@@ -46,7 +46,7 @@ class SlidableTaskListItem extends StatelessWidget {
           SlidableAction(
             flex: 1,
             onPressed: (ctx) async {
-              final now = DateTime.now();
+              final now = DateTime.now().toUtc();
               final newDueDate = await showDatePicker(
                 context: context,
                 initialDate: task.dueDate ?? now,
@@ -62,6 +62,11 @@ class SlidableTaskListItem extends StatelessWidget {
                   newDueDate?.month != dueDate?.month ||
                   newDueDate?.day != dueDate?.day) {
                 if (context.mounted) {
+                  if (task.dueDate != null) {
+                    Provider.of<CalendarMarkerController>(context, listen: false)
+                        .removeMarkerCache(task.dueDate!);
+                  }
+
                   await Provider.of<TaskController>(context, listen: false)
                       .updateDueDate(
                     context,

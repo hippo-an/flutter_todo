@@ -105,6 +105,7 @@ class CategoryController extends ChangeNotifier {
 
   Future<void> fetchCategoriesForInit() async {
     await _fetchCategories();
+    print('category init############################################');
     notifyListeners();
   }
 
@@ -186,7 +187,7 @@ class CategoryController extends ChangeNotifier {
     required int sortNumber,
     bool? isDefault,
   }) {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     return CategoryModel(
       categoryId: uuidV4.generate(),
       userId: uid,

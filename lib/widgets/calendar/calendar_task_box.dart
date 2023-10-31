@@ -27,7 +27,9 @@ class CalendarTaskBox extends StatelessWidget {
 
         if (categoryIds.isEmpty) {
           return const Expanded(
-            child: CircularProgressIndicator(),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         }
 

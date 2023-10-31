@@ -193,7 +193,7 @@ class AuthController extends ChangeNotifier {
   }
 
   UserModel _createUser(String uid, String email, String username) {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
 
     return UserModel(
       userId: uid,

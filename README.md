@@ -57,4 +57,5 @@ While working on this project, I tried to focus on what I needed and wanted to l
 - [flutter_signin_button](https://pub.dev/packages/flutter_signin_button)
 - [get_it](https://pub.dev/packages/get_it)
 - [avatar_glow](https://pub.dev/packages/avatar_glow)
+- [fl_chart](https://pub.dev/packages/fl_chart)
 

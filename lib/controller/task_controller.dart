@@ -82,7 +82,7 @@ class TaskController extends ChangeNotifier {
     required DateTime? dueDate,
     required List<SubtaskModel> subtasks,
   }) {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     return TaskModel(
       taskId: uuidV4.generate(),
       taskName: taskName,

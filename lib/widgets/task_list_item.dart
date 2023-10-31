@@ -83,7 +83,7 @@ class _TaskListItemState extends State<TaskListItem> {
                         : const SizedBox.shrink(),
                     if (widget.task.dueDate != null)
                       Text(
-                        formatDate(widget.task.dueDate!),
+                        dashFormatDate(widget.task.dueDate!),
                         style: TextStyle(
                           fontSize: 12,
                           color: widget.task.isBeforeThanToday

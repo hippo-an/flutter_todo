@@ -4,8 +4,8 @@ class UserModel {
       username: 'Invalid',
       identity: 'Invalid Email',
       colorCode: 0,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now()
+      createdAt: DateTime.now().toUtc(),
+      updatedAt: DateTime.now().toUtc()
   );
 
   final String userId;

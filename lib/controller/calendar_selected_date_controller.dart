@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarSelectedDateController extends ChangeNotifier {
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now().toUtc();
 
   DateTime get selectedDate => _selectedDate;
 
@@ -15,7 +15,7 @@ class CalendarSelectedDateController extends ChangeNotifier {
 
 
   void selectToday() {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     _selectedDate = DateTime.utc(
       now.year,
       now.month,
@@ -29,6 +29,6 @@ class CalendarSelectedDateController extends ChangeNotifier {
 
 
   void init() {
-    _selectedDate = DateTime.now();
+    _selectedDate = DateTime.now().toUtc();
   }
 }

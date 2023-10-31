@@ -48,6 +48,7 @@ class FlutterTodoApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => locator<CalendarMarkerController>(),
         ),
+
       ],
       child: MaterialApp.router(
         routerConfig: router,

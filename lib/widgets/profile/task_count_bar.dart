@@ -19,6 +19,7 @@ class TaskCountBar extends StatelessWidget {
           child: BaseCard(
             width: size.width,
             height: size.height * 0.15,
+            color: Theme.of(context).colorScheme.onBackground,
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -38,6 +39,7 @@ class TaskCountBar extends StatelessWidget {
           child: BaseCard(
             width: size.width,
             height: size.height * 0.15,
+            color: Theme.of(context).colorScheme.onBackground,
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -66,8 +68,7 @@ class _CompletedTasksFuture extends StatelessWidget {
     return FutureBuilder<int>(
       future: locator<TaskRepository>().completeCount(
           uid: locator<AuthRepository>().currentUser.uid,
-          categoryIds: Provider.of<CategoryController>(context,
-              listen: false)
+          categoryIds: Provider.of<CategoryController>(context, listen: false)
               .seenCategoryIds),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -108,8 +109,7 @@ class _PendingTasksFuture extends StatelessWidget {
     return FutureBuilder<int>(
       future: locator<TaskRepository>().pendingTasks(
           uid: locator<AuthRepository>().currentUser.uid,
-          categoryIds: Provider.of<CategoryController>(context,
-              listen: false)
+          categoryIds: Provider.of<CategoryController>(context, listen: false)
               .seenCategoryIds),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -141,4 +141,3 @@ class _PendingTasksFuture extends StatelessWidget {
     );
   }
 }
-

@@ -3,11 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:todo_todo/colors.dart';
 
 class TaskBarChart extends StatelessWidget {
-  const TaskBarChart({super.key});
+  const TaskBarChart({
+    super.key,
+    required this.from,
+    required this.to,
+  });
+
+  final DateTime from;
+  final DateTime to;
 
   @override
   Widget build(BuildContext context) {
     double max = 8;
+    final color = Theme.of(context).colorScheme.primary;
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -20,22 +28,16 @@ class TaskBarChart extends StatelessWidget {
                 gridData: const FlGridData(show: false),
                 borderData: FlBorderData(show: false),
                 barGroups: [
-                  _taskBarData(
-                      x: 0, color: Theme.of(context).colorScheme.primary),
-                  _taskBarData(
-                      x: 1, color: Theme.of(context).colorScheme.primary),
-                  _taskBarData(
-                      x: 2,
-                      y: max,
-                      color: Theme.of(context).colorScheme.primary),
-                  _taskBarData(
-                      x: 3, color: Theme.of(context).colorScheme.primary),
-                  _taskBarData(
-                      x: 4, color: Theme.of(context).colorScheme.primary),
-                  _taskBarData(
-                      x: 5, y: 3, color: Theme.of(context).colorScheme.primary),
-                  _taskBarData(
-                      x: 6, color: Theme.of(context).colorScheme.primary),
+                  ...List.generate(
+                    7,
+                    (index) {
+                      return _taskBarData(
+                        x: index,
+                        y: index % 2 == 0 ? index.toDouble() : 0.0,
+                        color: color,
+                      );
+                    },
+                  ),
                 ],
                 titlesData: FlTitlesData(
                   rightTitles: const AxisTitles(

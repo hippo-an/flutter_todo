@@ -38,7 +38,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
     _category = selectedCategory == null || selectedCategory.isDefault
         ? null
         : selectedCategory;
-    _selectedDate = DateTime.now();
+    _selectedDate = DateTime.now().toUtc();
     _subtaskForms = [];
     _formKey = GlobalKey<FormState>();
     _taskNameController = TextEditingController();
@@ -52,7 +52,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
   }
 
   Future<void> _dateSelectDialog() async {
-    final now = _selectedDate ?? DateTime.now();
+    final now = _selectedDate ?? DateTime.now().toUtc();
     final dateTime = await showDatePicker(
       context: context,
       initialDate: now,

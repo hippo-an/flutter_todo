@@ -9,7 +9,7 @@ class MarkerModel {
   });
 
   factory MarkerModel.fromJson(Map<String, dynamic> data) {
-    final dueDate = DateTime.tryParse(data['dueDate']) ?? DateTime.now();
+    final dueDate = DateTime.tryParse(data['dueDate']) ?? DateTime.now().toUtc();
 
     return MarkerModel(
       dueDate: DateTime(dueDate.year, dueDate.month, dueDate.day),

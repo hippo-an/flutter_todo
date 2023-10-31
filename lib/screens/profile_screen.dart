@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_todo/widgets/calendar/task_bar_section.dart';
 import 'package:todo_todo/widgets/profile/base_card.dart';
 import 'package:todo_todo/widgets/profile/profile_bar.dart';
 import 'package:todo_todo/widgets/profile/task_bar_chart.dart';
@@ -20,51 +21,7 @@ class ProfileScreen extends StatelessWidget {
           const TaskOverViewText(),
           const SizedBox(height: 4),
           const TaskCountBar(),
-          BaseCard(
-            width: size.width,
-            height: size.height * 0.3,
-            child: const Padding(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Completion of Daily Tasks',
-                          style: TextStyle(
-                            fontSize: 12,
-                          ),
-                        ),
-                        Spacer(),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.arrow_left,
-                              size: 18,
-                            ),
-                            Text(
-                              '10/30~11/5',
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_right,
-                              size: 18,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TaskBarChart(),
-                ],
-              ),
-            ),
-          ),
+         const TaskBarSection(),
           BaseCard(
             width: size.width,
             height: size.height * 0.08 * 5,

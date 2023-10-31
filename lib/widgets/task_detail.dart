@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_todo/colors.dart';
 import 'package:todo_todo/constants.dart';
+import 'package:todo_todo/controller/calendar_marker_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/models/category_model.dart';
@@ -39,6 +40,7 @@ class _TaskDetailState extends State<TaskDetail> {
   late String _noteTemp;
 
   bool _categoryLoading = false;
+  bool _dateLoading = false;
   bool _subtasksLoading = false;
 
   bool _checkLoading = false;
@@ -94,7 +96,7 @@ class _TaskDetailState extends State<TaskDetail> {
   }
 
   bool _isBefore() {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     return _dueDate!.year < now.year ||
         (_dueDate!.year == now.year && _dueDate!.month < now.month) ||
         (_dueDate!.year == now.year &&
@@ -134,7 +136,7 @@ class _TaskDetailState extends State<TaskDetail> {
   }
 
   Future<void> _dateSelectDialog() async {
-    final dueDate = _dueDate ?? DateTime.now();
+    final dueDate = _dueDate ?? DateTime.now().toUtc();
     final selectedDueDate = await showDatePicker(
       context: context,
       initialDate: dueDate,
@@ -146,6 +148,15 @@ class _TaskDetailState extends State<TaskDetail> {
   }
 
   Future<void> _updateDueDate(DateTime? selectedDueDate) async {
+    setState(() {
+      _dateLoading = true;
+    });
+
+    if (widget.task.dueDate != null) {
+      Provider.of<CalendarMarkerController>(context, listen: false)
+          .removeMarkerCache(widget.task.dueDate!);
+    }
+
     await Provider.of<TaskController>(context, listen: false).updateDueDate(
       context,
       taskId: widget.task.taskId,
@@ -153,6 +164,7 @@ class _TaskDetailState extends State<TaskDetail> {
     );
 
     setState(() {
+      _dateLoading = false;
       _dueDate = selectedDueDate;
     });
   }
@@ -285,20 +297,27 @@ class _TaskDetailState extends State<TaskDetail> {
                               width: 2),
                         ),
                         onPressed: _dateSelectDialog,
-                        child: _dueDate != null
-                            ? Text(
-                                formatDate(_dueDate!),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: _isBefore() ? kRedColor : kGreyColor,
-                                ),
+                        child: _dateLoading
+                            ? const SizedBox(
+                                height: 8,
+                                width: 8,
+                                child: CircularProgressIndicator(),
                               )
-                            : const Text(
-                                'No Date',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                ),
-                              ),
+                            : _dueDate != null
+                                ? Text(
+                                    dashFormatDate(_dueDate!),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color:
+                                          _isBefore() ? kRedColor : kGreyColor,
+                                    ),
+                                  )
+                                : const Text(
+                                    'No Date',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                    ),
+                                  ),
                       ),
                     ),
                     const SizedBox(width: 8),

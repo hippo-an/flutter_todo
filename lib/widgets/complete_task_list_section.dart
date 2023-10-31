@@ -17,7 +17,7 @@ class CompleteTaskListSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = locator<TaskTabOpenController>();
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
 
     final complete =
         tasks.where((task) => isSameDay(task.completedDate, now)).toList();

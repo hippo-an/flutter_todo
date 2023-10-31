@@ -60,7 +60,7 @@ class TaskRepository {
 
   Stream<List<TaskModel>> categoryTodayDoneTask(
       CategoryModel selectedCategory, List<String> seenCategoryIds) {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     final from = DateTime(now.year, now.month, now.day).toString();
     final to = DateTime(now.year, now.month, now.day + 1).toString();
     return _firestore
@@ -109,7 +109,7 @@ class TaskRepository {
 
   Stream<List<TaskModel>> defaultTodayDoneTask(
       String uid, List<String> seenCategoryIds) {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     final from = DateTime(now.year, now.month, now.day).toString();
     final to = DateTime(now.year, now.month, now.day + 1).toString();
     return _firestore
@@ -137,7 +137,7 @@ class TaskRepository {
   Future<void> updateTaskToDone(
       {required String taskId, required bool isDone}) async {
     try {
-      final now = DateTime.now().toString();
+      final now = DateTime.now().toUtc().toString();
       return await _firestore.collection('tasks').doc(taskId).update({
         'isDone': isDone,
         'updatedAt': now,
@@ -155,7 +155,7 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'isDeleted': true,
-        'deletedAt': DateTime.now().toString(),
+        'deletedAt': DateTime.now().toUtc().toString(),
         'categoryId': defaultCategoryId,
       });
     } catch (e) {
@@ -170,7 +170,7 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'stared': value,
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -182,7 +182,7 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'dueDate': dueDate == null ? 'null' : dueDate.toString(),
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -206,7 +206,7 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'categoryId': categoryId,
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -220,7 +220,7 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'taskName': taskName,
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -232,7 +232,7 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'note': note,
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -246,7 +246,7 @@ class TaskRepository {
     try {
       await _firestore.collection('tasks').doc(taskId).update({
         'subtasks': subtasks.map((e) => e.toJson()),
-        'updatedAt': DateTime.now().toString(),
+        'updatedAt': DateTime.now().toUtc().toString(),
       });
     } catch (e) {
       throw FirestoreException(message: e.toString());
@@ -273,7 +273,7 @@ class TaskRepository {
         final task = _firestore.collection('tasks').doc(taskId);
         batch.update(task, {
           'isDeleted': true,
-          'deletedAt': DateTime.now().toString(),
+          'deletedAt': DateTime.now().toUtc().toString(),
           'categoryId': defaultCategoryId,
         });
       }

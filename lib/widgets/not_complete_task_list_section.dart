@@ -17,7 +17,7 @@ class NotCompleteTaskListSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = locator<TaskTabOpenController>();
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
 
     final past = tasks.where((task) => task.isBeforeThanToday).toList();
     final today = tasks.where((task) => isSameDay(task.dueDate, now)).toList();
