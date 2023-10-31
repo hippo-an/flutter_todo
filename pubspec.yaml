@@ -54,6 +54,7 @@ dependencies:
   flutter_signin_button: ^2.0.0
   get_it: ^7.6.4
   avatar_glow: ^2.0.2
+  fl_chart: ^0.64.0
 
 dev_dependencies:
   flutter_test:

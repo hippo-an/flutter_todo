@@ -30,7 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
       initialIndex: _selectedIndex,
       child: SafeArea(
         child: Scaffold(
-          floatingActionButton: const AnimatedFloatingButton(),
+          floatingActionButton:
+              _selectedIndex != 2 ? const AnimatedFloatingButton() : null,
           drawer: const CustomDrawer(),
           bottomNavigationBar: CustomBottomNavigationBar(
             onTap: (value) {
@@ -38,11 +39,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   _selectedIndex = value;
                   if (value == 1) {
-                    Provider.of<TaskCalendarReloadController>(context, listen: false).reload();
-                    Provider.of<CalendarMarkerController>(context, listen: false).fetchMarker(
+                    Provider.of<TaskCalendarReloadController>(context,
+                            listen: false)
+                        .reload();
+                    Provider.of<CalendarMarkerController>(context,
+                            listen: false)
+                        .fetchMarker(
                       uid: locator<AuthRepository>().currentUser.uid,
-                      selectedMonth: context.read<CalendarSelectedDateController>().selectedDate,
-                      categoryIds: Provider.of<CategoryController>(context,listen: false).seenCategoryIds,
+                      selectedMonth: context
+                          .read<CalendarSelectedDateController>()
+                          .selectedDate,
+                      categoryIds: Provider.of<CategoryController>(context,
+                              listen: false)
+                          .seenCategoryIds,
                     );
                   }
                 });

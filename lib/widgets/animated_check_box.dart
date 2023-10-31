@@ -60,8 +60,8 @@ class _AnimatedCheckBoxState extends State<AnimatedCheckBox>
       child: Align(
         alignment: Alignment.center,
         child: Container(
-          height: 30,
-          width: 30,
+          height: 26,
+          width: 26,
           decoration: const BoxDecoration(
             color: Colors.transparent,
             border: Border.fromBorderSide(
@@ -75,7 +75,7 @@ class _AnimatedCheckBoxState extends State<AnimatedCheckBox>
               alignment: Alignment.center,
               child: Icon(
                 Icons.check_circle,
-                size: 25,
+                size: 22,
               ),
             ),
           ),

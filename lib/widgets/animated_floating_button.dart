@@ -9,11 +9,11 @@ class AnimatedFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AvatarGlow(
       glowColor: Theme.of(context).colorScheme.primary,
-      endRadius: 40.0,
+      endRadius: 40,
       duration: const Duration(milliseconds: 2000),
       repeat: true,
       showTwoGlows: true,
-      repeatPauseDuration: const Duration(milliseconds: 100),
+      repeatPauseDuration: const Duration(milliseconds: 150),
       child: Material(     // Replace this child with your own
         elevation: 8,
         shape: const CircleBorder(),
@@ -27,8 +27,8 @@ class AnimatedFloatingButton extends StatelessWidget {
           },
           child: Container(
             padding: const EdgeInsets.all(4),
-            height: 50,
-            width: 50,
+            height: 60,
+            width: 60,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               shape: BoxShape.circle,
