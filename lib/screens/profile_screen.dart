@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/colors.dart';
-import 'package:todo_todo/widgets/base_card.dart';
-import 'package:todo_todo/widgets/task_bar_chart.dart';
-import 'package:todo_todo/widgets/task_pi_chart.dart';
+import 'package:todo_todo/widgets/profile/base_card.dart';
+import 'package:todo_todo/widgets/profile/profile_bar.dart';
+import 'package:todo_todo/widgets/profile/task_bar_chart.dart';
+import 'package:todo_todo/widgets/profile/task_pi_chart.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,46 +13,7 @@ class ProfileScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(
-            width: size.width,
-            height: size.height * 0.1,
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  radius: 32,
-                ),
-                const SizedBox(width: 10),
-                const Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'username',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'email@gmail.com',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: kGreyColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  splashRadius: 20,
-                  onPressed: () {},
-                  icon: const Icon(Icons.settings),
-                ),
-              ],
-            ),
-          ),
+          ProfileBar(),
           const SizedBox(height: 10),
           SizedBox(
             width: size.width,

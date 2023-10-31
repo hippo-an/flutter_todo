@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/enums.dart';
 import 'package:todo_todo/models/category_model.dart';
-import 'package:todo_todo/widgets/category_edit_alert_dialog.dart';
 import 'package:todo_todo/widgets/category_delete_dialog.dart';
+import 'package:todo_todo/widgets/category_edit_alert_dialog.dart';
 
 class CategoryListItemMenuAnchor extends StatelessWidget {
   const CategoryListItemMenuAnchor({

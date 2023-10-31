@@ -8,7 +8,6 @@ import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/widgets/delete_task_item.dart';
-import 'package:todo_todo/widgets/task_list_item.dart';
 
 class DeletedTaskList extends StatefulWidget {
   const DeletedTaskList({super.key});

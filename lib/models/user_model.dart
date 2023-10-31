@@ -1,7 +1,13 @@
-
-
-
 class UserModel {
+  static UserModel empty = UserModel(
+      userId: '',
+      username: 'Invalid',
+      identity: 'Invalid Email',
+      colorCode: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now()
+  );
+
   final String userId;
   final String username;
   final String identity;
@@ -39,5 +45,4 @@ class UserModel {
       'updatedAt': updatedAt.toString(),
     };
   }
-
 }

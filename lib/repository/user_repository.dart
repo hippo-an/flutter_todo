@@ -11,20 +11,35 @@ class UserRepository {
 
   Future<void> createUser(UserModel user) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(user.userId)
-          .set(user.toJson());
+      await _firestore.collection('users').doc(user.userId).set(user.toJson());
     } catch (e) {
       throw FirestoreException(message: e.toString());
     }
   }
+
   Future<void> validateUsername(String username) async {
     if ((await _firestore
-        .collection('users')
-        .where('username', isEqualTo: username)
-        .get()).size > 0) {
+                .collection('users')
+                .where('username', isEqualTo: username)
+                .get())
+            .size >
+        0) {
       throw FirestoreException(message: 'Username is already using..');
+    }
+  }
+
+  Future<UserModel> fetchUser({required String uid}) async {
+    try {
+      final snap = await _firestore.collection('users').doc(uid).get();
+
+      if (snap.data() != null) {
+        return UserModel.fromJson(
+          snap.data()!,
+        );
+      }
+      return UserModel.empty;
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
     }
   }
 }

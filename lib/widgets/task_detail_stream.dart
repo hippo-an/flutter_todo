@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/models/task_model.dart';
-import 'package:todo_todo/repository/task_repository.dart';
 import 'package:todo_todo/widgets/task_detail.dart';
 
 class TaskDetailStream extends StatelessWidget {
