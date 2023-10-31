@@ -131,10 +131,8 @@ class _TaskListItemState extends State<TaskListItem> {
                     done: value ?? false,
                   )
                       .then((value) {
-                    setState(() {
-                      _isLoading = false;
-                      _isDone = !_isDone;
-                    });
+                    _isLoading = false;
+                    _isDone = !_isDone;
                   });
                 },
               ),

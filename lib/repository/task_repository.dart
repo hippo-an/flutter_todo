@@ -402,4 +402,41 @@ class TaskRepository {
       throw FirestoreException(message: e.toString());
     }
   }
+
+  Future<int> completeCount(
+      {required String uid, required List<String> categoryIds}) async {
+    try {
+      final query = await _firestore
+          .collection('tasks')
+          .where('uid', isEqualTo: uid)
+          .where('isDeleted', isEqualTo: false)
+          // .where('categoryId', whereIn: categoryIds)
+          .where('isDone', isEqualTo: true)
+          .count()
+      .get();
+
+      return query.count;
+    } catch (e) {
+      print(e.toString());
+      return 0;
+    }
+  }
+
+  Future<int> pendingTasks({required String uid, required List<String> categoryIds}) async {
+    try {
+      final query = await _firestore
+          .collection('tasks')
+          .where('uid', isEqualTo: uid)
+          .where('isDeleted', isEqualTo: false)
+      // .where('categoryId', whereIn: categoryIds)
+          .where('isDone', isEqualTo: false)
+          .count()
+          .get();
+
+      return query.count;
+    } catch (e) {
+      print(e.toString());
+      return 0;
+    }
+  }
 }

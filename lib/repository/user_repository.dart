@@ -39,7 +39,8 @@ class UserRepository {
       }
       return UserModel.empty;
     } catch (e) {
-      throw FirestoreException(message: e.toString());
+      print(e.toString());
+      return UserModel.empty;
     }
   }
 }

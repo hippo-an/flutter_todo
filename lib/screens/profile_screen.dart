@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo_todo/widgets/profile/base_card.dart';
 import 'package:todo_todo/widgets/profile/profile_bar.dart';
 import 'package:todo_todo/widgets/profile/task_bar_chart.dart';
+import 'package:todo_todo/widgets/profile/task_count_bar.dart';
+import 'package:todo_todo/widgets/profile/task_over_view_text.dart';
 import 'package:todo_todo/widgets/profile/task_pi_chart.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -13,77 +15,11 @@ class ProfileScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProfileBar(),
+          const ProfileBar(),
           const SizedBox(height: 10),
-          SizedBox(
-            width: size.width,
-            height: 20,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                'Tasks Overview',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+          const TaskOverViewText(),
           const SizedBox(height: 4),
-          Row(
-            children: [
-              Expanded(
-                child: BaseCard(
-                  width: size.width,
-                  height: size.height * 0.15,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '1',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Completed Tasks',
-                        style: TextStyle(fontSize: 12),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: BaseCard(
-                  width: size.width,
-                  height: size.height * 0.15,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '1',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Pending Tasks',
-                        style: TextStyle(fontSize: 12),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          const TaskCountBar(),
           BaseCard(
             width: size.width,
             height: size.height * 0.3,

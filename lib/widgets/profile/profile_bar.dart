@@ -5,12 +5,17 @@ import 'package:todo_todo/models/user_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
 import 'package:todo_todo/repository/user_repository.dart';
 
-class ProfileBar extends StatelessWidget {
+class ProfileBar extends StatefulWidget {
   const ProfileBar({super.key});
 
   @override
+  State<ProfileBar> createState() => _ProfileBarState();
+}
+
+class _ProfileBarState extends State<ProfileBar> {
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<UserModel>(
       future: locator<UserRepository>()
           .fetchUser(uid: locator<AuthRepository>().currentUser.uid),
       builder: (context, snapshot) {
