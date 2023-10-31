@@ -7,6 +7,7 @@ import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/models/task_model.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
+import 'package:todo_todo/widgets/delete_task_item.dart';
 import 'package:todo_todo/widgets/task_list_item.dart';
 
 class DeletedTaskList extends StatefulWidget {
@@ -17,7 +18,6 @@ class DeletedTaskList extends StatefulWidget {
 }
 
 class _DeletedTaskListState extends State<DeletedTaskList> {
-
   bool _allFetched = false;
   bool _isLoading = false;
   List<TaskModel> _deletedTasks = [];
@@ -94,65 +94,44 @@ class _DeletedTaskListState extends State<DeletedTaskList> {
             );
           }
           final task = _deletedTasks[index];
-          return TaskListItem(
+          return DeleteTaskItem(
             key: ValueKey(task.taskId),
             task: task,
-            taskItemState: TaskItemState.deleted,
             onReturn: () async {
               await Provider.of<TaskController>(context, listen: false)
                   .backTask(
                 context,
                 taskId: task.taskId,
                 categoryId: task.categoryId,
-              );
-
-              setState(() {
-                _deletedTasks.remove(task);
+              )
+                  .then((value) {
+                if (value) {
+                  setState(() {
+                    _deletedTasks.remove(task);
+                  });
+                }
               });
             },
             onDelete: () async {
-              final bool delete = await showDialog(
+              await showDialog<bool>(
                 context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Delete task permanently'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(
-                          color: kRedColor,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(
-                          color: kRedColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-
-              if (delete) {
-                await Provider.of<TaskController>(context, listen: false)
-                    .deleteTaskPermanently(
-                  context,
-                  taskId: task.taskId,
-                );
-
-                setState(() {
-                  _deletedTasks.remove(task);
-                });
-              }
+                builder: (context) => const _DeleteAlertDialog(),
+              ).then((value) async {
+                if (value != null && value) {
+                  await Provider.of<TaskController>(context, listen: false)
+                      .deleteTaskPermanently(
+                    context,
+                    taskId: task.taskId,
+                  )
+                      .then((value) {
+                    if (value) {
+                      setState(() {
+                        _deletedTasks.remove(task);
+                      });
+                    }
+                  });
+                }
+              });
             },
           );
         },
@@ -164,6 +143,41 @@ class _DeletedTaskListState extends State<DeletedTaskList> {
         }
         return true;
       },
+    );
+  }
+}
+
+class _DeleteAlertDialog extends StatelessWidget {
+  const _DeleteAlertDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete task permanently'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+          child: const Text('Cancel'),
+        ),
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(
+              color: kRedColor,
+            ),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+          child: const Text(
+            'Delete',
+            style: TextStyle(
+              color: kRedColor,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

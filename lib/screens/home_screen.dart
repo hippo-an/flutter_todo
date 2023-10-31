@@ -6,6 +6,7 @@ import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_calendar_reload_controller.dart';
 import 'package:todo_todo/locator.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
+import 'package:todo_todo/screens/profile_screen.dart';
 import 'package:todo_todo/screens/task_calendar_screen.dart';
 import 'package:todo_todo/screens/task_list_screen.dart';
 import 'package:todo_todo/widgets/animated_floating_button.dart';
@@ -20,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +49,16 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
           ),
-          body: IndexedStack(
-            index: _selectedIndex,
-            children: [
-              const TaskListScreen(),
-              const TaskCalendarScreen(),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: const Center(
-                  child: Text('3'),
-                ),
-              ),
-            ],
+          body: Container(
+            padding: const EdgeInsets.all(16),
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: const [
+                TaskListScreen(),
+                TaskCalendarScreen(),
+                ProfileScreen(),
+              ],
+            ),
           ),
         ),
       ),

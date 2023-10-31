@@ -7,15 +7,12 @@ class TaskListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: const Column(
-        children: [
-          CategoryBar(),
-          SizedBox(height: 10),
-          TaskListWidget(),
-        ],
-      ),
+    return const Column(
+      children: [
+        CategoryBar(),
+        SizedBox(height: 10),
+        TaskListWidget(),
+      ],
     );
   }
 }

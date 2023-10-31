@@ -1,10 +1,10 @@
 import 'package:todo_todo/enums.dart';
 
 class TaskTabOpenController {
-  bool pastOpen = false;
-  bool todayOpen = false;
-  bool futureOpen = false;
-  bool completeTodayOpen = false;
+  bool pastOpen = true;
+  bool todayOpen = true;
+  bool futureOpen = true;
+  bool completeTodayOpen = true;
 
   bool changeState(TaskListBlockState taskListBlockState) {
     switch (taskListBlockState) {
@@ -24,9 +24,9 @@ class TaskTabOpenController {
   }
 
   void init() {
-    pastOpen = false;
-    todayOpen = false;
-    futureOpen = false;
-    completeTodayOpen = false;
+    pastOpen = true;
+    todayOpen = true;
+    futureOpen = true;
+    completeTodayOpen = true;
   }
 }

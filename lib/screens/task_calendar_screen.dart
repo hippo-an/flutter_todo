@@ -26,16 +26,12 @@ class _TaskCalendarScreenState extends State<TaskCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(),
-      child: const Column(
-        children: [
-          MainCalendar(),
-          SizedBox(height: 10),
-          CalendarTaskBox(),
-        ],
-      ),
+    return const Column(
+      children: [
+        MainCalendar(),
+        SizedBox(height: 10),
+        CalendarTaskBox(),
+      ],
     );
   }
 }
