@@ -50,7 +50,7 @@ class _TaskBarSectionState extends State<TaskBarSection> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            _date = lastWeek(_date);
+                            _date = dateAdd(_date, -7);
                           });
                         },
                         child: const Icon(
@@ -59,7 +59,7 @@ class _TaskBarSectionState extends State<TaskBarSection> {
                         ),
                       ),
                       Text(
-                        '${slashFormatDate(from)}~${slashFormatDate(to)}',
+                        '${formatDateWithoutYear(from)}~${formatDateWithoutYear(to)}',
                         style: const TextStyle(
                           fontSize: 12,
                         ),
@@ -68,7 +68,7 @@ class _TaskBarSectionState extends State<TaskBarSection> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              _date = nextWeek(_date);
+                              _date = dateAdd(_date, 7);
                             });
                           },
                           child: const Icon(

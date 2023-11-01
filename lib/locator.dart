@@ -7,6 +7,7 @@ import 'package:todo_todo/controller/calendar_marker_controller.dart';
 import 'package:todo_todo/controller/calendar_selected_date_controller.dart';
 import 'package:todo_todo/controller/category_controller.dart';
 import 'package:todo_todo/controller/task_calendar_reload_controller.dart';
+import 'package:todo_todo/controller/task_chart_controller.dart';
 import 'package:todo_todo/controller/task_controller.dart';
 import 'package:todo_todo/controller/task_tab_open_controller.dart';
 import 'package:todo_todo/repository/auth_repository.dart';
@@ -77,5 +78,11 @@ void setupLocator() {
         () => TaskCalendarReloadController(),
   );
 
+  locator.registerLazySingleton(
+        () => TaskChartController(
+      taskRepository: locator<TaskRepository>(),
+      authRepository: locator<AuthRepository>(),
+    ),
+  );
 
 }

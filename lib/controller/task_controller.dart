@@ -88,7 +88,7 @@ class TaskController extends ChangeNotifier {
       taskName: taskName,
       categoryId: categoryId,
       uid: _authRepository.currentUser.uid,
-      dueDate: dueDate,
+      dueDate: dueDate?.toUtc(),
       createdAt: now,
       updatedAt: now,
       subtasks: subtasks,

@@ -4,6 +4,7 @@ import 'package:todo_todo/models/category_model.dart';
 import 'package:todo_todo/models/marker_model.dart';
 import 'package:todo_todo/models/subtask_model.dart';
 import 'package:todo_todo/models/task_model.dart';
+import 'package:todo_todo/utils.dart';
 
 class TaskRepository {
   final FirebaseFirestore _firestore;
@@ -137,10 +138,11 @@ class TaskRepository {
   Future<void> updateTaskToDone(
       {required String taskId, required bool isDone}) async {
     try {
-      final now = DateTime.now().toUtc().toString();
+      final utcNow = DateTime.now().toUtc();
+      final now = resetTimeToZero(utcNow).toString();
       return await _firestore.collection('tasks').doc(taskId).update({
         'isDone': isDone,
-        'updatedAt': now,
+        'updatedAt': utcNow.toString(),
         'completedDate': isDone ? now : 'null',
       });
     } catch (e) {
@@ -413,7 +415,7 @@ class TaskRepository {
           // .where('categoryId', whereIn: categoryIds)
           .where('isDone', isEqualTo: true)
           .count()
-      .get();
+          .get();
 
       return query.count;
     } catch (e) {
@@ -422,13 +424,14 @@ class TaskRepository {
     }
   }
 
-  Future<int> pendingTasks({required String uid, required List<String> categoryIds}) async {
+  Future<int> pendingTasks(
+      {required String uid, required List<String> categoryIds}) async {
     try {
       final query = await _firestore
           .collection('tasks')
           .where('uid', isEqualTo: uid)
           .where('isDeleted', isEqualTo: false)
-      // .where('categoryId', whereIn: categoryIds)
+          // .where('categoryId', whereIn: categoryIds)
           .where('isDone', isEqualTo: false)
           .count()
           .get();
@@ -437,6 +440,78 @@ class TaskRepository {
     } catch (e) {
       print(e.toString());
       return 0;
+    }
+  }
+
+  Future<List<TaskModel>> fetchWeeklyCompletionTasks({
+    required String uid,
+    required DateTime from,
+    required DateTime to,
+    required List<String> categoryIds,
+  }) async {
+    try {
+      final query = await _firestore
+          .collection('tasks')
+          .where('uid', isEqualTo: uid)
+          .where('isDeleted', isEqualTo: false)
+          .where('categoryId', whereIn: categoryIds)
+          .where('isDone', isEqualTo: true)
+          .where(
+            'completedDate',
+            isGreaterThanOrEqualTo: from.toString(),
+          )
+          .where(
+            'completedDate',
+            isLessThanOrEqualTo: to.toString(),
+          )
+          .orderBy('completedDate')
+          .get();
+
+      return query.docs
+          .map(
+            (e) => TaskModel.fromJson(
+              e.data(),
+            ),
+          )
+          .toList();
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
+    }
+  }
+
+  Future<List<TaskModel>> fetchNextNDaysTasks({
+    required String uid,
+    required DateTime from,
+    required DateTime to,
+    required List<String> categoryIds,
+  }) async {
+    try {
+      final query = await _firestore
+          .collection('tasks')
+          .where('uid', isEqualTo: uid)
+          .where('isDeleted', isEqualTo: false)
+          .where('categoryId', whereIn: categoryIds)
+          .where('isDone', isEqualTo: false)
+          .where(
+        'dueDate',
+        isGreaterThanOrEqualTo: from.toString(),
+      )
+          .where(
+        'dueDate',
+        isLessThan: to.toString(),
+      )
+          .orderBy('dueDate')
+          .get();
+
+      return query.docs
+          .map(
+            (e) => TaskModel.fromJson(
+          e.data(),
+        ),
+      )
+          .toList();
+    } catch (e) {
+      throw FirestoreException(message: e.toString());
     }
   }
 }

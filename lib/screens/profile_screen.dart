@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_todo/widgets/calendar/task_bar_section.dart';
 import 'package:todo_todo/widgets/profile/base_card.dart';
+import 'package:todo_todo/widgets/profile/next_days_section.dart';
 import 'package:todo_todo/widgets/profile/profile_bar.dart';
-import 'package:todo_todo/widgets/profile/task_bar_chart.dart';
 import 'package:todo_todo/widgets/profile/task_count_bar.dart';
 import 'package:todo_todo/widgets/profile/task_over_view_text.dart';
 import 'package:todo_todo/widgets/profile/task_pi_chart.dart';
@@ -21,64 +21,8 @@ class ProfileScreen extends StatelessWidget {
           const TaskOverViewText(),
           const SizedBox(height: 4),
           const TaskCountBar(),
-         const TaskBarSection(),
-          BaseCard(
-            width: size.width,
-            height: size.height * 0.08 * 5,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  const Row(
-                    children: [
-                      Text(
-                        'Tasks in Next 7 Days',
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.all(4),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.newspaper,
-                                size: 18,
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  '${index}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                '11-01',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          const TaskBarSection(),
+          const NextDaysSection(),
           BaseCard(
             width: size.width,
             height: size.height * 0.4,
