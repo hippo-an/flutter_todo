@@ -479,7 +479,7 @@ class TaskRepository {
     }
   }
 
-  Future<List<TaskModel>> fetchNextNDaysTasks({
+  Future<List<TaskModel>> fetchNextNDaysToBeDoneTasks({
     required String uid,
     required DateTime from,
     required DateTime to,
@@ -493,25 +493,26 @@ class TaskRepository {
           .where('categoryId', whereIn: categoryIds)
           .where('isDone', isEqualTo: false)
           .where(
-        'dueDate',
-        isGreaterThanOrEqualTo: from.toString(),
-      )
+            'dueDate',
+            isGreaterThanOrEqualTo: from.toString(),
+          )
           .where(
-        'dueDate',
-        isLessThan: to.toString(),
-      )
+            'dueDate',
+            isLessThan: to.toString(),
+          )
           .orderBy('dueDate')
           .get();
 
       return query.docs
           .map(
             (e) => TaskModel.fromJson(
-          e.data(),
-        ),
-      )
+              e.data(),
+            ),
+          )
           .toList();
     } catch (e) {
       throw FirestoreException(message: e.toString());
     }
   }
+
 }

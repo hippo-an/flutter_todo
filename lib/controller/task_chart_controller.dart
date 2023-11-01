@@ -45,33 +45,63 @@ class TaskChartController extends ChangeNotifier {
 
       return ret;
     } on FirestoreException catch (e) {
-      print(e.toString());
+      print(e.message.toString());
       final Map<DateTime, int> ret = {};
 
       for (int offset = 0; offset < 7; offset++) {
         ret.putIfAbsent(
-            DateTime(from.year, from.month, from.day + offset), () => 0);
+            DateTime(from.year, from.month, from.day + offset), () => 1);
       }
 
       return ret;
     }
   }
 
-  Future<List<TaskModel>> fetchNextNDaysTasks({
+  Future<List<TaskModel>> fetchNextNDaysToBeDoneTasks({
     required int days,
     required DateTime from,
     required List<String> categoryIds,
   }) async {
     try {
-      return await _taskRepository.fetchNextNDaysTasks(
+      return await _taskRepository.fetchNextNDaysToBeDoneTasks(
         uid: _authRepository.currentUser.uid,
         from: from,
-        to: dateAdd(from, 7),
+        to: dateAdd(from, days),
         categoryIds: categoryIds,
       );
     } on FirestoreException catch (e) {
-      print(e.toString());
+      print(e.message.toString());
       return [];
+    }
+  }
+
+  Future<Map<String, int>> fetchPendingTasks({
+    required int days,
+    required DateTime to,
+    required List<String> categoryIds,
+  }) async {
+    try {
+      final tasks = await _taskRepository.fetchNextNDaysToBeDoneTasks(
+        uid: _authRepository.currentUser.uid,
+        from: dateAdd(to, days),
+        to: to,
+        categoryIds: categoryIds,
+      );
+
+      final Map<String, int> ret = {};
+
+      for (final task in tasks) {
+        ret.update(
+          task.categoryId,
+          (value) => value + 1,
+          ifAbsent: () => 1,
+        );
+      }
+
+      return ret;
+    } on FirestoreException catch (e) {
+      print(e.message.toString());
+      return {};
     }
   }
 }

@@ -15,7 +15,7 @@ class NextDaysSection extends StatelessWidget {
 
     return FutureBuilder(
       future: Provider.of<TaskChartController>(context, listen: false)
-          .fetchNextNDaysTasks(
+          .fetchNextNDaysToBeDoneTasks(
         days: 7,
         from: from,
         categoryIds: Provider.of<CategoryController>(context, listen: false)
@@ -61,7 +61,7 @@ class _TaskList extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return BaseCard(
       width: size.width,
-      height: tasks.length == 0 ? 0 : size.height * 0.3,
+      height: tasks.isEmpty ? 0 : size.height * 0.3,
       color: Theme.of(context).colorScheme.onBackground,
       child: Padding(
         padding: const EdgeInsets.all(16),

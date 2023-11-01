@@ -1,14 +1,23 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_todo/colors.dart';
+import 'package:todo_todo/controller/category_controller.dart';
 
 class TaskPiChart extends StatefulWidget {
-  const TaskPiChart({super.key});
+  const TaskPiChart({
+    super.key,
+    required this.categoryAndCount,
+  });
+
+  final Map<String, int> categoryAndCount;
 
   @override
   State<TaskPiChart> createState() => _TaskPiChartState();
 }
 
 class _TaskPiChartState extends State<TaskPiChart> {
+  double opacity = 0.1;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -17,78 +26,47 @@ class _TaskPiChartState extends State<TaskPiChart> {
         child: PieChart(
           PieChartData(
             pieTouchData: PieTouchData(
-              touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                // setState(() {
-                //   if (!event.isInterestedForInteractions ||
-                //       pieTouchResponse == null ||
-                //       pieTouchResponse.touchedSection == null) {
-                //     touchedIndex = -1;
-                //     return;
-                //   }
-                //   touchedIndex = pieTouchResponse
-                //       .touchedSection!.touchedSectionIndex;
-                // });
-              },
+              touchCallback: (FlTouchEvent event, pieTouchResponse) {},
             ),
             borderData: FlBorderData(
               show: false,
             ),
-            sectionsSpace: 0,
-            centerSpaceRadius: 40,
-            sections: List.generate(4, (i) {
-              switch (i) {
-                case 0:
-                  return PieChartSectionData(
-                    color: Colors.blue,
-                    value: 40,
-                    title: '40%',
-                    radius: 30.0,
-                    titleStyle: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+            sectionsSpace: 10,
+            centerSpaceRadius: 30,
+            sections: widget.categoryAndCount.isEmpty
+                ? [
+                    PieChartSectionData(
+                      color: kColorScheme.withOpacity(0.5),
+                      radius: 30.0,
+                      titleStyle: const TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(color: Colors.black, blurRadius: 2),
+                        ],
+                      ),
                     ),
-                  );
-                case 1:
-                  return PieChartSectionData(
-                    color: Colors.yellow,
-                    value: 30,
-                    title: '30%',
-                    radius: 30.0,
-                    titleStyle: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 2)],
-                    ),
-                  );
-                case 2:
-                  return PieChartSectionData(
-                    color: Colors.purple,
-                    value: 15,
-                    title: '15%',
-                    radius: 30.0,
-                    titleStyle: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 2)],
-                    ),
-                  );
-                case 3:
-                  return PieChartSectionData(
-                    color: Colors.green,
-                    value: 15,
-                    title: '15%',
-                    radius: 30.0,
-                    titleStyle: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 2)],
-                    ),
-                  );
-                default:
-                  throw Error();
-              }
-            }),
+                  ]
+                : widget.categoryAndCount.entries.map(
+                    (entry) {
+                      final category = Provider.of<CategoryController>(context, listen: false)
+                          .findNullableSeenCategory(entry.key)!;
+
+                      return PieChartSectionData(
+                        color: category.color,
+                        showTitle: true,
+                        title: '${entry.value}',
+                        radius: 30.0,
+                        titleStyle: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(color: Colors.black, blurRadius: 2),
+                          ],
+                        ),
+                      );
+                    },
+                  ).toList(),
           ),
         ),
       ),
