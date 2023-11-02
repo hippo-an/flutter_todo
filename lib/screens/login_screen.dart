@@ -52,7 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordController.text.trim(),
     );
 
-    _isEmailLoading = false;
+    setState(() {
+      _isEmailLoading = false;
+    });
 
     if (success) {
       if (mounted) {

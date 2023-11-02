@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _fetchCategory();
   }
 
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
 
   final List<Widget> _tabs = [
     const TaskListScreen(),

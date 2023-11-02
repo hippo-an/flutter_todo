@@ -18,6 +18,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
         children: [
           Expanded(
             child: IconButton(
+              splashRadius: 10,
+              splashColor: Colors.transparent,
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
