@@ -1,6 +1,6 @@
 # Flutter Todo
 
-![demo](https://github.com/dev-hippo-an/flutter_todo/assets/65079652/894fad96-e590-4e11-89ab-458ce0dc4870)
+![ezgif com-resize](https://github.com/dev-hippo-an/flutter_todo/assets/65079652/a7bb0f65-d273-4228-8d8a-49fed0be3571)
 
 # References
 
